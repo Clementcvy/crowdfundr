@@ -51,7 +51,7 @@ community manager
 }
 
 class MembreProjet {
-    rôle : Rôle {key}
+    rôle : Rôle
 }
 
 Membre "1..n" -right-> "0..n" Projet : Participe
