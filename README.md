@@ -34,24 +34,24 @@ Transporteur : nom, délai moyen (jours).
 
 Nous allons creer une base de données pour aider la plateforme CrowdFunder puisse savoir:- quels projet artistiques font intervenir à la fois Hideo Kojima et Yona Shinkawa et ont dépassé leur objectif financier 
 
--la moyenne dee notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets 
+-La moyenne dee notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets 
 
--combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur "Chronopost" lors de leurs contributions ,pour chaque projet accompagné par un incubateur 
+-Combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur "Chronopost" lors de leurs contributions ,pour chaque projet accompagné par un incubateur 
 
 
 ## 4. Livrables 
 
--Mcd v1 ,v2
+-MCD v1 ,v2
 
--Mld v1,v2
+-MLD v1,v2
 
 -SQL (LDD,LMD)
 
--l'application en python 
+-L'application en python 
 
--no SQL
+-No SQL
 
--étude de la normalisation 
+-Étude de la normalisation 
 
 
 ## 5. Hypothèse:
