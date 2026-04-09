@@ -41,8 +41,20 @@ Contrepartie :
 *Contrepartie Numérique : format, taille fichier
 *Contrepartie Physique : poids, frais de livraison  
 
+## 3. Contraintes:
 
-## 3. Hypothèses:
+* Un Projet a au moins un Membre.
+* Pour donner un Avis, un Membre doit avoir contribué au Projet.
+* Chaque Membre a un Rôle unique sur ce Projet. 
+* Une Contrepartie physique à un unique Transporteur.
+* Un Projet à au plus un Incubateur.
+* Un Contributeur ne peut donner qu'un seul avis.  
+* Les notes vont de 1 à 5.
+* Une Contribution est forcément liée à une Contrainte et un Projet.
+
+
+
+## 4. Hypothèses:
 
 * Des instances des classes Contributeur , ONG ,Incubateur, Membre peuvent exister sans intéragir avec d'autres clases de la base.  
 * On part du principe qu'il existe une relation de composition entre la Contrepartie (composant) et la Contribution (composite) puisque certaines Contributions ont une Contrepartie et toute Contrepartie n'existe que dans le contexte d'une Contribution.
@@ -53,7 +65,7 @@ Contrepartie :
 * L'attribut date de Contribution est une clé pour matérialiser le fait qu'un Membre puisse contribuer plusieurs fois à un même Projet.
 
 
-## 4. Objet 
+## 5. Objet 
 
 Nous allons creer une base de données pour aider la plateforme CrowdFunder puisse savoir:- quels projet artistiques font intervenir à la fois Hideo Kojima et Yona Shinkawa et ont dépassé leur objectif financier 
 
@@ -63,7 +75,7 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 
 
 
-## 5. Livrables 
+## 6. Livrables 
 
 -MCD v1 ,v2
 
@@ -77,7 +89,7 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 
 -Étude de la normalisation 
 
-## 6. Organisation du travail : 
+## 7. Organisation du travail : 
 
 ### Utilisation IA:
 
@@ -111,6 +123,6 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 |        |        |        |        |        |
 |        |        |        |        |        |
 |        |        |        |        |        |
-|Pourcentage totale:|        |        |        |        |
+|Pourcentage total:|        |        |        |        |
 
 
