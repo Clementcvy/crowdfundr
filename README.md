@@ -56,7 +56,7 @@ Contrepartie :
 
 ## 4. Hypothèses:
 
-* Des instances des classes Contributeur , ONG ,Incubateur, Membre peuvent exister sans intéragir avec d'autres clases de la base.  
+* Des instances des classes Contributeur, ONG, Incubateur, Membre peuvent exister sans intéragir avec d'autres classes de la base.  
 * On part du principe qu'il existe une relation de composition entre la Contrepartie (composant) et la Contribution (composite) puisque certaines Contributions ont une Contrepartie et toute Contrepartie n'existe que dans le contexte d'une Contribution.
 * La classe Projet est abstraite car un projet est forcément artistique, technologique ou social.
 * La classe Contrepartie est une interface car une contrepartie est forcément physique ou numérique et ces deux types n'ont aucun attribut en commun.
@@ -95,7 +95,7 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 
 | rendu  | oui/non| prompt |
 | ------ | ------ | ------ |
-| UML1 |  oui  |  réarrangement PlantUML (esthétique)  |
+| UML1 |oui|réarrangement PlantUML (esthétique)|
 |        |        |        |
 
 ### Participation :
@@ -110,19 +110,5 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 
 
 
-
-| rendu  | oui/non| prompt |
-| ------ | ------ | ------ |
-| UML1 |  oui  |  réarrangement PlantUML (esthétique)  |
-|        |        |        |
-
-
-| rendu  | Hugo   | Mathis | Tom    | Clement|
-| ------ | ------ | ------ | ------ | ------ |
-|        |        |        |        |        |
-|        |        |        |        |        |
-|        |        |        |        |        |
-|        |        |        |        |        |
-|Pourcentage total:|        |        |        |        |
 
 
