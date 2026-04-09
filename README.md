@@ -58,14 +58,14 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 
 On considère qu'un projet social ne peut pas être officiellement soutenu par un ou plusieurs ong 
 
-### Utilisation Ia:
+### Utilisation IA:
 
 | rendu  | oui/non| prompt |
 | ------ | ------ | ------ |
 | UML1 |  oui  |  réarrangement PlantUML (esthétique)  |
 |        |        |        |
 
-
+### Participation :
 
 | rendu  | Hugo   | Mathis | Tom    | Clement|
 | ------ | ------ | ------ | ------ | ------ |
