@@ -42,9 +42,18 @@ Contrepartie :
 *Contrepartie Physique : poids, frais de livraison  
 
 
+## 3. Hypothèses:
+
+* Des instances des classes Contributeur , ONG ,Incubateur, Membre peuvent exister sans intéragir avec d'autres clases de la base.  
+* On part du principe qu'il existe une relation de composition entre la Contrepartie (composant) et la Contribution (composite) puisque certaines Contributions ont une Contrepartie et toute Contrepartie n'existe que dans le contexte d'une Contribution.
+* La classe Projet est abstraite car un projet est forcément artistique, technologique ou social.
+* La classe Contrepartie est une interface car une contrepartie est forcément physique ou numérique et ces deux types n'ont aucun attribut en commun.
+* On définit la classe Rôle comme énumération car le sujet mentionne un nombre fini de rôles.
+* Les classes Avis, Contribution et MembreProjet sont définies comme des classes d'association car elle permettent d'ajouter des propriétés à des associations entre d'autres classes.
+* L'attribut date de Contribution est une clé pour matérialiser le fait qu'un Membre puisse contribuer plusieurs fois à un même Projet.
 
 
-## 3. Objet 
+## 4. Objet 
 
 Nous allons creer une base de données pour aider la plateforme CrowdFunder puisse savoir:- quels projet artistiques font intervenir à la fois Hideo Kojima et Yona Shinkawa et ont dépassé leur objectif financier 
 
@@ -53,7 +62,8 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 -Combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur "Chronopost" lors de leurs contributions ,pour chaque projet accompagné par un incubateur 
 
 
-## 4. Livrables 
+
+## 5. Livrables 
 
 -MCD v1 ,v2
 
@@ -66,17 +76,6 @@ Nous allons creer une base de données pour aider la plateforme CrowdFunder puis
 -No SQL
 
 -Étude de la normalisation 
-
-
-## 5. Hypothèses:
-
-* Des instances des classes Contributeur , ONG ,Incubateur, Membre peuvent exister sans intéragir avec d'autres clases de la base.  
-* On part du principe qu'il existe une relation de composition entre la Contrepartie (composant) et la Contribution (composite) puisque certaines Contributions ont une Contrepartie et toute Contrepartie n'existe que dans le contexte d'une Contribution.
-* La classe Projet est abstraite car un projet est forcément artistique, technologique ou social.
-* La classe Contrepartie est une interface car une contrepartie est forcément physique ou numérique et ces deux types n'ont aucun attribut en commun.
-* On définit la classe Rôle comme énumération car le sujet mentionne un nombre fini de rôles.
-* Les classes Avis, Contribution et MembreProjet sont définies comme des classes d'association car elle permettent d'ajouter des propriétés à des associations entre d'autres classes.
-* L'attribut date de Contribution est une clé pour matérialiser le fait qu'un Membre puisse contribuer plusieurs fois à un même Projet.
 
 ## 6. Organisation du travail : 
 
