@@ -17,7 +17,9 @@ Projet : titre, description, objectif financier (€), date de lancement, incuba
 * Projet Social : région
 * Projet Technologique : innovation 
 
-Membre d'équipe : nom, prénom, pays de résidence, date de naissance
+Personne : nom, date de naissance
+* Membre d'équipe : prénom, pays de résidence
+* Contributeur :  pseudo , mail
 
 Rôle (énumération): { chef de projet, développeur, designer, community manager }
 
@@ -31,13 +33,11 @@ Transporteur : nom, délai moyen (jours).
 
 Avis : date, note, texte
 
-Contributeur :  pseudo , mail ,nom , naissance
-
 Contribution : date-heure, montant
 
 Contrepartie :
-*Contrepartie Numérique : format, taille du fichier
-*Contrepartie Physique : poids, frais de livraison  
+* Contrepartie Numérique : format, taille du fichier
+* Contrepartie Physique : poids, frais de livraison  
 
 ## 3. Contraintes:
 
@@ -64,6 +64,9 @@ Contrepartie :
 * On définit la classe Rôle comme énumération car le sujet mentionne un nombre fini de rôles.
 * Les classes Avis, Contribution et MembreProjet sont définies comme des classes d'association car elles permettent d'ajouter des propriétés à des associations entre d'autres classes.
 * La date-heure permet la multiplicité des contributions entre un même contributeur et un même projet, mais la nature exacte de la clé sera tranchée au moment du MLD.
+* On transforme l'héritage de Contrepartie par référence, car Contrepartie a une association complexe avec contribution
+* On transforme l'héritage de Projet par référence, car l'héritage n'est pas semi-complet et il y a des associations complexes sur Projet
+* On transforme l'héritage de Personne par les classes fille, car Personne est abstrait et n'a pas d'association
 
 
 ## 5. Objet 
