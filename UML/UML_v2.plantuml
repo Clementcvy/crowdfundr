@@ -42,7 +42,7 @@ abstract class Personne {
 }
 
 class Membre {
-    prenom : varchar[20] {key}
+    prenom : varchar[20]
     pays : varchar[10]
 }
 
