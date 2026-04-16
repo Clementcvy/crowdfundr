@@ -9,18 +9,19 @@ Incubateur (#nom : varchar[20], création :integer[4] , budget : float)
 ONG (#NEU : integer , nom : varchar[20], pays : varchar[20] )
 Transporteur (#nom : varchar [20], delai : integer)
 Membre (#id: int, nom : varchar [20], prenom : varchar[20], naissance : date , pays : varchar [10]) 
-Projet_Techno(#titre=>Projet, ,#lancement : date =>Projet ,innovation :text)
-Projet_Artis(#titre=>Projet, #lancement=>Projet, médium: text)
-Projet_Social(#titre=>Projet, #lancement=>Projet, région: text)
-Projet_socialONG(#titre_projet=>Projet_Social, lancement_projet=>Projet_Social, NEU=>ONG)
-Contrepartie(#id : int, contribution => Contribution) contribution NOT NULL
-Contrepartie_Numérique(#id => Contrepartie, format : varchar[10], tailleFichier: int)
-Contrepartie_Physique(#id => Contrepartie, poids : float, fraisLivraison: int, transporteur => Transporteur) transporteur NOT NULL
-Contribution(#date: DateTime, montant: float, projet_titre=>Projet, projet_lancement=>Projet, contributeur=>Contributeur), projet_titre NOT NULL AND projet_lancement NOT NULL
-Contributeur(#id: int, pseudo: varchar[20], mail: varchar[20], nom: varchar[20], naissance: Date) pseudo KEY
-Projet(#titre: varchar[20], description: text, objectif: float, #lancement: Date, incubateur => Incubateur, contributeur=>Contributeur, date_avis: Date, note_avis: int[1..5], texte_avis: text)
+Projet_Techno(#titre=>Projet.titre, ,#lancement=>Projet.date ,innovation :text)
+Projet_Artis(#titre=>Projet.titre, #lancement=>Projet.date, médium: text)
+Projet_Social(#titre=>Projet.titre, #lancement=>Projet.date, région: text)
+Projet_socialONG(#titre_projet=>Projet_Social.titre, lancement_projet=>Projet_Social.date, NEU=>ONG)
+Contrepartie(#id : int, contribution => Contribution.date) contribution NOT NULL
+Contrepartie_Numérique(#id => Contrepartie.id, format : varchar[10], tailleFichier: int)
+Contrepartie_Physique(#id => Contrepartie.id, poids : float, fraisLivraison: int, transporteur => Transporteur) transporteur NOT NULL
+Contribution(#date: DateTime, montant: float, projet_titre=>Projet.titre, projet_lancement=>Projet.date, contributeur=>Contributeur.id), projet_titre NOT NULL AND projet_lancement NOT NULL
+Contributeur(#id: int, #pseudo: varchar[20], mail: varchar[20], nom: varchar[20], naissance: Date)
+Projet(#titre: varchar[20], description: text, objectif: float, #lancement: Date, incubateur => Incubateur.nom, contributeur=>Contributeur.id, )
+Avis(#projet_titre=>Projet.titre, #projet_lancement=>Projet.lancement, #contributeur=>Contributeur.id  ,date_avis: Date, note_avis: int[1..5], texte_avis: text)
 
-MembreProjet ( rôle: {chef de projet, développeur, designer, community manager} ,nom_membre=>membre , prenom_membre=>membre , naissance_membre=>membre titre_projet=> projet ,lancement_projet=> projet )nom_membre NOT NULL AND prenom_membre NOT NULL AND naissance_membre NOT NULL 
+MembreProjet ( rôle: {'chef de projet', 'développeur', 'designer', 'community manager'} ,#membre=>Membre.id, titre_projet=>Projet.titre ,lancement_projet=>Projet.lancement)
 
 
 
