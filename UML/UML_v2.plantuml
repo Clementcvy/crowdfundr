@@ -42,12 +42,12 @@ abstract class Personne {
 }
 
 class Membre {
-    prenom : varchar[20] {local key}
+    prenom : varchar[20] {key}
     pays : varchar[10]
 }
 
 class Contributeur {
-    pseudo : varchar[20] {local key}
+    pseudo : varchar[20] {key}
     mail : varchar[20]
 }
 
