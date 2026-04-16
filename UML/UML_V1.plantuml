@@ -14,7 +14,7 @@ class Incubateur {
     budget : float
 }
 
-Incubateur "0..1" --> "0..n" Projet : Soutient
+Incubateur "0..1" --> "*" Projet : Soutient
 
 class Projet_Techno {
     innovation : text
@@ -34,35 +34,39 @@ class ONG {
 Projet <|-- Projet_Techno
 Projet <|-- Projet_Artis
 Projet <|-- Projet_Social
-Projet_Social "0..n" <-- "0..n" ONG : Soutient
+Projet_Social "*" <-- "*" ONG : Soutient
 
-class Membre {
-    nom : varchar[20] {key}
-    prenom : varchar[20] {key}
-    pays : varchar[10]
-    naissance : date {key}
+abstract class Personne {
+    nom : varchar[20]
+    naissance : date
 }
 
-Enum Rôle{
-chef de projet
-développeur
-designer
-community manager
+class Membre {
+    prenom : varchar[20] {key}
+    pays : varchar[10]
+}
+
+class Contributeur {
+    pseudo : varchar[20] {key}
+    mail : varchar[20]
+}
+
+Personne <|-- Membre
+Personne <|-- Contributeur
+
+enum Rôle {
+    chef de projet
+    développeur
+    designer
+    community manager
 }
 
 class MembreProjet {
     rôle : Rôle
 }
 
-Membre "1..n" -right-> "0..n" Projet : Participe
-(Membre, Projet) .. MembreProjet
-
-class Contributeur {
-    pseudo : varchar[20] {key}
-    mail : varchar[20]
-    nom : varchar[20]
-    naissance : date
-}
+Projet "*" <-right- "1..*" Membre : Participe
+(Projet, Membre) .. MembreProjet
 
 class Contribution {
     date : datetime {key}
@@ -76,17 +80,17 @@ class Avis {
 }
 
 note right of (Avis)
-Le contributeur doit
-avoir contribué pour donner un avis
+    Le contributeur doit 
+    avoir contribué pour donner un avis
 end note
 
-Contributeur "0..n" <-left- "0..n" Projet : Contribue
-(Contributeur, Projet) . Contribution
+Contribution "*" <- "1" Contributeur
+Projet *-- "*" Contribution
 
-Contributeur "0..n" <-left- "0..1" Projet : Note
+Contributeur "*" <-left- "0..1" Projet : Note
 (Contributeur, Projet) . Avis
 
-interface Contrepartie {
+abstract Contrepartie {
 }
 
 class Contrepartie_Numérique {
@@ -105,9 +109,8 @@ class Transporteur {
 }
 
 Contribution *-- "0..1" Contrepartie
-
 Contrepartie <|-- Contrepartie_Numérique
 Contrepartie <|-- Contrepartie_Physique
-Transporteur "1" --> "0..n" Contrepartie_Physique : Transporte
+Transporteur "1" --> "*" Contrepartie_Physique : Transporte
 
 @enduml
