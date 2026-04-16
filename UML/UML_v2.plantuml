@@ -69,7 +69,7 @@ Projet "*" <-right- "1..*" Membre : Participe
 (Projet, Membre) .. MembreProjet
 
 class Contribution {
-    date : datetime {key}
+    date : datetime {local key}
     montant : float
 }
 
