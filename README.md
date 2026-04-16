@@ -99,16 +99,19 @@ Nous allons créer une base de données pour aider la plateforme CrowdFundr puis
 
 | rendu  | oui/non | prompt |
 | ------ | ------ | ------ |
-| UML1 | oui | réarrangement PlantUML (esthétique) |
+| UMLv1 | oui | réarrangement PlantUML (esthétique) |
 |        |        |        |
+| UMLv2/MLD | oui | réarrangement PlantUML (esthétique) |
+
+
 
 ### Participation :
 
 | rendu  | Hugo   | Mathis | Tom    | Clement|
 | ------ | ------ | ------ | ------ | ------ |
-| NDC/UML1 |   25%   |   25%   |   25%   |   25%   |
+| NDC/UMLv1 |   25%   |   25%   |   25%   |   25%   |
 |        |        |        |        |        |
-|        |        |        |        |        |
+|     UMLv2/MLD   |    33%    |   33%     |        |   33%     |
 |        |        |        |        |        |
 | Pourcentage totale:|        |        |        |        |
 
