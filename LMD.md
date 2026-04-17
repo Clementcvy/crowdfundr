@@ -1,35 +1,32 @@
 Choix de modélisation : 
 
-On modélise Contrepartie avec un héritage par référence, car ce n’est pas un héritage semi-complet et on a une association complexe sur la mère.
-On modélise Personne avec un héritage par les classes filles, car c’est une classe abstraite et on a pas d’association sur la mère.
-On modélise Projet avec un héritage par référence, car ce n’est pas un héritage semi-complet et on a une association complexe sur la mère.
+On choisi de transformer Contrepartie par référence, car on a pas un héritage semi-complet et l'association sur la classe mère est complexe
+On choisi de transformer Projet par référence, car on a pas un héritage semi-complet et l'association sur la classe mère est complexe
+On choisi de transformer Personne par les classes filles, car on a un héritage abstrait et l'association sur la classe mère n'est pas complexe
 
 Relations : 
-Incubateur (#nom : varchar[20], création :integer[4] , budget : float)
-ONG (#NEU : integer , nom : varchar[20], pays : varchar[20] )
-Transporteur (#nom : varchar [20], delai : integer)
-Membre (#id: int, nom : varchar [20], prenom : varchar[20], naissance : date , pays : varchar [10]) 
-Projet_Techno(#titre=>Projet.titre, ,#lancement=>Projet.date ,innovation :text)
-Projet_Artis(#titre=>Projet.titre, #lancement=>Projet.date, médium: text)
-Projet_Social(#titre=>Projet.titre, #lancement=>Projet.date, région: text)
-Projet_socialONG(#titre_projet=>Projet_Social.titre, lancement_projet=>Projet_Social.date, NEU=>ONG)
-Contrepartie(#id : int, contribution => Contribution.date) contribution NOT NULL
-Contrepartie_Numérique(#id => Contrepartie.id, format : varchar[10], tailleFichier: int)
-Contrepartie_Physique(#id => Contrepartie.id, poids : float, fraisLivraison: int, transporteur => Transporteur) transporteur NOT NULL
-Contribution(#date: DateTime, montant: float, projet_titre=>Projet.titre, projet_lancement=>Projet.date, contributeur=>Contributeur.id), projet_titre NOT NULL AND projet_lancement NOT NULL
-Contributeur(#id: int, #pseudo: varchar[20], mail: varchar[20], nom: varchar[20], naissance: Date)
-Projet(#titre: varchar[20], description: text, objectif: float, #lancement: Date, incubateur => Incubateur.nom, contributeur=>Contributeur.id, )
-Avis(#projet_titre=>Projet.titre, #projet_lancement=>Projet.lancement, #contributeur=>Contributeur.id  ,date_avis: Date, note_avis: int[1..5], texte_avis: text)
 
-MembreProjet ( rôle: {'chef de projet', 'développeur', 'designer', 'community manager'} ,#membre=>Membre.id, titre_projet=>Projet.titre ,lancement_projet=>Projet.lancement)
-
-
+ONG(#NEU: int, nom: varchar[20], pays: varchar[20]) nom et pays NOT NULL
+Transporteur(#nom: varchar[20], delai: int) delai NOT NULL
+Incubateur(#nom: varchar[20], création: int[4], budget: float) création et budget NOT NULL
+Projet(#id: int, titre: varchar[20], description: text, objectif: float, lancement: Date, incubateur=>Incubateur) (titre, lancement) KEY AND decription et objectif NOT NULL
+Projet_social(#id=>Projet, region: text)
+Projet_techno(#id=>Projet, innovation: text)
+Projet_artis(#id=>Projet, medium: text)
+Contributeur(#id: int, nom: varchar[20], naissance: Date, pseudo: varchar[20], mail: varchar[50]) nom, naissance, mail NOT NULL AND pseudo KEY
+Contribution(#date: Date, montant: float, projet=>Projet, contributeur=>Contributeur) montant, projet et contributeur NOT NULL
+Contrepartie(#id: int, contribution=>Conribution) contribution NOT NULL
+Contrepartie_physique(#id=>Contrepartie, poids: float, fraisLivraison: float, transporteur=>Transporteur) poids, fraisLivraison et transporteur NOT NULL
+Contrepartie_numérique(#id=>Contrepartie, format: varchar[10], tailleFichier: int) format et tailleFichier NOT NULL
+Projet_socialONG(#Projet_social=>Projet_social, ONG=>ONG)
+Membre(#id: int, nom: varchar[20], naissance: Date, prenom: varchar[20], pays: varchar[10]) nom, naissance, prenom et pays NOT NULL
+Avis(projet=>Projet, contributeur=>Contributeur, date: Date, note: int, texte: text) date, note et texte NOT NULL AND 1<=note<=5
+MembreProjet(#projet=>Projet, membre=>Membre, rôle: {'chef de projet', 'développeur', 'designer', 'community manager'}) rôle NOT NULL 
 
 Contraintes : 
-Intersection(Projection(Contrepartie_Numérique, id), Projection(Contrepartie_Physique, id)) = {}
-Projection(Contrepartie, id) = Projection(Contrepartie_Physique, id)) UNION Projection(Contrepartie_Physique, id)
-Intersection(Projection(Projet_Techno, titre, lancement), Projection(Projet_Artis, titre, lancement), Projection(Projet_Social, titre, lancement)) = {}
-Projection(Projet, titre, lancement) = Projection(Projet_Techno, titre, lancement)) UNION Projection(Projet_Artis, titre, lancement) UNION Projection(Projet_Social, titre, lancement))
-Le contributeur doit avoir contribué pour donner un avis
-Intersection(Projection(Membre, id), Projection(Contributeur, id)) = {}
 
+Intersection(Projection(Contrepartie_physique, id), Projection(Contrepartie_numérique, id)) = {}
+Intersection(Projection(Projet_social, id), Projection(Projet_techno, id), Projection(Projet_artis, id)) = {}
+Intersection(Projection(Contributeur, id), Projection(Membre, id)) = {}
+Le contributeur doit avoir contributé pour donner un avis
+Projection(Membre, id) = Projection(MembreProjet, membre)

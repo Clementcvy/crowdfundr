@@ -47,8 +47,8 @@ class Membre {
 }
 
 class Contributeur {
-    pseudo : varchar[20] {key}
-    mail : varchar[20]
+    pseudo : varchar[20] {unique}
+    mail : varchar[50]
 }
 
 Personne <|-- Membre
@@ -69,7 +69,7 @@ Projet "*" <-right- "1..*" Membre : Participe
 (Projet, Membre) .. MembreProjet
 
 class Contribution {
-    date : datetime {local key}
+    date : datetime {key}
     montant : float
 }
 
@@ -87,7 +87,7 @@ end note
 Contribution "*" <- "1" Contributeur
 Projet *-- "*" Contribution
 
-Contributeur "*" <-left- "0..1" Projet : Note
+Contributeur "*" <-left- "*" Projet : Note
 (Contributeur, Projet) . Avis
 
 abstract Contrepartie {
@@ -112,5 +112,4 @@ Contribution *-- "0..1" Contrepartie
 Contrepartie <|-- Contrepartie_Numérique
 Contrepartie <|-- Contrepartie_Physique
 Transporteur "1" --> "*" Contrepartie_Physique : Transporte
-
 @enduml

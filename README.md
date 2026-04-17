@@ -62,7 +62,7 @@ Contrepartie :
 * La classe Projet est abstraite car un projet est forcément artistique, technologique ou social. Il s'agit d'un héritage total et exclusif.
 * La classe Contrepartie est une classe Abstraite car une contrepartie est forcément physique ou numérique. Il s'agit d'un héritage total et exclusif.
 * On définit la classe Rôle comme énumération car le sujet mentionne un nombre fini de rôles.
-* Les classes Avis, Contribution et MembreProjet sont définies comme des classes d'association car elles permettent d'ajouter des propriétés à des associations entre d'autres classes.
+* Les classes Avis et MembreProjet sont définies comme des classes d'association car elles permettent d'ajouter des propriétés à des associations entre d'autres classes.
 * La date-heure permet la multiplicité des contributions entre un même contributeur et un même projet, mais la nature exacte de la clé sera tranchée au moment du MLD.
 * On transforme l'héritage de Contrepartie par référence, car Contrepartie a une association complexe avec contribution
 * On transforme l'héritage de Projet par référence, car l'héritage n'est pas semi-complet et il y a des associations complexes sur Projet
