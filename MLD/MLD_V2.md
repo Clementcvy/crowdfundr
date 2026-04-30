@@ -27,10 +27,10 @@ Projet_artis(#id_p => Projet, medium: text)
 medium NOT NULL
 
 Contributeur(#id: int, nom: varchar[20], naissance: Date, pseudo: varchar[20], mail: varchar[50])
-nom, naissance, mail NOT NULL AND pseudo UNIQUE
+nom, naissance, mail NOT NULL AND pseudo UNIQUE NOT NULL
 
 Contribution(#id : int, date: DateTime, montant: float, projet => Projet, contributeur => Contributeur)
-montant, projet et contributeur NOT NULL
+date, montant, projet et contributeur NOT NULL
 
 Contrepartie(#contribution => Contribution)
 
