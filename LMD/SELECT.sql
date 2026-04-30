@@ -1,29 +1,21 @@
 -- Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?
 
-SELECT DISTINCT pa.id_p AS id_p
+SELECT DISTINCT pa.id_p
 FROM Projet_artis pa
 JOIN Projet p ON p.id = pa.id_p
-WHERE (
-    SELECT SUM(c.montant)
-    FROM Contribution c
-    JOIN Membre m ON m.id = c.membre
-    WHERE c.projet = p.id
-      AND m.nom = 'Shinkawa'
-      AND m.prenom = 'Yoji'
-) >= p.objectif 
-AND pa.id_p IN (
-    SELECT DISTINCT pa2.id_p
-    FROM Projet_artis pa2
-    JOIN Projet p2 ON p2.id = pa2.id_p
-    WHERE (
-        SELECT SUM(c.montant)
-        FROM Contribution c
-        JOIN Membre m ON m.id = c.membre
-        WHERE c.projet = p2.id
-          AND m.nom = 'Kojima'
-          AND m.prenom = 'Hideo'
-    ) >= p2.objectif
-);
+JOIN MembreProjet mp1 ON mp1.projet = p.id
+JOIN Membre m1 ON m1.id = mp1.membre
+JOIN MembreProjet mp2 ON mp2.projet = p.id
+JOIN Membre m2 ON m2.id = mp2.membre
+WHERE m1.nom = 'Shinkawa'
+  AND m1.prenom = 'Yoji'
+  AND m2.nom = 'Kojima'
+  AND m2.prenom = 'Hideo'
+  AND (
+      SELECT SUM(c.montant)
+      FROM Contribution c
+      WHERE c.projet = p.id
+  ) >= p.objectif;
 
 -- Quelle est la moyenne des notes des projets sociaux qui sont soutenus par l'ONG nommée
 -- Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une
