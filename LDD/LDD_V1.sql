@@ -13,7 +13,7 @@ CREATE TABLE Incubateur (
     nom VARCHAR(20) PRIMARY KEY,
     creation INT NOT NULL, -- Représente l'année (int[4])
     budget FLOAT NOT NULL,
-    CONSTRAINT annee CHECK creation BETWEEN 1 AND 9999
+    CONSTRAINT annee CHECK (creation BETWEEN 1 AND 9999)
 );
 
 CREATE TABLE Projet (
@@ -55,7 +55,7 @@ CREATE TABLE Contributeur (
 
 CREATE TABLE Contribution (
     id INT PRIMARY KEY,
-    date_c DATETIME NOT NULL,
+    date_c TIMESTAMP NOT NULL,
     montant FLOAT NOT NULL,
     projet INT NOT NULL,
     contributeur INT NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE Contrepartie_physique (
     poids FLOAT NOT NULL,
     frais FLOAT NOT NULL,
     transporteur VARCHAR(20) NOT NULL,
-    CONSTRAINT contrepartie FOREIGN KEY (id_c) REFERENCES Contrepartie(id),
+    CONSTRAINT contrepartie FOREIGN KEY (id_c) REFERENCES Contrepartie(id_c),
     CONSTRAINT transporteur FOREIGN KEY (transporteur) REFERENCES Transporteur(nom)
 );
 
@@ -81,13 +81,15 @@ CREATE TABLE Contrepartie_numerique (
     id_c INT PRIMARY KEY,
     format VARCHAR(10) NOT NULL,
     taille INT NOT NULL,
-    CONSTRAINT contrepartie FOREIGN KEY (id_c) REFERENCES Contrepartie(id)
+    CONSTRAINT contrepartie FOREIGN KEY (id_c) REFERENCES Contrepartie(id_c)
 );
 
-Projet_socialONG( --Association *-*
-    projet INT FOREIGN KEY REFERENCES Projet_social(id_p),
-    ONG INT FOREIGN KEY REFERENCES ONG(NEU),
-    CONSTRAINT cle (projet,ONG) PRIMARY KEY
+CREATE TABLE Projet_socialONG( --Association *-*
+    projet INT,
+    ONG INT,
+	CONSTRAINT cle_ong FOREIGN KEY (projet) REFERENCES ONG(NEU),
+	CONSTRAINT cle_projet FOREIGN KEY (ONG) REFERENCES Projet_social(id_p),
+    CONSTRAINT cle_projet_ONG PRIMARY KEY(projet,ONG)
 );
 
 CREATE TABLE Membre (
@@ -106,13 +108,17 @@ CREATE TABLE Avis(
     texte TEXT NOT NULL,
     CONSTRAINT avis_projet FOREIGN KEY (projet) REFERENCES Projet(id),
     CONSTRAINT avis_contrib FOREIGN KEY (contributeur) REFERENCES Contributeur(id),
-    CONSTRAINT cle (projet,contributeur) PRIMARY KEY,
-    CONSTRAINT validation_note CHECK note BETWEEN 1 AND 5
+    CONSTRAINT cle_avis PRIMARY KEY(projet,contributeur),
+    CONSTRAINT validation_note CHECK(note BETWEEN 1 AND 5)
 );
 
+CREATE TYPE roleMembre as ENUM('chef de projet', 'développeur', 'designer', 'community manager');
+
 CREATE TABLE MembreProjet( -- Association *-*
-    projet INT FOREIGN KEY REFERENCES Projet(id),
-    membre INT FOREIGN KEY REFERENCES Membre(id),
-    role_m ENUM('chef de projet', 'développeur', 'designer', 'community manager') NOT NULL,
-    CONSTRAINT cle (projet,membre) PRIMARY KEY
+    projet INT,
+    membre INT,
+	CONSTRAINT cle_projet FOREIGN KEY (projet) REFERENCES Projet(id),
+	CONSTRAINT cle_membre FOREIGN KEY (membre) REFERENCES Membre(id),
+    role_m roleMembre NOT NULL,
+    CONSTRAINT cle_membre_projet PRIMARY KEY(projet,membre)
 );
