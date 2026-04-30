@@ -60,8 +60,8 @@ Intersection(Projection(Projet_social, id), Projection(Projet_techno, id)) = {} 
 
 Intersection(Projection(Contributeur, nom, naissance), Projection(Membre, nom, naissance)) = {}
 
+### Le contributeur doit avoir contribué pour donner un avis
 Projection(Avis, projet, contributeur) ⊆ Projection(Contribution, projet, contributeur) 
-# Le contributeur doit avoir contribué pour donner un avis
 
 Projection(Projet, id) = Projection(MembreProjet, projet)
 
