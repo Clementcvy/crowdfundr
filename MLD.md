@@ -17,19 +17,19 @@ Incubateur(#nom: varchar[20], création: int[4], budget: float) création et bud
 Projet(#id: int, titre: varchar[20], description: text, objectif: float, lancement: Date, incubateur => Incubateur)
 (titre, lancement) UNIQUE NOT NULL AND description et objectif NOT NULL
 
-Projet_social(#id => Projet, region: text)
+Projet_social(#id_p => Projet, region: text)
 region NOT NULL
 
-Projet_techno(#id => Projet, innovation: text)
+Projet_techno(#id_p => Projet, innovation: text)
 innovation NOT NULL
 
-Projet_artis(#id => Projet, medium: text)
+Projet_artis(#id_p => Projet, medium: text)
 medium NOT NULL
 
 Contributeur(#id: int, nom: varchar[20], naissance: Date, pseudo: varchar[20], mail: varchar[50])
 nom, naissance, mail NOT NULL AND pseudo UNIQUE
 
-Contribution(#date: DateTime, montant: float, projet => Projet, contributeur => Contributeur)
+Contribution(#id : int, date: DateTime, montant: float, projet => Projet, contributeur => Contributeur)
 montant, projet et contributeur NOT NULL
 
 Contrepartie(#contribution => Contribution)
@@ -56,9 +56,9 @@ Contraintes :
 
 Intersection(Projection(Contrepartie_physique, contribution), Projection(Contrepartie_numérique, contribution)) = {}
 
-Intersection(Projection(Projet_social, id), Projection(Projet_techno, id), Projection(Projet_artis, id)) = {}
+Intersection(Projection(Projet_social, id), Projection(Projet_techno, id)) = {} AND Intersection(Projection(Projet_social, id), Projection(Projet_artis, id)) = {} AND Intersection(Projection(Projet_techno, id), Projection(Projet_artis, id)) = {}
 
-Intersection(Projection(Contributeur, id), Projection(Membre, id)) = {}
+Intersection(Projection(Contributeur, nom, naissance), Projection(Membre, nom, naissance)) = {}
 
 Projection(Avis, projet, contributeur) ⊆ Projection(Contribution, projet, contributeur) 
 # Le contributeur doit avoir contribué pour donner un avis
