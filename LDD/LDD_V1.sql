@@ -87,8 +87,8 @@ CREATE TABLE Contrepartie_numerique (
 CREATE TABLE Projet_socialONG( --Association *-*
     projet INT,
     ONG INT,
-	CONSTRAINT cle_ong FOREIGN KEY (projet) REFERENCES ONG(NEU),
-	CONSTRAINT cle_projet FOREIGN KEY (ONG) REFERENCES Projet_social(id_p),
+	CONSTRAINT cle_ong FOREIGN KEY (ONG) REFERENCES ONG(NEU),
+	CONSTRAINT cle_projet FOREIGN KEY (projet) REFERENCES Projet_social(id_p),
     CONSTRAINT cle_projet_ONG PRIMARY KEY(projet,ONG)
 );
 

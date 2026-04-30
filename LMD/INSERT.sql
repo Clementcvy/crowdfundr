@@ -55,7 +55,7 @@ INSERT INTO Projet_techno (id_p, innovation) VALUES
 
 -- Projet Social ONG
 INSERT INTO Projet_socialONG (projet, ONG) VALUES 
-(1, 6), (2, 7), (3, 8), (4, 9), (5, 10);
+(6,1), (7,2), (8,3), (9,4), (10,5);
 
 -- Membre
 INSERT INTO Membre (id, nom, naissance, prenom, pays) VALUES 
