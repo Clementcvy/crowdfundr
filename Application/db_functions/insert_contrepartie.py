@@ -9,19 +9,7 @@ def insert_contrepartie(conn):
 
     choix = input("1 pour une contrepartie physique, 2 pour un contrepartie numérique : ")
 
-    sql = "SELECT id_c FROM Contrepartie"
-    try :
-        cur.execute(sql)
-    except psycopg2.IntegrityError as e:
-        print("Message système :", e)
-    raw = cur.fetchone()
-    max = 0
-    while raw:
-        if max < raw[0] :
-            max = raw[0]
-        raw = cur.fetchone()
-
-    id_c = max + 1
+    id_c = input("Choisissez l'id de le contribution dont vous voulez inserer une contrepartie : ")
 
     sql = "INSERT INTO Contrepartie VALUES (%s)" % (id_c)
     try :

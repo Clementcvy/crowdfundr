@@ -1,5 +1,5 @@
 def show_contreparties(conn, id):
-    sql = "SELECT id_c, poids, frais, transporteur FROM Contrepartie_physique WHERE id_c = %s" % (id)
+    sql = "SELECT id_c, poids, frais, transporteur FROM Contrepartie_physique cp JOIN Contrepartie c ON cp.id_c=c.id_c JOIN Contribution co ON c.id_c=id  JOIN Contributeur ct ON ct.id=co.contributeur WHERE ct.id = %s" % (id)
 
     cur = conn.cursor()
     try :
