@@ -17,8 +17,8 @@ def insert_contribution(conn):
     raw = cur.fetchone()
     max = 0
     while raw:
-        if max < raw :
-            max = raw
+        if max < raw[0]:
+            max = raw[0]
         raw = cur.fetchone()
 
     id = max + 1
