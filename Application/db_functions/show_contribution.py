@@ -9,7 +9,7 @@ def show_contributions(conn, id):
 
       # Fetch data line by line
     raw = cur.fetchone()
-    print("-----Contributions-----")
+    print("-----Contribution----")
     while raw:
         print(f"id: {raw[0]}, date: {raw[1]}, montant: {raw[2]}, projet: {raw[3]}")
         raw = cur.fetchone()
