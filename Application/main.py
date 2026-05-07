@@ -1,5 +1,5 @@
 import database_connect as dbc
-from db_selects import *
+from db_functions import *
 import time
 
 def printMenu(id, conn):
@@ -61,6 +61,24 @@ def handleMenu(rep, id, conn):
             case _:
                 print("Choix non connu.")
                 time.sleep(0.5)
+    else:
+        match int(rep):
+            case 1:
+                print("Affichage des informations")
+            case 2:
+                print("1 - UPDATE")
+                print("2 - INSERT")
+                print("3 - DELETE")
+                choice = input("-> ")
+            case 3:
+                print("1 - UPDATE")
+                print("2 - INSERT")
+                print("3 - DELETE")
+                choice = input("-> ")
+            case _:
+                print("Choix non connu.")
+                time.sleep(0.5)
+
 
     time.sleep(2)
     printMenu(id, conn)
