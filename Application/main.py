@@ -1,6 +1,12 @@
 import database_connect as dbc
-from db_functions import *
+from db_functions.db_selects import *
+from db_functions.delete_contrepartie import *
+from db_functions.delete_contribution import *
+from db_functions.insert_contrepartie import *
+from db_functions.insert_contribution import *
+from db_functions.show_contributions import *
 import time
+
 
 def printMenu(id, conn):
     print("Application base SQL :")
@@ -66,11 +72,26 @@ def handleMenu(rep, id, conn):
             case 1:
                 print("Affichage des informations")
             case 2:
+                # Contrepartie
                 print("1 - UPDATE")
                 print("2 - INSERT")
                 print("3 - DELETE")
                 choice = input("-> ")
+                print("-----------")
+                match int(choice):
+                    case 1:
+                        print("A FAIRE")
+                    case 2:
+                        insert_contrepartie(conn)
+                    case 3:
+                        delete_contrepartie(conn)
+                    case _:
+                        print("Choix inconnu.")
+                        time.sleep(0.5)
+                print("-----------")
+                    
             case 3:
+                # Contribution
                 print("1 - UPDATE")
                 print("2 - INSERT")
                 print("3 - DELETE")
@@ -81,7 +102,6 @@ def handleMenu(rep, id, conn):
 
 
     time.sleep(2)
-    printMenu(id, conn)
     return
 
 
@@ -90,6 +110,7 @@ def handleMenu(rep, id, conn):
 if __name__ == "__main__":
     conn = dbc.connectDatabase()
     id = input("ID : ")
+    show_contributions(conn, id)
     try:
         while True:
             rep = printMenu(id, conn)
