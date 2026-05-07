@@ -1,10 +1,8 @@
 import database_connect as dbc
+from db_selects import *
 import time
 
-def login():
-    return input("ID : ")
-
-def printMenu(id):
+def printMenu(id, conn):
     print("Application base SQL :")
     print("----------------------")
     if id =="admin":
@@ -23,7 +21,7 @@ def printMenu(id):
 
     return input("Quel est votre choix ? : ")
 
-def handleMenu(rep, id):
+def handleMenu(rep, id, conn):
     print("")
     if id == "admin":
         match int(rep):
@@ -44,6 +42,19 @@ def handleMenu(rep, id):
                 print("2 - Quelle est la moyenne des notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets ?")
                 print("3 - Pour chaque projet accompagné par un incubateur, combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur  Chronopost lors de leurs contributions ?")
                 choice = input("-> ")
+                print("-----------")
+                match int(choice):
+                    case 1:
+                        select1(conn)
+                    case 2:
+                        select2(conn)
+                    case 3:
+                        select3(conn)
+                    case _:
+                        print("Choix non connu.")
+                        time.sleep(0.5)
+                print("-----------")
+
             case 4:
                 #Appeler fonction corres
                 print("")
@@ -52,7 +63,7 @@ def handleMenu(rep, id):
                 time.sleep(0.5)
 
     time.sleep(2)
-    printMenu(id)
+    printMenu(id, conn)
     return
 
 
@@ -60,6 +71,12 @@ def handleMenu(rep, id):
 
 if __name__ == "__main__":
     conn = dbc.connectDatabase()
-    id = login()
-    rep = printMenu(id)
-    handleMenu(rep, id)
+    id = input("ID : ")
+    try:
+        while True:
+            rep = printMenu(id, conn)
+            handleMenu(rep, id, conn)
+    except KeyboardInterrupt as k:
+        print("")
+        print("Exiting...")
+        dbc.exitDatabase(conn)
