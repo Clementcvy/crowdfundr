@@ -9,7 +9,6 @@ import time
 
 
 def printMenu(id, conn):
-    print("Application base SQL :")
     print("----------------------")
     if id =="admin":
         print("Vous êtes Admin")
@@ -72,6 +71,7 @@ def handleMenu(rep, id, conn):
             case 1:
                 print("Affichage des informations")
             case 2:
+                show_contributions(conn, id)
                 # Contrepartie
                 print("1 - UPDATE")
                 print("2 - INSERT")
@@ -104,17 +104,69 @@ def handleMenu(rep, id, conn):
     time.sleep(2)
     return
 
+def login():
+    # #Affichage des membres existants
+    cur = conn.cursor()
+    # sql = "SELECT id, nom, prenom FROM Membre"
+    # try :
+    #     cur.execute(sql)
+    # except psycopg2.IntegrityError as e:
+    #     print("Message système :", e)
 
+    # raw = cur.fetchone()
+    # print("-----Membres-----")
+    # while raw:
+    #     print(f"id: {raw[0]}, nom: {raw[1]}, prenom: {raw[2]}")
+    #     raw = cur.fetchone()
 
+    #Affichage des Contributeurrs existants
+    sql = "SELECT id, nom, pseudo FROM Contributeur"
+    try :
+        cur.execute(sql)
+    except psycopg2.IntegrityError as e:
+        print("Message système :", e)
+
+    raw = cur.fetchone()
+    print("-----Contributeurs-----")
+    while raw:
+        print(f"id: {raw[0]}, nom: {raw[1]}, pseudo: {raw[2]}")
+        raw = cur.fetchone()
+    print("-----------------")
+    
+    access_granted = False
+    while not access_granted:
+        print("")
+        id = input("ID : ")
+
+        sql = "SELECT id, nom, pseudo FROM Contributeur WHERE id=%s" % (id)
+        try :
+            cur.execute(sql)
+        except psycopg2.IntegrityError as e:
+            print("Message système :", e)
+
+        raw = cur.fetchone()
+        if not raw:
+            print("[ERREUR] L'utilisateur demandé n'existe pas.")
+        else:
+            access_granted = True
+    
+    member = {
+        "id":id,
+        "nom":raw[1],
+        "pseudo":raw[2]
+    }
+    return member
 
 if __name__ == "__main__":
     conn = dbc.connectDatabase()
-    id = input("ID : ")
-    show_contributions(conn, id)
+
     try:
         while True:
-            rep = printMenu(id, conn)
-            handleMenu(rep, id, conn)
+            member = login()
+            print("")
+            print("Bienvenue ", member["pseudo"])
+            rep = printMenu(member["id"], conn)
+            handleMenu(rep, member["id"], conn)
     except KeyboardInterrupt as k:
         print("")
         print("Exiting...")

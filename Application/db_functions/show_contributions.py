@@ -1,5 +1,7 @@
+import psycopg2
+
 def show_contributions(conn, id):
-    sql = "SELECT id, date_c, montant, projet FROM Contribution WHERE id == %s" % (id)
+    sql = "SELECT Contribution.id, date_c, montant, projet FROM Contribution JOIN Contributeur ON Contribution.contributeur = Contributeur.id WHERE Contributeur.id = %s" % (id)
 
     cur = conn.cursor()
     try :
