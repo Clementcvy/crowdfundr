@@ -4,7 +4,12 @@ from db_functions.db_selects import select1, select2, select3
 from db_functions.show_contribution import show_contributions
 from db_functions.insert_contrepartie import insert_contrepartie
 from db_functions.delete_contrepartie import delete_contrepartie
+from db_functions.print_personne import print_personne
 import time
+
+
+def Pause():
+    input("Appuyez sur entrée pour passer à la suite : ")
 
 
 def printMenu(id, conn):
@@ -75,7 +80,8 @@ def handleMenu(rep, id, conn):
     else:
         match int(rep):
             case 1:
-                print("Affichage des informations")
+                print_personne(conn, id)
+                Pause()
             case 2:
                 show_contributions(conn, id)
                 # Contrepartie
@@ -106,26 +112,15 @@ def handleMenu(rep, id, conn):
                 print("Choix non connu.")
                 time.sleep(0.5)
 
-    time.sleep(2)
+    time.sleep(0)
     return
 
 
-def login():
-    # #Affichage des membres existants
+def login(conn):
+
     cur = conn.cursor()
-    # sql = "SELECT id, nom, prenom FROM Membre"
-    # try :
-    #     cur.execute(sql)
-    # except psycopg2.IntegrityError as e:
-    #     print("Message système :", e)
 
-    # raw = cur.fetchone()
-    # print("-----Membres-----")
-    # while raw:
-    #     print(f"id: {raw[0]}, nom: {raw[1]}, prenom: {raw[2]}")
-    #     raw = cur.fetchone()
-
-    # Affichage des Contributeurrs existants
+    # affichage des contributeurs
     sql = "SELECT id, nom, pseudo FROM Contributeur"
     try:
         cur.execute(sql)
@@ -144,9 +139,10 @@ def login():
         print("")
         id = input("ID : ")
 
-        sql = "SELECT id, nom, pseudo FROM Contributeur WHERE id=%s" % (id)
+        sql = "SELECT id, nom, pseudo FROM Contributeur WHERE id=%s"
         try:
-            cur.execute(sql)
+            # utilisation d'une requête paramétrée
+            cur.execute(sql, (id,))
         except psycopg2.IntegrityError as e:
             print("Message système :", e)
 
@@ -161,11 +157,10 @@ def login():
 
 
 if __name__ == "__main__":
-    conn = dbc.connectDatabase()
-
     try:
         while True:
-            member = login()
+            conn = dbc.connectDatabase()
+            member = login(conn)
             print("")
             print("Bienvenue ", member["pseudo"])
             rep = printMenu(member["id"], conn)
