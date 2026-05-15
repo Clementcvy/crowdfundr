@@ -4,44 +4,25 @@
 
 import psycopg2
 
-def print_personne(conn):
+
+def print_personne(conn, id):
     # Open a cursor to send SQL commands
     cur = conn.cursor()
 
-    id = input("Entrez l'id de la personne dont vous voulez les informations : ")
-
     # Execute a SQL SELECT command
-    sql = "SELECT * FROM Membre WHERE id = '%s'", % (id)
-    try :
-        cur.execute(sql)
+    sql = "SELECT * FROM Contributeur WHERE id = %s"
+    try:
+        cur.execute(sql, (id,))
 
         # Fetch data line by line
         raw = cur.fetchone()
-        print("C'est un membre de projet")
+        print("Voici vos informations")
         while raw:
-            print (raw[0])
-            print (raw[1])
-            print (raw[2])
-            print (raw[3])
-            print (raw[4])
+            print(f"ID : {raw[0]}")
+            print(f"Nom : {raw[1]}")
+            print(f"Date de naissance : {raw[2]}")
+            print(f"Pseudo : {raw[3]}")
+            print(f"Mail : {raw[4]}")
             raw = cur.fetchone()
-    except psycopg2.IntegrityError as e:
+    except psycopg2.Error as e:
         print("Message système :", e)
-
-    sql = "SELECT * FROM Contributeur WHERE id = '%s'", % (id)
-    try :
-        cur.execute(sql)
-
-        # Fetch data line by line
-        raw = cur.fetchone()
-        print("C'est un contributeur")
-        while raw:
-            print (raw[0])
-            print (raw[1])
-            print (raw[2])
-            print (raw[3])
-            print (raw[4])
-            raw = cur.fetchone()
-    except psycopg2.IntegrityError as e:
-        print("Message système :", e)
-

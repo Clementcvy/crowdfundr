@@ -1,19 +1,27 @@
+import psycopg2
+
+
 def show_contreparties(conn, id):
-    sql = "SELECT id_c, poids, frais, transporteur FROM Contrepartie_physique cp JOIN Contrepartie c ON cp.id_c=c.id_c JOIN Contribution co ON c.id_c=id  JOIN Contributeur ct ON ct.id=co.contributeur WHERE ct.id = %s" % (id)
+    sql = (
+        "SELECT id_c, poids, frais, transporteur FROM Contrepartie_physique cp JOIN Contrepartie c ON cp.id_c=c.id_c JOIN Contribution co ON c.id_c=id  JOIN Contributeur ct ON ct.id=co.contributeur WHERE ct.id = %s"
+        % (id)
+    )
 
     cur = conn.cursor()
-    try :
+    try:
         cur.execute(sql)
-    except psycopg2.IntegrityError as e:
+    except psycopg2.Error as e:
         print("Message système :", e)
 
-    sql = "SELECT id_c, format, taille FROM Contrepartie_numerique WHERE id_c = %s" % (id)
-    try :
+    sql = "SELECT id_c, format, taille FROM Contrepartie_numerique WHERE id_c = %s" % (
+        id
+    )
+    try:
         cur.execute(sql)
-    except psycopg2.IntegrityError as e:
+    except psycopg2.Error as e:
         print("Message système :", e)
 
-      # Fetch data line by line
+    # Fetch data line by line
     raw = cur.fetchone()
     print("-----Contrepartie-----")
     while raw:
