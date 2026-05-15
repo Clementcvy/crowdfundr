@@ -5,6 +5,9 @@ from db_functions.show_contribution import show_contributions
 from db_functions.insert_contrepartie import insert_contrepartie
 from db_functions.delete_contrepartie import delete_contrepartie
 from db_functions.print_personne import print_personne
+from db_functions.insert_contribution import insert_contribution
+from db_functions.update_contribution import update_contribution
+from db_functions.delete_contribution import delete_contribution
 import time
 
 
@@ -104,10 +107,22 @@ def handleMenu(rep, id, conn):
 
             case 3:
                 # Contribution
+                show_contributions(conn, id)
                 print("1 - UPDATE")
                 print("2 - INSERT")
                 print("3 - DELETE")
                 choice = input("-> ")
+                match int(choice):
+                    case 1:
+                        update_contribution(conn)
+                    case 2:
+                        insert_contribution(conn, id)
+                    case 3:
+                        delete_contribution(conn)
+                    case _:
+                        print("Choix inconnu.")
+                        time.sleep(0.5)
+                print("-----------")
             case _:
                 print("Choix non connu.")
                 time.sleep(0.5)
