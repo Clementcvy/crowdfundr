@@ -124,7 +124,7 @@ def login(conn):
     sql = "SELECT id, nom, pseudo FROM Contributeur"
     try:
         cur.execute(sql)
-    except psycopg2.IntegrityError as e:
+    except psycopg2.Error as e:
         print("Message système :", e)
 
     raw = cur.fetchone()
@@ -143,7 +143,7 @@ def login(conn):
         try:
             # utilisation d'une requête paramétrée
             cur.execute(sql, (id,))
-        except psycopg2.IntegrityError as e:
+        except psycopg2.Error as e:
             print("Message système :", e)
 
         raw = cur.fetchone()
@@ -157,9 +157,9 @@ def login(conn):
 
 
 if __name__ == "__main__":
+    conn = dbc.connectDatabase()
     try:
         while True:
-            conn = dbc.connectDatabase()
             member = login(conn)
             print("")
             print("Bienvenue ", member["pseudo"])

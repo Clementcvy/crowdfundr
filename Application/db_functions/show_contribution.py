@@ -1,15 +1,16 @@
 import psycopg2
 
+
 def show_contributions(conn, id):
-    sql = "SELECT Contribution.id, date_c, montant, projet FROM Contribution JOIN Contributeur ON Contribution.contributeur = Contributeur.id WHERE Contributeur.id = %s" % (id)
+    sql = "SELECT Contribution.id, date_c, montant, projet FROM Contribution JOIN Contributeur ON Contribution.contributeur = Contributeur.id WHERE Contributeur.id = %s"
 
     cur = conn.cursor()
-    try :
-        cur.execute(sql)
-    except psycopg2.IntegrityError as e:
+    try:
+        cur.execute(sql, (id,))
+    except psycopg2.Error as e:
         print("Message système :", e)
 
-      # Fetch data line by line
+    # Fetch data line by line
     raw = cur.fetchone()
     print("-----Contribution----")
     while raw:

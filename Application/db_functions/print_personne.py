@@ -24,5 +24,5 @@ def print_personne(conn, id):
             print(f"Pseudo : {raw[3]}")
             print(f"Mail : {raw[4]}")
             raw = cur.fetchone()
-    except psycopg2.IntegrityError as e:
+    except psycopg2.Error as e:
         print("Message système :", e)
