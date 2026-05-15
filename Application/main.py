@@ -1,16 +1,15 @@
 import database_connect as dbc
-from db_functions.db_selects import *
-from db_functions.delete_contrepartie import *
-from db_functions.delete_contribution import *
-from db_functions.insert_contrepartie import *
-from db_functions.insert_contribution import *
-from db_functions.show_contributions import *
+import psycopg2
+from db_functions.db_selects import select1, select2, select3
+from db_functions.show_contribution import show_contributions
+from db_functions.insert_contrepartie import insert_contrepartie
+from db_functions.delete_contrepartie import delete_contrepartie
 import time
 
 
 def printMenu(id, conn):
     print("----------------------")
-    if id =="admin":
+    if id == "admin":
         print("Vous êtes Admin")
         print("")
         print("1 - Gérer les utilisateurs")
@@ -18,13 +17,14 @@ def printMenu(id, conn):
         print("3 - SELECT")
         print("4 - Afficher toutes les tables")
     else:
-        #Afficher ID utilisateur ?
+        # Afficher ID utilisateur ?
         print("")
         print("1 - Afficher mes informations")
         print("2 - Contrepartie")
         print("3 - Contribution")
 
     return input("Quel est votre choix ? : ")
+
 
 def handleMenu(rep, id, conn):
     print("")
@@ -35,17 +35,23 @@ def handleMenu(rep, id, conn):
                 print("2 - INSERT")
                 print("3 - DELETE")
                 choice = input("-> ")
-                #Appeler les fonctions correspondantes
+                # Appeler les fonctions correspondantes
             case 2:
                 print("1 - UPDATE")
                 print("2 - INSERT")
                 print("3 - DELETE")
                 choice = input("-> ")
-                #Appeler les fonctions correspondantes
+                # Appeler les fonctions correspondantes
             case 3:
-                print("1 - Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?")
-                print("2 - Quelle est la moyenne des notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets ?")
-                print("3 - Pour chaque projet accompagné par un incubateur, combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur  Chronopost lors de leurs contributions ?")
+                print(
+                    "1 - Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?"
+                )
+                print(
+                    "2 - Quelle est la moyenne des notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets ?"
+                )
+                print(
+                    "3 - Pour chaque projet accompagné par un incubateur, combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur  Chronopost lors de leurs contributions ?"
+                )
                 choice = input("-> ")
                 print("-----------")
                 match int(choice):
@@ -61,7 +67,7 @@ def handleMenu(rep, id, conn):
                 print("-----------")
 
             case 4:
-                #Appeler fonction corres
+                # Appeler fonction corres
                 print("")
             case _:
                 print("Choix non connu.")
@@ -89,7 +95,7 @@ def handleMenu(rep, id, conn):
                         print("Choix inconnu.")
                         time.sleep(0.5)
                 print("-----------")
-                    
+
             case 3:
                 # Contribution
                 print("1 - UPDATE")
@@ -100,9 +106,9 @@ def handleMenu(rep, id, conn):
                 print("Choix non connu.")
                 time.sleep(0.5)
 
-
     time.sleep(2)
     return
+
 
 def login():
     # #Affichage des membres existants
@@ -119,9 +125,9 @@ def login():
     #     print(f"id: {raw[0]}, nom: {raw[1]}, prenom: {raw[2]}")
     #     raw = cur.fetchone()
 
-    #Affichage des Contributeurrs existants
+    # Affichage des Contributeurrs existants
     sql = "SELECT id, nom, pseudo FROM Contributeur"
-    try :
+    try:
         cur.execute(sql)
     except psycopg2.IntegrityError as e:
         print("Message système :", e)
@@ -132,14 +138,14 @@ def login():
         print(f"id: {raw[0]}, nom: {raw[1]}, pseudo: {raw[2]}")
         raw = cur.fetchone()
     print("-----------------")
-    
+
     access_granted = False
     while not access_granted:
         print("")
         id = input("ID : ")
 
         sql = "SELECT id, nom, pseudo FROM Contributeur WHERE id=%s" % (id)
-        try :
+        try:
             cur.execute(sql)
         except psycopg2.IntegrityError as e:
             print("Message système :", e)
@@ -149,13 +155,10 @@ def login():
             print("[ERREUR] L'utilisateur demandé n'existe pas.")
         else:
             access_granted = True
-    
-    member = {
-        "id":id,
-        "nom":raw[1],
-        "pseudo":raw[2]
-    }
+
+    member = {"id": id, "nom": raw[1], "pseudo": raw[2]}
     return member
+
 
 if __name__ == "__main__":
     conn = dbc.connectDatabase()
