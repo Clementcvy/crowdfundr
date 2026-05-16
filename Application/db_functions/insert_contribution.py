@@ -14,6 +14,8 @@ def insert_contribution(conn, contributeur):
         cur.execute(sql)
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
     raw = cur.fetchone()
     while raw:
         print(f"ID : {raw[0]}, Titre : {raw[1]}")
@@ -26,8 +28,10 @@ def insert_contribution(conn, contributeur):
     sql = "SELECT id FROM Contribution"
     try:
         cur.execute(sql)
-    except psycopg2.IntegrityError as e:
+    except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
     raw = cur.fetchone()
     max = 0
     while raw:
@@ -42,5 +46,8 @@ def insert_contribution(conn, contributeur):
         cur.execute(sql, (id, date_c, montant, projet, contributeur))
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
 
     conn.commit()
+    print("Opération réussie")

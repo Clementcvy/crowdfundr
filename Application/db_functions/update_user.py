@@ -3,28 +3,26 @@
 import psycopg2
 
 
-def update_contribution(conn, contributeur):
+def update_user(conn):
     cur = conn.cursor()
 
-    id = input(
-        "Entrez l'id de la contribution dont les données sont à mettre à jour : "
-    )
+    id = input("Entrez l'id de l'utilisateur dont les données sont à mettre à jour : ")
     choix = input("Entrez la donnée à modifier : ")
-    if choix not in {"date_c", "montant", "projet"}:
+    if choix not in {"nom", "naissance", "pseudo", "mail"}:
         print("Champ non autorisé")
         return
     value = input("Entrez la nouvelle valeur : ")
 
-    sql = f"UPDATE Contribution SET {choix}=%s WHERE id=%s AND contributeur=%s"
+    sql = f"UPDATE Contributeur SET {choix}=%s WHERE id=%s"
     try:
-        cur.execute(sql, (value, id, contributeur))
+        cur.execute(sql, (value, id))
     except psycopg2.Error as e:
         print("Message système :", e)
         conn.rollback()
         return
 
     if cur.rowcount == 0:
-        print("Aucune contribution modifiée.")
+        print("Aucun utilisateur modifié.")
         conn.rollback()
         return
 

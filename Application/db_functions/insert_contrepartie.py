@@ -1,46 +1,94 @@
 #!/usr/bin/python3
 
 import psycopg2
+from db_functions.show_contribution import show_contributions
 
 
-def insert_contrepartie(conn):
+def insert_contrepartie(conn, contributeur):
 
     # Open a cursor to send SQL commands
     cur = conn.cursor()
 
-    choix = input(
-        "1 pour une contrepartie physique, 2 pour un contrepartie numérique : "
-    )
+    show_contributions(conn, contributeur)
 
     id_c = input(
         "Choisissez l'id de le contribution dont vous voulez inserer une contrepartie : "
     )
 
-    sql = "INSERT INTO Contrepartie VALUES (%s)" % (id_c)
+    sql = "SELECT id FROM Contribution WHERE contributeur=%s AND id=%s"
     try:
-        cur.execute(sql)
+        cur.execute(
+            sql,
+            (
+                contributeur,
+                id_c,
+            ),
+        )
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
+
+    raw = cur.fetchone()
+    if not raw:
+        print("Cette contribution ne vous appartient pas")
+        return
+
+    choix = input(
+        "1 pour une contrepartie physique, 2 pour un contrepartie numérique : "
+    )
+
+    sql = "INSERT INTO Contrepartie VALUES (%s)"
+    try:
+        cur.execute(sql, (id_c,))
+    except psycopg2.Error as e:
+        print("Message système :", e)
+        conn.rollback()
+        return
 
     if int(choix) == 1:
-        format = input("Entrez le format : ")
-        taille = input("Entrez la taille : ")
-        sql = (
-            "INSERT INTO Contrepartie_numerique (id_c, format, taille) VALUES ('%s', '%s', %s)"
-            % (id_c, format, taille)
-        )
-    elif int(choix) == 2:
         poids = input("Entrez le poids : ")
         frais = input("Entrez les frais : ")
         transporteur = input("Entrez le transporteur : ")
-        sql = (
-            "INSERT INTO Contrepartie_physique (id_c, poids, frais, transporteur) VALUES (%s, %s, %s, '%s')"
-            % (id_c, poids, frais, transporteur)
-        )
+        sql = "INSERT INTO Contrepartie_physique (id_c, poids, frais, transporteur) VALUES (%s, %s, %s, %s)"
 
-    try:
-        cur.execute(sql)
-    except psycopg2.Error as e:
-        print("Message système :", e)
+        try:
+            cur.execute(
+                sql,
+                (
+                    id_c,
+                    poids,
+                    frais,
+                    transporteur,
+                ),
+            )
+        except psycopg2.Error as e:
+            print("Message système :", e)
+            conn.rollback()
+            return
+
+    elif int(choix) == 2:
+        format = input("Entrez le format : ")
+        taille = input("Entrez la taille : ")
+        sql = "INSERT INTO Contrepartie_numerique (id_c, format, taille) VALUES (%s, %s, %s)"
+
+        try:
+            cur.execute(
+                sql,
+                (
+                    id_c,
+                    format,
+                    taille,
+                ),
+            )
+        except psycopg2.Error as e:
+            print("Message système :", e)
+            conn.rollback()
+            return
+    else:
+        print("Choix inconnu.")
+        conn.rollback()
+        return
 
     conn.commit()
+    print("Opération réussie")

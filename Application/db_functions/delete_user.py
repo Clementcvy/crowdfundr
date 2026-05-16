@@ -3,21 +3,21 @@
 import psycopg2
 
 
-def delete_contribution(conn, contributeur):
+def delete_user(conn):
     cur = conn.cursor()
 
-    num = input("Entrez l'id de la contribution à supprimer : ")
+    id = input("Entrez l'id de l'utilisateur à supprimer : ")
 
-    sql = "DELETE FROM Contribution WHERE id=%s AND contributeur=%s"
+    sql = "DELETE FROM Contributeur WHERE id=%s"
     try:
-        cur.execute(sql, (num, contributeur))
+        cur.execute(sql, (id,))
     except psycopg2.Error as e:
         print("Message système :", e)
         conn.rollback()
         return
 
     if cur.rowcount == 0:
-        print("Aucune contribution supprimée.")
+        print("Aucun utilisateur supprimé.")
         conn.rollback()
         return
 
