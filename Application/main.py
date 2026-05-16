@@ -13,130 +13,135 @@ from db_functions.update_contrepartie import update_contrepartie
 import time
 
 
-def Pause():
+def pause():
     input("Appuyez sur entrée pour passer à la suite : ")
 
 
-def printMenu(id, conn):
-    print("----------------------")
-    if id == "admin":
-        print("Vous êtes Admin")
-        print("")
-        print("1 - Gérer les utilisateurs")
-        print("2 - Gérer les projets")
-        print("3 - SELECT")
-        print("4 - Afficher toutes les tables")
-    else:
-        # Afficher ID utilisateur ?
-        print("")
-        print("1 - Afficher mes informations")
-        print("2 - Contrepartie")
-        print("3 - Contribution")
-
-    return input("Quel est votre choix ? : ")
+def mainMenu(conn):
+    print("1 - Connexion utilisateur")
+    print("2 - Admin")
+    print("0 - Quitter")
+    choice = int(input("--> "))
+    match choice:
+        case 1:
+            contributeur = login(conn)
+            userMenu(conn, contributeur)
+            return True
+        case 2:
+            adminMenu(conn)
+            return True
+        case _:
+            return False
 
 
-def handleMenu(rep, id, conn):
+def userMenu(conn, contributeur):
     print("")
-    if id == "admin":
-        match int(rep):
-            case 1:
-                print("1 - UPDATE")
-                print("2 - INSERT")
-                print("3 - DELETE")
-                choice = input("-> ")
-                # Appeler les fonctions correspondantes
-            case 2:
-                print("1 - UPDATE")
-                print("2 - INSERT")
-                print("3 - DELETE")
-                choice = input("-> ")
-                # Appeler les fonctions correspondantes
-            case 3:
-                print(
-                    "1 - Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?"
-                )
-                print(
-                    "2 - Quelle est la moyenne des notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets ?"
-                )
-                print(
-                    "3 - Pour chaque projet accompagné par un incubateur, combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur  Chronopost lors de leurs contributions ?"
-                )
-                choice = input("-> ")
-                print("-----------")
-                match int(choice):
-                    case 1:
-                        select1(conn)
-                    case 2:
-                        select2(conn)
-                    case 3:
-                        select3(conn)
-                    case _:
-                        print("Choix non connu.")
-                        time.sleep(0.5)
-                print("-----------")
+    print("1 - Afficher mes informations")
+    print("2 - Contrepartie")
+    print("3 - Contribution")
+    choice = int(input("--> "))
+    match choice:
+        case 1:
+            print_personne(conn, contributeur)
+            pause()
+        case 2:
+            show_contreparties(conn, contributeur)
+            # Contrepartie
+            print("1 - UPDATE")
+            print("2 - INSERT")
+            print("3 - DELETE")
+            choice = input("-> ")
+            print("-----------")
+            match int(choice):
+                case 1:
+                    update_contrepartie(conn, contributeur)
+                    pause()
+                case 2:
+                    insert_contrepartie(conn, contributeur)
+                    pause()
+                case 3:
+                    delete_contrepartie(conn, contributeur)
+                    pause()
+                case _:
+                    print("Choix inconnu.")
+                    time.sleep(0.5)
+            print("-----------")
+        case 3:
+            # Contribution
+            show_contributions(conn, contributeur)
+            print("1 - UPDATE")
+            print("2 - INSERT")
+            print("3 - DELETE")
+            choice = input("-> ")
+            match int(choice):
+                case 1:
+                    update_contribution(conn, contributeur)
+                    pause()
+                case 2:
+                    insert_contribution(conn, contributeur)
+                    pause()
+                case 3:
+                    delete_contribution(conn, contributeur)
+                    pause()
+                case _:
+                    print("Choix inconnu.")
+                    time.sleep(0.5)
+            print("-----------")
+        case _:
+            print("Choix non connu.")
+            time.sleep(0.5)
 
-            case 4:
-                # Appeler fonction corres
-                print("")
-            case _:
-                print("Choix non connu.")
-                time.sleep(0.5)
-    else:
-        match int(rep):
-            case 1:
-                print_personne(conn, id)
-                Pause()
-            case 2:
-                show_contreparties(conn, id)
-                # Contrepartie
-                print("1 - UPDATE")
-                print("2 - INSERT")
-                print("3 - DELETE")
-                choice = input("-> ")
-                print("-----------")
-                match int(choice):
-                    case 1:
-                        update_contrepartie(conn, id)
-                        Pause()
-                    case 2:
-                        insert_contrepartie(conn, id)
-                        Pause()
-                    case 3:
-                        delete_contrepartie(conn, id)
-                        Pause()
-                    case _:
-                        print("Choix inconnu.")
-                        time.sleep(0.5)
-                print("-----------")
 
-            case 3:
-                # Contribution
-                show_contributions(conn, id)
-                print("1 - UPDATE")
-                print("2 - INSERT")
-                print("3 - DELETE")
-                choice = input("-> ")
-                match int(choice):
-                    case 1:
-                        update_contribution(conn, id)
-                        Pause()
-                    case 2:
-                        insert_contribution(conn, id)
-                        Pause()
-                    case 3:
-                        delete_contribution(conn, id)
-                        Pause()
-                    case _:
-                        print("Choix inconnu.")
-                        time.sleep(0.5)
-                print("-----------")
-            case _:
-                print("Choix non connu.")
-                time.sleep(0.5)
+def adminMenu(conn):
+    print("")
+    print("1 - Gérer les utilisateurs")
+    print("2 - Gérer les projets")
+    print("3 - SELECT")
+    print("4 - Afficher toutes les tables")
+    choice = int(input("--> "))
+    match choice:
+        case 1:
+            print("1 - UPDATE")
+            print("2 - INSERT")
+            print("3 - DELETE")
+            choice = input("-> ")
+            # Appeler les fonctions correspondantes
+        case 2:
+            print("1 - UPDATE")
+            print("2 - INSERT")
+            print("3 - DELETE")
+            choice = input("-> ")
+            # Appeler les fonctions correspondantes
+        case 3:
+            print(
+                "1 - Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?"
+            )
+            print(
+                "2 - Quelle est la moyenne des notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets ?"
+            )
+            print(
+                "3 - Pour chaque projet accompagné par un incubateur, combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur  Chronopost lors de leurs contributions ?"
+            )
+            choice = input("-> ")
+            print("-----------")
+            match int(choice):
+                case 1:
+                    select1(conn)
+                case 2:
+                    select2(conn)
+                case 3:
+                    select3(conn)
+                case _:
+                    print("Choix non connu.")
+                    time.sleep(0.5)
+            print("-----------")
 
-    time.sleep(0)
-    return
+        case 4:
+            # Appeler fonction corres
+            print("")
+        case _:
+            print("Choix non connu.")
+            time.sleep(0.5)
 
 
 def login(conn):
@@ -162,7 +167,7 @@ def login(conn):
         print("")
         id = input("ID : ")
 
-        sql = "SELECT id, nom, pseudo FROM Contributeur WHERE id=%s"
+        sql = "SELECT id FROM Contributeur WHERE id=%s"
         try:
             # utilisation d'une requête paramétrée
             cur.execute(sql, (id,))
@@ -175,19 +180,15 @@ def login(conn):
         else:
             access_granted = True
 
-    member = {"id": id, "nom": raw[1], "pseudo": raw[2]}
-    return member
+    return id
 
 
 if __name__ == "__main__":
     conn = dbc.connectDatabase()
     try:
-        while True:
-            member = login(conn)
-            print("")
-            print("Bienvenue ", member["pseudo"])
-            rep = printMenu(member["id"], conn)
-            handleMenu(rep, member["id"], conn)
+        noQuit = True
+        while noQuit:
+            noQuit = mainMenu(conn)
     except KeyboardInterrupt as k:
         print("")
         print("Exiting...")
