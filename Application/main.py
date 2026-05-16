@@ -10,6 +10,8 @@ from db_functions.update_contribution import update_contribution
 from db_functions.delete_contribution import delete_contribution
 from db_functions.show_contrepartie import show_contreparties
 from db_functions.update_contrepartie import update_contrepartie
+from db_functions.show_projects import show_projects
+from db_functions.show_users import show_users
 import time
 
 
@@ -97,7 +99,8 @@ def adminMenu(conn):
     print("1 - Gérer les utilisateurs")
     print("2 - Gérer les projets")
     print("3 - SELECT")
-    print("4 - Afficher toutes les tables")
+    print("4 - Afficher tous les projets")
+    print("5 - Afficher tous les utilisateurs")
     choice = int(input("--> "))
     match choice:
         case 1:
@@ -137,8 +140,11 @@ def adminMenu(conn):
             print("-----------")
 
         case 4:
-            # Appeler fonction corres
-            print("")
+            show_projects(conn)
+            pause()
+        case 5:
+            show_users(conn)
+            pause()
         case _:
             print("Choix non connu.")
             time.sleep(0.5)
@@ -192,4 +198,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt as k:
         print("")
         print("Exiting...")
+    finally:
         dbc.exitDatabase(conn)
