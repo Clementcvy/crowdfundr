@@ -14,6 +14,7 @@ from db_functions.show_projects import show_projects
 from db_functions.show_users import show_users
 from db_functions.insert_user import insert_user
 from db_functions.update_user import update_user
+from db_functions.delete_user import delete_user
 import time
 
 
@@ -106,6 +107,7 @@ def adminMenu(conn):
     choice = int(input("--> "))
     match choice:
         case 1:
+            show_users(conn)
             print("1 - UPDATE")
             print("2 - INSERT")
             print("3 - DELETE")
@@ -118,7 +120,8 @@ def adminMenu(conn):
                     insert_user(conn)
                     pause()
                 case 3:
-                    pass
+                    delete_user(conn)
+                    pause()
                 case _:
                     pass
         case 2:
