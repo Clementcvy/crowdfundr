@@ -9,6 +9,7 @@ def show_users(conn):
         cur.execute(sql)
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
         return
 
     # Fetch data line by line

@@ -9,6 +9,8 @@ def show_contributions(conn, id):
         cur.execute(sql, (id,))
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
 
     # Fetch data line by line
     raw = cur.fetchone()

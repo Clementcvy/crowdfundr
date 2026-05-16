@@ -9,6 +9,8 @@ def show_contreparties(conn, contributeur):
         cur.execute(sql, (contributeur,))
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
 
     raw = cur.fetchone()
     print("-----Contrepartie Physique-----")
@@ -24,6 +26,8 @@ def show_contreparties(conn, contributeur):
         cur.execute(sql, (contributeur,))
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
 
     raw = cur.fetchone()
     print("-----Contrepartie Numérique-----")

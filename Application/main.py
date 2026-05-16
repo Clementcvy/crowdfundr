@@ -17,6 +17,7 @@ from db_functions.update_user import update_user
 from db_functions.delete_user import delete_user
 from db_functions.insert_project import insert_project
 from db_functions.update_project import update_project
+from db_functions.delete_project import delete_project
 import time
 
 
@@ -140,7 +141,7 @@ def adminMenu(conn):
                     insert_project(conn)
                     pause()
                 case 3:
-
+                    delete_project(conn)
                     pause()
                 case _:
                     pass
@@ -159,10 +160,13 @@ def adminMenu(conn):
             match int(choice):
                 case 1:
                     select1(conn)
+                    pause()
                 case 2:
                     select2(conn)
+                    pause()
                 case 3:
                     select3(conn)
+                    pause()
                 case _:
                     print("Choix non connu.")
                     time.sleep(0.5)

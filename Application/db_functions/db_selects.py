@@ -24,6 +24,7 @@ def select1(conn):
         cur.execute(sql)
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
         return
 
     # Fetch data line by line
@@ -50,6 +51,7 @@ def select2(conn):
         cur.execute(sql)
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
         return
 
     # Fetch data line by line
@@ -76,6 +78,7 @@ def select3(conn):
         cur.execute(sql)
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
         return
 
     # Fetch data line by line
