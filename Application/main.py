@@ -8,6 +8,7 @@ from db_functions.print_personne import print_personne
 from db_functions.insert_contribution import insert_contribution
 from db_functions.update_contribution import update_contribution
 from db_functions.delete_contribution import delete_contribution
+from db_functions.show_contrepartie import show_contreparties
 import time
 
 
@@ -86,7 +87,7 @@ def handleMenu(rep, id, conn):
                 print_personne(conn, id)
                 Pause()
             case 2:
-                show_contributions(conn, id)
+                show_contreparties(conn, id)
                 # Contrepartie
                 print("1 - UPDATE")
                 print("2 - INSERT")
