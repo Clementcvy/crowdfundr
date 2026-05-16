@@ -26,6 +26,8 @@ def insert_contrepartie(conn, contributeur):
         )
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
 
     raw = cur.fetchone()
     if not raw:
@@ -41,6 +43,8 @@ def insert_contrepartie(conn, contributeur):
         cur.execute(sql, (id_c,))
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
 
     if int(choix) == 1:
         poids = input("Entrez le poids : ")
@@ -60,6 +64,8 @@ def insert_contrepartie(conn, contributeur):
             )
         except psycopg2.Error as e:
             print("Message système :", e)
+            conn.rollback()
+            return
 
     elif int(choix) == 2:
         format = input("Entrez le format : ")
@@ -77,6 +83,12 @@ def insert_contrepartie(conn, contributeur):
             )
         except psycopg2.Error as e:
             print("Message système :", e)
+            conn.rollback()
+            return
+    else:
+        print("Choix inconnu.")
+        conn.rollback()
+        return
 
-    print("Opération réussie")
     conn.commit()
+    print("Opération réussie")

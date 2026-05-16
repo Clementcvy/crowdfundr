@@ -19,6 +19,8 @@ def delete_contrepartie(conn, contributeur):
         )
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
     raw = cur.fetchone()
     if not raw:
         print("Cette contrepartie ne vous appartient pas")
@@ -29,15 +31,22 @@ def delete_contrepartie(conn, contributeur):
         cur.execute(sql, (num,))
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
     sql = "DELETE FROM Contrepartie_physique WHERE id_c=%s"
     try:
         cur.execute(sql, (num,))
     except psycopg2.Error as e:
         print("Message système :", e)
+        conn.rollback()
+        return
     sql = "DELETE FROM Contrepartie WHERE id_c=%s"
     try:
         cur.execute(sql, (num,))
     except psycopg2.Error as e:
         print("Message système :", e)
-    print("Opération réussie")
+        conn.rollback()
+        return
+
     conn.commit()
+    print("Opération réussie")
