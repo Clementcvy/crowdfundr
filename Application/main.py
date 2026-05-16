@@ -114,11 +114,11 @@ def handleMenu(rep, id, conn):
                 choice = input("-> ")
                 match int(choice):
                     case 1:
-                        update_contribution(conn)
+                        update_contribution(conn, id)
                     case 2:
                         insert_contribution(conn, id)
                     case 3:
-                        delete_contribution(conn)
+                        delete_contribution(conn, id)
                     case _:
                         print("Choix inconnu.")
                         time.sleep(0.5)
