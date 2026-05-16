@@ -104,6 +104,8 @@ Nous allons créer une base de données pour aider la plateforme CrowdFundr puis
 | UMLv2/MLD | oui | réarrangement PlantUML (esthétique) |
 |        |        |        |
 | MLDv2/LDD | oui | idées de SELECT |
+|        |        |        |
+| APP | non |   |
 
 
 
@@ -116,6 +118,8 @@ Nous allons créer une base de données pour aider la plateforme CrowdFundr puis
 |     UMLv2/MLD   |    25%    |   25%     |   25%     |   25%     |
 |        |        |        |        |        |
 |     MLDv2/LDD   |    25%    |   25%     |   25%     |   25%     |
+|        |        |        |        |        |
+|     APP   |    25%    |   25%     |   25%     |   25%     |
 |        |        |        |        |        |
 | Pourcentage totale:|        |        |        |        |
 
