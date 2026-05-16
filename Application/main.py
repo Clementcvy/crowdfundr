@@ -100,7 +100,7 @@ def handleMenu(rep, id, conn):
                     case 2:
                         insert_contrepartie(conn, id)
                     case 3:
-                        delete_contrepartie(conn)
+                        delete_contrepartie(conn, id)
                     case _:
                         print("Choix inconnu.")
                         time.sleep(0.5)
