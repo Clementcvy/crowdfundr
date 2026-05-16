@@ -15,6 +15,7 @@ from db_functions.show_users import show_users
 from db_functions.insert_user import insert_user
 from db_functions.update_user import update_user
 from db_functions.delete_user import delete_user
+from db_functions.insert_project import insert_project
 import time
 
 
@@ -125,11 +126,23 @@ def adminMenu(conn):
                 case _:
                     pass
         case 2:
+            show_projects(conn)
             print("1 - UPDATE")
             print("2 - INSERT")
             print("3 - DELETE")
             choice = input("-> ")
-            # Appeler les fonctions correspondantes
+            match int(choice):
+                case 1:
+
+                    pause()
+                case 2:
+                    insert_project(conn)
+                    pause()
+                case 3:
+
+                    pause()
+                case _:
+                    pass
         case 3:
             print(
                 "1 - Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?"
