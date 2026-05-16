@@ -20,4 +20,6 @@ def update_contribution(conn, contributeur):
         cur.execute(sql, (value, id, contributeur))
     except psycopg2.Error as e:
         print("Message système :", e)
+
+    print("Opération réussie")
     conn.commit()

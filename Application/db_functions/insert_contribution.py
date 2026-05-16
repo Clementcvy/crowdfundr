@@ -43,4 +43,5 @@ def insert_contribution(conn, contributeur):
     except psycopg2.Error as e:
         print("Message système :", e)
 
+    print("Opération réussie")
     conn.commit()

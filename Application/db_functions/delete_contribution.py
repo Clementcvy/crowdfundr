@@ -13,4 +13,5 @@ def delete_contribution(conn, contributeur):
         cur.execute(sql, (num, contributeur))
     except psycopg2.Error as e:
         print("Message système :", e)
+    print("Opération réussie")
     conn.commit()

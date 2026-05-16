@@ -39,4 +39,5 @@ def delete_contrepartie(conn, contributeur):
         cur.execute(sql, (num,))
     except psycopg2.Error as e:
         print("Message système :", e)
+    print("Opération réussie")
     conn.commit()

@@ -98,10 +98,13 @@ def handleMenu(rep, id, conn):
                 match int(choice):
                     case 1:
                         update_contrepartie(conn, id)
+                        Pause()
                     case 2:
                         insert_contrepartie(conn, id)
+                        Pause()
                     case 3:
                         delete_contrepartie(conn, id)
+                        Pause()
                     case _:
                         print("Choix inconnu.")
                         time.sleep(0.5)
@@ -117,10 +120,13 @@ def handleMenu(rep, id, conn):
                 match int(choice):
                     case 1:
                         update_contribution(conn, id)
+                        Pause()
                     case 2:
                         insert_contribution(conn, id)
+                        Pause()
                     case 3:
                         delete_contribution(conn, id)
+                        Pause()
                     case _:
                         print("Choix inconnu.")
                         time.sleep(0.5)
