@@ -9,6 +9,7 @@ from db_functions.insert_contribution import insert_contribution
 from db_functions.update_contribution import update_contribution
 from db_functions.delete_contribution import delete_contribution
 from db_functions.show_contrepartie import show_contreparties
+from db_functions.update_contrepartie import update_contrepartie
 import time
 
 
@@ -96,7 +97,7 @@ def handleMenu(rep, id, conn):
                 print("-----------")
                 match int(choice):
                     case 1:
-                        print("A FAIRE")
+                        update_contrepartie(conn, id)
                     case 2:
                         insert_contrepartie(conn, id)
                     case 3:
