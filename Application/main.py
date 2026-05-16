@@ -98,7 +98,7 @@ def handleMenu(rep, id, conn):
                     case 1:
                         print("A FAIRE")
                     case 2:
-                        insert_contrepartie(conn)
+                        insert_contrepartie(conn, id)
                     case 3:
                         delete_contrepartie(conn)
                     case _:
