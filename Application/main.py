@@ -16,6 +16,7 @@ from db_functions.insert_user import insert_user
 from db_functions.update_user import update_user
 from db_functions.delete_user import delete_user
 from db_functions.insert_project import insert_project
+from db_functions.update_project import update_project
 import time
 
 
@@ -133,7 +134,7 @@ def adminMenu(conn):
             choice = input("-> ")
             match int(choice):
                 case 1:
-
+                    update_project(conn)
                     pause()
                 case 2:
                     insert_project(conn)
