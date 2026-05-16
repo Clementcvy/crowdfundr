@@ -12,6 +12,7 @@ from db_functions.show_contrepartie import show_contreparties
 from db_functions.update_contrepartie import update_contrepartie
 from db_functions.show_projects import show_projects
 from db_functions.show_users import show_users
+from db_functions.insert_user import insert_user
 import time
 
 
@@ -108,7 +109,15 @@ def adminMenu(conn):
             print("2 - INSERT")
             print("3 - DELETE")
             choice = input("-> ")
-            # Appeler les fonctions correspondantes
+            match int(choice):
+                case 1:
+                    pass
+                case 2:
+                    insert_user(conn)
+                case 3:
+                    pass
+                case _:
+                    pass
         case 2:
             print("1 - UPDATE")
             print("2 - INSERT")
