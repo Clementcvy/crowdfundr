@@ -1,29 +1,16 @@
 import database_connect as dbc
 import psycopg2
 from db_functions.db_selects import select1, select2, select3
-from db_functions.show_contribution import show_contributions
-from db_functions.insert_contrepartie import insert_contrepartie
-from db_functions.delete_contrepartie import delete_contrepartie
 from db_functions.print_personne import print_personne
-from db_functions.insert_contribution import insert_contribution
-from db_functions.update_contribution import update_contribution
-from db_functions.delete_contribution import delete_contribution
-from db_functions.show_contrepartie import show_contreparties
-from db_functions.update_contrepartie import update_contrepartie
-from db_functions.show_projects import show_projects
-from db_functions.show_users import show_users
-from db_functions.insert_user import insert_user
-from db_functions.update_user import update_user
-from db_functions.delete_user import delete_user
-from db_functions.insert_project import insert_project
-from db_functions.update_project import update_project
-from db_functions.delete_project import delete_project
+from db_functions.project_functions import insert_project, update_project, show_projects, delete_project
+from db_functions.contrepartie_functions import update_contrepartie, show_contreparties, insert_contrepartie, delete_contrepartie
+from db_functions.contribution_functions import update_contribution, show_contributions, insert_contribution, delete_contribution
+from db_functions.user_functions import delete_user, insert_user, show_users, update_user
 import time
 
 
 def pause():
     input("Appuyez sur entrée pour passer à la suite : ")
-
 
 def mainMenu(conn):
     print("1 - Connexion utilisateur")
@@ -40,7 +27,6 @@ def mainMenu(conn):
             return True
         case _:
             return False
-
 
 def userMenu(conn, contributeur):
     print("")
@@ -98,7 +84,6 @@ def userMenu(conn, contributeur):
         case _:
             print("Choix non connu.")
             time.sleep(0.5)
-
 
 def adminMenu(conn):
     print("")
@@ -182,7 +167,6 @@ def adminMenu(conn):
             print("Choix non connu.")
             time.sleep(0.5)
 
-
 def login(conn):
 
     cur = conn.cursor()
@@ -220,7 +204,6 @@ def login(conn):
             access_granted = True
 
     return id
-
 
 if __name__ == "__main__":
     conn = dbc.connectDatabase()

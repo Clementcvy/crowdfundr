@@ -15,3 +15,4 @@ def connectDatabase():
 
 def exitDatabase(conn):
     conn.close()
+    print("[LOGS] Connexion SQL fermée.")
