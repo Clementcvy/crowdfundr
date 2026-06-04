@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import psycopg2
+from datetime import datetime
 
 def update_contribution(conn, contributeur):
     cur = conn.cursor()
@@ -68,7 +69,7 @@ def insert_contribution(conn, contributeur):
         raw = cur.fetchone()
 
     projet = input("Entrez l'id du projet auxquel vous voulez contribuer : ")
-    date_c = input("Entrez la date d'aujourd'hui : ")
+    date_c = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     montant = input("Entrez le montant de la contribution : ")
 
     sql = "SELECT id FROM Contribution"

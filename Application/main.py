@@ -31,8 +31,8 @@ def mainMenu(conn):
 def userMenu(conn, contributeur):
     print("")
     print("1 - Afficher mes informations")
-    print("2 - Contrepartie")
-    print("3 - Contribution")
+    print("2 - Gérer les contreparties")
+    print("3 - Faire une contribution")
     choice = int(input("--> "))
     match choice:
         case 1:
@@ -41,19 +41,15 @@ def userMenu(conn, contributeur):
         case 2:
             show_contreparties(conn, contributeur)
             # Contrepartie
-            print("1 - UPDATE")
-            print("2 - INSERT")
-            print("3 - DELETE")
+            print("1 - INSERT")
+            print("2 - DELETE")
             choice = input("-> ")
             print("-----------")
             match int(choice):
                 case 1:
-                    update_contrepartie(conn, contributeur)
-                    pause()
-                case 2:
                     insert_contrepartie(conn, contributeur)
                     pause()
-                case 3:
+                case 2:
                     delete_contrepartie(conn, contributeur)
                     pause()
                 case _:
@@ -63,24 +59,8 @@ def userMenu(conn, contributeur):
         case 3:
             # Contribution
             show_contributions(conn, contributeur)
-            print("1 - UPDATE")
-            print("2 - INSERT")
-            print("3 - DELETE")
-            choice = input("-> ")
-            match int(choice):
-                case 1:
-                    update_contribution(conn, contributeur)
-                    pause()
-                case 2:
-                    insert_contribution(conn, contributeur)
-                    pause()
-                case 3:
-                    delete_contribution(conn, contributeur)
-                    pause()
-                case _:
-                    print("Choix inconnu.")
-                    time.sleep(0.5)
-            print("-----------")
+            insert_contribution(conn,contributeur)
+            pause()
         case _:
             print("Choix non connu.")
             time.sleep(0.5)
@@ -92,6 +72,8 @@ def adminMenu(conn):
     print("3 - SELECT")
     print("4 - Afficher tous les projets")
     print("5 - Afficher tous les utilisateurs")
+    print("6 - Gérer les contributions")
+    print("7 - Gérer les contreparties")
     choice = int(input("--> "))
     match choice:
         case 1:
@@ -163,6 +145,41 @@ def adminMenu(conn):
         case 5:
             show_users(conn)
             pause()
+        case 6:
+            contributeur = login(conn)
+            show_contributions(conn,contributeur)
+            print("1 - UPDATE")
+            print("2 - DELETE")
+            choice = input("-> ")
+            match int(choice):
+                case 1:
+                    update_contribution(conn,contributeur)
+                    pause()
+                case 2:
+                    delete_contribution(conn,contributeur)
+                    pause()
+                case _:
+                    pass
+        case 7:
+            contributeur = login(conn)
+            show_contreparties(conn,contributeur)
+            print("1 - UPDATE")
+            print("2 - INSERT")
+            print("3 - DELETE")
+            choice = input("-> ")
+            match int(choice):
+                case 1:
+                    update_contrepartie(conn,contributeur)
+                    pause()
+                case 2:
+                    insert_contrepartie(conn,contributeur)
+                    pause()
+                case 3:
+                    delete_contrepartie(conn,contributeur)
+                    pause()
+                case _:
+                    pass
+
         case _:
             print("Choix non connu.")
             time.sleep(0.5)
