@@ -1,4 +1,3 @@
-import database_connect as dbc
 import psycopg2
 from db_functions.db_selects import select1, select2, select3
 from db_functions.print_personne import print_personne
@@ -6,251 +5,190 @@ from db_functions.project_functions import insert_project, update_project, show_
 from db_functions.contrepartie_functions import update_contrepartie, show_contreparties, insert_contrepartie, delete_contrepartie
 from db_functions.contribution_functions import update_contribution, show_contributions, insert_contribution, delete_contribution
 from db_functions.user_functions import delete_user, insert_user, show_users, update_user
+from db_functions.avis_functions import delete_avis, insert_avis, show_avis, update_avis
 import time
 import os
-
+import database_connect as dbc
 
 def clear():
-    # 'nt'=Windows, sinon c'est Linux ou macOS
     if os.name == 'nt':
         os.system('cls')
     else:
         os.system('clear')
 
 def pause():
-    input("Appuyez sur entrée pour passer à la suite : ")
+    input("\nAppuyez sur entrée pour continuer...")
 
 def mainMenu(conn):
-    clear()
-    print("1 - Connexion utilisateur")
-    print("2 - Admin")
-    print("0 - Quitter")
-    choice = input("--> ")
-    match choice:
-        case '1':
+    while True:
+        clear()
+        print("1 - Connexion utilisateur")
+        print("2 - Admin")
+        print("0 - Quitter")
+        choice = input("--> ")
+        if choice == '1':
             contributeur = login(conn)
-            userMenu(conn, contributeur)
-            return True
-        case '2':
+            if contributeur:
+                userMenu(conn, contributeur)
+        elif choice == '2':
             adminMenu(conn)
-            return True
-        case '0':
+        elif choice == '0':
             return False
-        case _:
-            mainMenu(conn)
+        else:
+            print("Choix invalide.")
+            time.sleep(0.5)
 
 def userMenu(conn, contributeur):
-    clear()
-    print("")
-    print("1 - Afficher mes informations")
-    print("2 - Gérer les contreparties")
-    print("3 - Faire une contribution")
-    choice = input("--> ")
-    match choice:
-        case '1':
+    while True:
+        clear()
+        print("1 - Afficher mes informations")
+        print("2 - Gérer les contreparties")
+        print("3 - Faire une contribution")
+        print("4 - Gérer les avis")
+        print("0 - Retour")
+        choice = input("--> ")
+        if choice == '1':
             clear()
             print_personne(conn, contributeur)
             pause()
-        case '2':
-            clear()
-            show_contreparties(conn, contributeur)
-            # Contrepartie
-            print("1 - INSERT")
-            print("2 - DELETE")
-            choice = input("-> ")
-            print("-----------")
-            match choice:
-                case '1':
+        elif choice == '2':
+            while True:
+                clear()
+                show_contreparties(conn, contributeur)
+                print("1 - INSERT")
+                print("2 - DELETE")
+                print("0 - Retour")
+                sub = input("-> ")
+                if sub == '1':
                     insert_contrepartie(conn, contributeur)
                     pause()
-                case '2':
+                elif sub == '2':
                     delete_contrepartie(conn, contributeur)
                     pause()
-                case _:
-                    print("Choix inconnu.")
-                    time.sleep(0.5)
-            print("-----------")
-        case '3':
+                elif sub == '0':
+                    break
+        elif choice == '3':
             clear()
-            # Contribution
             show_contributions(conn, contributeur)
-            insert_contribution(conn,contributeur)
+            insert_contribution(conn, contributeur)
             pause()
-        case _:
-            print("Choix non connu.")
-            time.sleep(0.5)
+        elif choice == '4':
+            while True:
+                clear()
+                print("1 - Laisser un avis")
+                print("2 - Modifier un avis")
+                print("3 - Supprimer un avis")
+                print("0 - Retour")
+                sub = input("-> ")
+                if sub == '1':
+                    insert_avis(conn, contributeur)
+                    pause()
+                elif sub == '2':
+                    update_avis(conn, contributeur)
+                    pause()
+                elif sub == '3':
+                    delete_avis(conn, contributeur)
+                    pause()
+                elif sub == '0':
+                    break
+        elif choice == '0':
+            break
 
 def adminMenu(conn):
-    clear()
-    print("")
-    print("1 - Gérer les utilisateurs")
-    print("2 - Gérer les projets")
-    print("3 - SELECT")
-    print("4 - Afficher tous les projets")
-    print("5 - Afficher tous les utilisateurs")
-    print("6 - Gérer les contributions")
-    print("7 - Gérer les contreparties")
-    choice = input("--> ")
-    match choice:
-        case '1':
-            clear()
-            show_users(conn)
-            print("1 - UPDATE")
-            print("2 - INSERT")
-            print("3 - DELETE")
-            choice = input("-> ")
-            match choice:
-                case '1':
-                    update_user(conn)
-                    pause()
-                case '2':
-                    insert_user(conn)
-                    pause()
-                case '3':
-                    delete_user(conn)
-                    pause()
-                case _:
-                    pass
-        case '2':
-            clear()
-            show_projects(conn)
-            print("1 - UPDATE")
-            print("2 - INSERT")
-            print("3 - DELETE")
-            choice = input("-> ")
-            match choice:
-                case '1':
-                    update_project(conn)
-                    pause()
-                case '2':
-                    insert_project(conn)
-                    pause()
-                case '3':
-                    delete_project(conn)
-                    pause()
-                case _:
-                    pass
-        case '3':
-            clear()
-            print(
-                "1 - Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?"
-            )
-            print(
-                "2 - Quelle est la moyenne des notes des projets sociaux qui sont soutenus par l'ONG nommée Amnesty International, en ne prenant en compte que les utilisateurs ayant apporté une contribution supérieure à 50 euros sur ces projets ?"
-            )
-            print(
-                "3 - Pour chaque projet accompagné par un incubateur, combien d'utilisateurs distincts ont réclamé au moins une contrepartie physique expédiée via le transporteur  Chronopost lors de leurs contributions ?"
-            )
-            choice = input("-> ")
-            print("-----------")
-            match choice:
-                case '1':
-                    select1(conn)
-                    pause()
-                case '2':
-                    select2(conn)
-                    pause()
-                case '3':
-                    select3(conn)
-                    pause()
-                case _:
-                    print("Choix non connu.")
-                    time.sleep(0.5)
-            print("-----------")
-
-        case '4':
+    while True:
+        clear()
+        print("1 - Gérer les utilisateurs")
+        print("2 - Gérer les projets")
+        print("3 - SELECT")
+        print("4 - Afficher tous les projets")
+        print("5 - Afficher tous les utilisateurs")
+        print("6 - Gérer les contributions")
+        print("7 - Gérer les contreparties")
+        print("0 - Retour")
+        choice = input("--> ")
+        if choice == '0':
+            break
+        elif choice == '1':
+            while True:
+                clear()
+                show_users(conn)
+                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == '1': update_user(conn); pause()
+                elif sub == '2': insert_user(conn); pause()
+                elif sub == '3': delete_user(conn); pause()
+                elif sub == '0': break
+        elif choice == '2':
+            while True:
+                clear()
+                show_projects(conn)
+                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == '1': update_project(conn); pause()
+                elif sub == '2': insert_project(conn); pause()
+                elif sub == '3': delete_project(conn); pause()
+                elif sub == '0': break
+        elif choice == '3':
+            while True:
+                clear()
+                print("1 - Projets artistiques (Kojima/Shinkawa + objectif)")
+                print("2 - Moyenne notes projets sociaux (Amnesty + contribution > 50)")
+                print("3 - Utilisateurs par projet/incubateur (Chronopost)")
+                print("0 - Retour")
+                sub = input("-> ")
+                if sub == '1': select1(conn); pause()
+                elif sub == '2': select2(conn); pause()
+                elif sub == '3': select3(conn); pause()
+                elif sub == '0': break
+        elif choice == '4':
             clear()
             show_projects(conn)
             pause()
-        case '5':
+        elif choice == '5':
             clear()
             show_users(conn)
             pause()
-        case '6':
-            clear()
+        elif choice == '6':
             contributeur = login(conn)
-            show_contributions(conn,contributeur)
-            print("1 - UPDATE")
-            print("2 - DELETE")
-            choice = input("-> ")
-            match choice:
-                case '1':
-                    update_contribution(conn,contributeur)
-                    pause()
-                case '2':
-                    delete_contribution(conn,contributeur)
-                    pause()
-                case _:
-                    pass
-        case '7':
-            clear()
+            if contributeur:
+                show_contributions(conn, contributeur)
+                print("1 - UPDATE | 2 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == '1': update_contribution(conn, contributeur); pause()
+                elif sub == '2': delete_contribution(conn, contributeur); pause()
+        elif choice == '7':
             contributeur = login(conn)
-            show_contreparties(conn,contributeur)
-            print("1 - UPDATE")
-            print("2 - INSERT")
-            print("3 - DELETE")
-            choice = input("-> ")
-            match choice:
-                case '1':
-                    update_contrepartie(conn,contributeur)
-                    pause()
-                case '2':
-                    insert_contrepartie(conn,contributeur)
-                    pause()
-                case '3':
-                    delete_contrepartie(conn,contributeur)
-                    pause()
-                case _:
-                    pass
-        case _:
-            print("Choix non connu.")
-            time.sleep(0.5)
+            if contributeur:
+                show_contreparties(conn, contributeur)
+                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == '1': update_contrepartie(conn, contributeur); pause()
+                elif sub == '2': insert_contrepartie(conn, contributeur); pause()
+                elif sub == '3': delete_contrepartie(conn, contributeur); pause()
 
 def login(conn):
-
     cur = conn.cursor()
-
-    # affichage des contributeurs
-    sql = "SELECT id, nom, pseudo FROM Contributeur"
-    try:
-        cur.execute(sql)
-    except psycopg2.Error as e:
-        print("Message système :", e)
-    raw = cur.fetchone()
+    cur.execute("SELECT id, nom, pseudo FROM Contributeur")
+    raw = cur.fetchall()
     print("-----Contributeurs-----")
-    while raw:
-        print(f"id: {raw[0]}, nom: {raw[1]}, pseudo: {raw[2]}")
-        raw = cur.fetchone()
+    for r in raw:
+        print(f"id: {r[0]}, nom: {r[1]}, pseudo: {r[2]}")
     print("-----------------")
-
-    access_granted = False
-    while not access_granted:
-        print("")
-        id = input("ID : ")
-
-        sql = "SELECT id FROM Contributeur WHERE id=%s"
-        try:
-            # utilisation d'une requête paramétrée
-            cur.execute(sql, (id,))
-        except psycopg2.Error as e:
-            print("Message système :", e)
-
-        raw = cur.fetchone()
-        if not raw:
-            print("[ERREUR] L'utilisateur demandé n'existe pas.")
-        else:
-            access_granted = True
-
-    return id
+    
+    while True:
+        id_user = input("ID (ou 'q' pour annuler) : ")
+        if id_user == 'q': return None
+        cur.execute("SELECT id FROM Contributeur WHERE id=%s", (id_user,))
+        if cur.fetchone():
+            return id_user
+        print("[ERREUR] Inexistant.")
 
 if __name__ == "__main__":
     conn = dbc.connectDatabase()
     try:
-        noQuit = True
-        while noQuit:
-            noQuit = mainMenu(conn)
-    except KeyboardInterrupt as k:
-        print("")
-        print("Exiting...")
+        while mainMenu(conn):
+            pass
+    except KeyboardInterrupt:
+        print("\nExiting...")
     finally:
         dbc.exitDatabase(conn)

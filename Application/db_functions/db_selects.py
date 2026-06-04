@@ -32,7 +32,7 @@ def select1(conn):
     while raw:
         print(raw[0])
         raw = cur.fetchone()
-
+    cur.close()
     return
 
 
@@ -59,7 +59,7 @@ def select2(conn):
     while raw:
         print(raw[0])
         raw = cur.fetchone()
-
+    cur.close()
     return
 
 
@@ -86,4 +86,6 @@ def select3(conn):
     while raw:
         print(f"id : {raw[0]}, count : {raw[1]}")
         raw = cur.fetchone()
+    cur.close()
     return
+    

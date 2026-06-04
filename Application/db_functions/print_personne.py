@@ -27,3 +27,4 @@ def print_personne(conn, id):
     except psycopg2.Error as e:
         print("Message système :", e)
         conn.rollback()
+    cur.close()
