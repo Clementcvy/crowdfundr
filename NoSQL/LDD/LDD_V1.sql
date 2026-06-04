@@ -1,12 +1,3 @@
-CREATE TABLE Transporteur (
-
-    nom VARCHAR(20) PRIMARY KEY,
-
-    delai INT NOT NULL
-
-);
-
-
 CREATE TABLE Incubateur (
 
     nom VARCHAR(20) PRIMARY KEY,
@@ -18,6 +9,8 @@ CREATE TABLE Incubateur (
     CONSTRAINT annee CHECK (creation BETWEEN 1 AND 9999)
 
 );
+
+CREATE TYPE type_projet as ENUM('projet_techno', 'projet_social', 'projet_artis');
 
 
 CREATE TABLE Projet (
@@ -34,26 +27,15 @@ CREATE TABLE Projet (
 
     incubateur VARCHAR(20),
 
-    type_projet JSON NOT NULL, -- EX:{" type_projet ": " techno ", " innovation ":...}
+    type_projet 
 
-    membre   JSON NOT NULL — EX
+    membre   JSON NOT NULL 
+
+    avis JSON NOT NULL
+
+    CONSTRAINT projet_incubateur FOREIGN KEY (incubateur) REFERENCES Incubateur(nom)
 
 );   
-
-
-CREATE TABLE Contributeur (
-
-    id INT PRIMARY KEY,
-
-    nom VARCHAR(20) NOT NULL,
-
-    naissance DATE NOT NULL,
-
-    pseudo VARCHAR(20) UNIQUE NOT NULL,
-
-    mail VARCHAR(50) NOT NULL
-
-);
 
 
 CREATE TABLE Contribution (
@@ -66,11 +48,9 @@ CREATE TABLE Contribution (
 
     projet INT NOT NULL,
 
-    contributeur INT NOT NULL,
+    contributeur JSON NOT NULL,
 
-    CONSTRAINT contrib_projet FOREIGN KEY (projet) REFERENCES Projet(id),
-
-    CONSTRAINT contrib FOREIGN KEY (contributeur) REFERENCES Contributeur(id)
+    CONSTRAINT contrib_projet FOREIGN KEY (projet) REFERENCES Projet(id)
 
 );
 
@@ -96,9 +76,7 @@ CREATE TABLE Contrepartie_physique (
 
     
 
-    CONSTRAINT contrepartie FOREIGN KEY (id_c) REFERENCES Contrepartie(id_c),
-
-    CONSTRAINT transporteur FOREIGN KEY (transporteur) REFERENCES Transporteur(nom)
+    CONSTRAINT contrepartie FOREIGN KEY (id_c) REFERENCES Contrepartie(id_c)
 
 );
 
@@ -112,78 +90,5 @@ CREATE TABLE Contrepartie_numerique (
     taille INT NOT NULL,
 
     CONSTRAINT contrepartie FOREIGN KEY (id_c) REFERENCES Contrepartie(id_c)
-
-);
-
-
-CREATE TABLE Projet_socialONG( --Association *-*
-
-    projet INT,
-
-    ONG INT,
-
-CONSTRAINT cle_ong FOREIGN KEY (ONG) REFERENCES ONG(NEU),
-
-CONSTRAINT cle_projet FOREIGN KEY (projet) REFERENCES Projet_social(id_p),
-
-    CONSTRAINT cle_projet_ONG PRIMARY KEY(projet,ONG)
-
-);
-
-
-CREATE TABLE Membre (
-
-    id INT PRIMARY KEY,
-
-    nom VARCHAR(20) NOT NULL,
-
-    naissance DATE NOT NULL,
-
-    prenom VARCHAR(20) NOT NULL,
-
-    pays VARCHAR(10) NOT NULL
-
-);
-
-
-CREATE TABLE Avis(
-
-    projet INT,
-
-    contributeur INT,
-
-    date_a DATE NOT NULL,
-
-    note INT NOT NULL,
-
-    texte TEXT NOT NULL,
-
-    CONSTRAINT avis_projet FOREIGN KEY (projet) REFERENCES Projet(id),
-
-    CONSTRAINT avis_contrib FOREIGN KEY (contributeur) REFERENCES Contributeur(id),
-
-    CONSTRAINT cle_avis PRIMARY KEY(projet,contributeur),
-
-    CONSTRAINT validation_note CHECK(note BETWEEN 1 AND 5)
-
-);
-
-
-CREATE TYPE roleMembre as ENUM('chef de projet', 'développeur', 'designer', 'community manager');
-
-
-CREATE TABLE MembreProjet( -- Association *-*
-
-    projet INT,
-
-    membre INT,
-
-CONSTRAINT cle_projet FOREIGN KEY (projet) REFERENCES Projet(id),
-
-CONSTRAINT cle_membre FOREIGN KEY (membre) REFERENCES Membre(id),
-
-    role_m roleMembre NOT NULL,
-
-    CONSTRAINT cle_membre_projet PRIMARY KEY(projet,membre)
 
 );
