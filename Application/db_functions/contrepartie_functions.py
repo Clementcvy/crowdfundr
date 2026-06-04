@@ -119,6 +119,25 @@ def show_contreparties(conn, contributeur):
         raw = cur.fetchone()
     print("-----------------------")
 
+def show_transporteurs(conn):
+    sql = "SELECT nom FROM Transporteur"
+    cur = conn.cursor()
+
+    try:
+        cur.execute(sql)
+    except psycopg2.Error as e:
+        print("Message système :", e)
+        conn.rollback()
+
+    raw = cur.fetchone()
+    print("-----Transporteurs-----")
+    while raw:
+        print(
+            f"Nom: {raw[0]}"
+        )
+        raw = cur.fetchone()
+    print("-----------------------")
+
 def insert_contrepartie(conn, contributeur):
 
     # Open a cursor to send SQL commands
@@ -164,6 +183,7 @@ def insert_contrepartie(conn, contributeur):
     if int(choix) == 1:
         poids = input("Entrez le poids : ")
         frais = input("Entrez les frais : ")
+        show_transporteurs(conn)
         transporteur = input("Entrez le transporteur : ")
         sql = "INSERT INTO Contrepartie_physique (id_c, poids, frais, transporteur) VALUES (%s, %s, %s, %s)"
 
