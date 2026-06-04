@@ -216,7 +216,6 @@ def login(conn):
         cur.execute(sql)
     except psycopg2.Error as e:
         print("Message système :", e)
-
     raw = cur.fetchone()
     print("-----Contributeurs-----")
     while raw:
