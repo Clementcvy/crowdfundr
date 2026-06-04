@@ -37,6 +37,23 @@ def insert_project(conn):
     if incubateur == "":
         incubateur = None
 
+    type_projet = input("Entrez le type du projet (Projet social : 1, Projet techno : 2, Projet artis : 3) : ")
+
+    if int(type_projet) not in (1, 2, 3):
+        print("Message système : Option non possible.")
+        return
+
+    match int(type_projet):
+        case 1: #Projet social
+            print("Vous avez sélectionné 'Projet Social' :")
+            region = input("Entrez la région : ")
+        case 2: #Projet Techno
+            print("Vous avez sélectionné 'Projet Technologique' :")
+            innovation = input("Entrez l'innovation : ")
+        case 3: #Projet Artis
+            print("Vous avez sélectionné 'Projet Artistique' :")
+            medium = input("Entrez le médium : ")
+
     sql = "SELECT id FROM Projet"
     try:
         cur.execute(sql)
@@ -60,6 +77,33 @@ def insert_project(conn):
         print("Message système :", e)
         conn.rollback()
         return
+
+    match int(type_projet):
+        case 1: #Projet social
+            sql = "INSERT INTO Projet_social (id_p, region) VALUES (%s, %s)"
+            try:
+                cur.execute(sql, (id, region))
+            except psycopg2.Error as e:
+                print("Message système :", e)
+                conn.rollback()
+                return
+
+        case 2: #Projet Techno
+            sql = "INSERT INTO Projet_techno (id_p, innovation) VALUES (%s, %s)"
+            try:
+                cur.execute(sql, (id, innovation))
+            except psycopg2.Error as e:
+                print("Message système :", e)
+                conn.rollback()
+                return
+        case 3: #Projet Artis
+            sql = "INSERT INTO Projet_artis (id_p, medium) VALUES (%s, %s)"
+            try:
+                cur.execute(sql, (id, medium))
+            except psycopg2.Error as e:
+                print("Message système :", e)
+                conn.rollback()
+                return
 
     conn.commit()
     print("Opération réussie")
@@ -93,7 +137,9 @@ def update_project(conn):
     print("Opération réussie")
 
 def show_projects(conn):
-    sql = "SELECT * FROM Projet ORDER BY id"
+
+    #PROJETS ARTISTIQUES
+    sql = "SELECT * FROM Projet JOIN Projet_artis ON id_p = id ORDER BY id"
 
     cur = conn.cursor()
     try:
@@ -105,12 +151,54 @@ def show_projects(conn):
 
     # Fetch data line by line
     raw = cur.fetchone()
-    print("-----Projets----")
+    print("-----Projets Artistiques----")
     while raw:
         print(
-            f"ID : {raw[0]}, Titre : {raw[1]}, Description : {raw[2]}, Objectif : {raw[3]},"
+            f"ID : {raw[0]}, Titre : {raw[1]}, Description : {raw[2]}, Objectif : {raw[3]}, Date de lancement : {raw[4]}, Incubateur : {raw[5]}"
         )
-        print(f"Date de lancement : {raw[4]}, Incubateur : {raw[5]}")
+        raw = cur.fetchone()
+    print("-----------------------")
+
+    # PROJETS TECHNOLOGIQUES
+    sql = "SELECT * FROM Projet JOIN Projet_techno ON id_p = id ORDER BY id"
+
+
+    cur = conn.cursor()
+    try:
+        cur.execute(sql)
+    except psycopg2.Error as e:
+        print("Message système :", e)
+        conn.rollback()
+        return
+
+    # Fetch data line by line
+    raw = cur.fetchone()
+    print("-----Projets Technologiques----")
+    while raw:
+        print(
+            f"ID : {raw[0]}, Titre : {raw[1]}, Description : {raw[2]}, Objectif : {raw[3]}, Date de lancement : {raw[4]}, Incubateur : {raw[5]}"
+        )
+        raw = cur.fetchone()
+    print("-----------------------")
+
+    # PROJETS SOCIAL
+    sql = "SELECT * FROM Projet JOIN Projet_social ON id_p = id ORDER BY id "
+
+    cur = conn.cursor()
+    try:
+        cur.execute(sql)
+    except psycopg2.Error as e:
+        print("Message système :", e)
+        conn.rollback()
+        return
+
+    # Fetch data line by line
+    raw = cur.fetchone()
+    print("-----Projets Sociaux----")
+    while raw:
+        print(
+            f"ID : {raw[0]}, Titre : {raw[1]}, Description : {raw[2]}, Objectif : {raw[3]}, Date de lancement : {raw[4]}, Incubateur : {raw[5]}"
+        )
         raw = cur.fetchone()
     print("-----------------------")
 
