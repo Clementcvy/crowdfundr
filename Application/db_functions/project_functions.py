@@ -2,6 +2,24 @@
 
 import psycopg2
 
+def show_incubateurs(conn):
+    sql = "SELECT * FROM Incubateur"
+    cur = conn.cursor()
+
+    try:
+        cur.execute(sql)
+    except psycopg2.Error as e:
+        print("Message système :", e)
+        conn.rollback()
+
+    raw = cur.fetchone()
+    print("-----Incubateurs-----")
+    while raw:
+        print(
+            f"Nom: {raw[0]}, Création: {raw[1]}, Budget {raw[2]}"
+        )
+        raw = cur.fetchone()
+    print("-----------------------")
 
 def insert_project(conn):
 
@@ -12,6 +30,7 @@ def insert_project(conn):
     descr = input("Entrez la description du projet : ")
     objectif = input("Entrez l'objectif du projet : ")
     lancement = input("Entrez la date de lancement du projet : ")
+    show_incubateurs(conn)
     incubateur = input(
         "Entrez l'incubateur du projet (appuyez sur entrée s'il y en a pas): "
     )
