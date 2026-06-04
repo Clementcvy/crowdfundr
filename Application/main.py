@@ -7,56 +7,71 @@ from db_functions.contrepartie_functions import update_contrepartie, show_contre
 from db_functions.contribution_functions import update_contribution, show_contributions, insert_contribution, delete_contribution
 from db_functions.user_functions import delete_user, insert_user, show_users, update_user
 import time
+import os
 
+
+def clear():
+    # 'nt'=Windows, sinon c'est Linux ou macOS
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 def pause():
     input("Appuyez sur entrée pour passer à la suite : ")
 
 def mainMenu(conn):
+    clear()
     print("1 - Connexion utilisateur")
     print("2 - Admin")
     print("0 - Quitter")
-    choice = int(input("--> "))
+    choice = input("--> ")
     match choice:
-        case 1:
+        case '1':
             contributeur = login(conn)
             userMenu(conn, contributeur)
             return True
-        case 2:
+        case '2':
             adminMenu(conn)
             return True
-        case _:
+        case '0':
             return False
+        case _:
+            mainMenu(conn)
 
 def userMenu(conn, contributeur):
+    clear()
     print("")
     print("1 - Afficher mes informations")
     print("2 - Gérer les contreparties")
     print("3 - Faire une contribution")
-    choice = int(input("--> "))
+    choice = input("--> ")
     match choice:
-        case 1:
+        case '1':
+            clear()
             print_personne(conn, contributeur)
             pause()
-        case 2:
+        case '2':
+            clear()
             show_contreparties(conn, contributeur)
             # Contrepartie
             print("1 - INSERT")
             print("2 - DELETE")
             choice = input("-> ")
             print("-----------")
-            match int(choice):
-                case 1:
+            match choice:
+                case '1':
                     insert_contrepartie(conn, contributeur)
                     pause()
-                case 2:
+                case '2':
                     delete_contrepartie(conn, contributeur)
                     pause()
                 case _:
                     print("Choix inconnu.")
                     time.sleep(0.5)
             print("-----------")
-        case 3:
+        case '3':
+            clear()
             # Contribution
             show_contributions(conn, contributeur)
             insert_contribution(conn,contributeur)
@@ -66,6 +81,7 @@ def userMenu(conn, contributeur):
             time.sleep(0.5)
 
 def adminMenu(conn):
+    clear()
     print("")
     print("1 - Gérer les utilisateurs")
     print("2 - Gérer les projets")
@@ -74,45 +90,48 @@ def adminMenu(conn):
     print("5 - Afficher tous les utilisateurs")
     print("6 - Gérer les contributions")
     print("7 - Gérer les contreparties")
-    choice = int(input("--> "))
+    choice = input("--> ")
     match choice:
-        case 1:
+        case '1':
+            clear()
             show_users(conn)
             print("1 - UPDATE")
             print("2 - INSERT")
             print("3 - DELETE")
             choice = input("-> ")
-            match int(choice):
-                case 1:
+            match choice:
+                case '1':
                     update_user(conn)
                     pause()
-                case 2:
+                case '2':
                     insert_user(conn)
                     pause()
-                case 3:
+                case '3':
                     delete_user(conn)
                     pause()
                 case _:
                     pass
-        case 2:
+        case '2':
+            clear()
             show_projects(conn)
             print("1 - UPDATE")
             print("2 - INSERT")
             print("3 - DELETE")
             choice = input("-> ")
-            match int(choice):
-                case 1:
+            match choice:
+                case '1':
                     update_project(conn)
                     pause()
-                case 2:
+                case '2':
                     insert_project(conn)
                     pause()
-                case 3:
+                case '3':
                     delete_project(conn)
                     pause()
                 case _:
                     pass
-        case 3:
+        case '3':
+            clear()
             print(
                 "1 - Quels projets artistiques font intervenir à la fois Hideo Kojima et Yoji Shinkawa (membres d'équipe) et ont dépassé leur objectif financier (somme des contributions > objectif) ?"
             )
@@ -124,14 +143,14 @@ def adminMenu(conn):
             )
             choice = input("-> ")
             print("-----------")
-            match int(choice):
-                case 1:
+            match choice:
+                case '1':
                     select1(conn)
                     pause()
-                case 2:
+                case '2':
                     select2(conn)
                     pause()
-                case 3:
+                case '3':
                     select3(conn)
                     pause()
                 case _:
@@ -139,47 +158,50 @@ def adminMenu(conn):
                     time.sleep(0.5)
             print("-----------")
 
-        case 4:
+        case '4':
+            clear()
             show_projects(conn)
             pause()
-        case 5:
+        case '5':
+            clear()
             show_users(conn)
             pause()
-        case 6:
+        case '6':
+            clear()
             contributeur = login(conn)
             show_contributions(conn,contributeur)
             print("1 - UPDATE")
             print("2 - DELETE")
             choice = input("-> ")
-            match int(choice):
-                case 1:
+            match choice:
+                case '1':
                     update_contribution(conn,contributeur)
                     pause()
-                case 2:
+                case '2':
                     delete_contribution(conn,contributeur)
                     pause()
                 case _:
                     pass
-        case 7:
+        case '7':
+            clear()
             contributeur = login(conn)
             show_contreparties(conn,contributeur)
             print("1 - UPDATE")
             print("2 - INSERT")
             print("3 - DELETE")
             choice = input("-> ")
-            match int(choice):
-                case 1:
+            match choice:
+                case '1':
                     update_contrepartie(conn,contributeur)
                     pause()
-                case 2:
+                case '2':
                     insert_contrepartie(conn,contributeur)
                     pause()
-                case 3:
+                case '3':
                     delete_contrepartie(conn,contributeur)
                     pause()
                 case _:
                     pass
-
         case _:
             print("Choix non connu.")
             time.sleep(0.5)
