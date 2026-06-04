@@ -1,8 +1,3 @@
-
-
-
-
-
 CREATE TABLE Transporteur (
 
     nom VARCHAR(20) PRIMARY KEY,
