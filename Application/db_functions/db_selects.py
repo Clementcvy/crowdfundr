@@ -2,6 +2,10 @@ import psycopg2
 
 
 def select1(conn):
+    nom1 = input("Entrez le nom du premier membre : ")
+    prenom1 = input("Entrez le prenom du premier membre : ")
+    nom2 = input("Entrez le nom du deuxieme membre : ")
+    prenom2 = input("Entrez le prenom du deuxieme membre : ")
     sql = """SELECT DISTINCT p.titre, p.descr, p.objectif, p.lancement, p.incubateur, pa.medium
   FROM Projet_artis pa  
   JOIN Projet p ON p.id = pa.id_p
@@ -9,10 +13,10 @@ def select1(conn):
   JOIN Membre m1 ON m1.id = mp1.membre
   JOIN MembreProjet mp2 ON mp2.projet = p.id
   JOIN Membre m2 ON m2.id = mp2.membre
-  WHERE m1.nom = 'Shinkawa'
-    AND m1.prenom = 'Yoji'
-    AND m2.nom = 'Kojima'
-    AND m2.prenom = 'Hideo'
+  WHERE m1.nom = %s
+    AND m1.prenom = %s
+    AND m2.nom = %s
+    AND m2.prenom = %s
     AND (
         SELECT SUM(c.montant)
         FROM Contribution c
@@ -21,7 +25,7 @@ def select1(conn):
   """
     cur = conn.cursor()
     try:
-        cur.execute(sql)
+        cur.execute(sql, (nom1, prenom1, nom2, prenom2))
     except psycopg2.Error as e:
         print("Message système :", e)
         conn.rollback()
