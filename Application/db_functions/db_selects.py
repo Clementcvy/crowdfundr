@@ -43,6 +43,8 @@ def select1(conn):
 
 
 def select2(conn):
+    ong = input("ONG soutenant le projet : ")
+    montant = input("montant de de la contribution de l'utilisateur ayant noté : ")
     sql = """select AVG(note) from Avis
     JOIN Contributeur on Contributeur.id=Avis.contributeur
     JOIN Contribution on Contribution.contributeur = Contributeur.id
@@ -50,11 +52,11 @@ def select2(conn):
     JOIN Projet_Social on projet.id=Projet_Social.id_p
     JOIN Projet_socialONG on Projet_Social.id_p=Projet_SocialONG.projet
     JOIN ONG on Projet_socialONG.ONG=ONG.NEU
-    WHERE ONG.nom='Amnesty Internat.' AND Contribution.montant > 50"""
+    WHERE ONG.nom=%s AND Contribution.montant > %s"""
 
     cur = conn.cursor()
     try:
-        cur.execute(sql)
+        cur.execute(sql, (ong, montant))
     except psycopg2.Error as e:
         print("Message système :", e)
         conn.rollback()
