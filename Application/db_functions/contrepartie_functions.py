@@ -8,7 +8,7 @@ def update_contrepartie(conn, contributeur):
     cur = conn.cursor()
     while True:
         id = input("Entrez l'id de la contrepartie (ou 'q' pour quitter) : ")
-        if id.lower() == 'q':
+        if id.lower() == "q":
             break
 
         sql = "SELECT id_c FROM Contrepartie C JOIN Contribution CO ON C.id_c=CO.id WHERE CO.contributeur=%s AND C.id_c=%s"
@@ -32,8 +32,11 @@ def update_contrepartie(conn, contributeur):
             continue
         raw = cur.fetchone()
         if raw:
-            choix = input("Entrez la donnée à modifier (poids, frais, transporteur) ou 'q' : ")
-            if choix.lower() == 'q': break
+            choix = input(
+                "Entrez la donnée à modifier (poids, frais, transporteur) ou 'q' : "
+            )
+            if choix.lower() == "q":
+                break
             if choix not in {"poids", "frais", "transporteur"}:
                 print("Champ non autorisé")
                 continue
@@ -47,7 +50,8 @@ def update_contrepartie(conn, contributeur):
                 continue
         else:
             choix = input("Entrez la donnée à modifier (format, taille) ou 'q' : ")
-            if choix.lower() == 'q': break
+            if choix.lower() == "q":
+                break
             if choix not in {"format", "taille"}:
                 print("Champ non autorisé")
                 continue
@@ -69,6 +73,7 @@ def update_contrepartie(conn, contributeur):
         print("Opération réussie")
         break
     cur.close()
+
 
 def show_contreparties(conn, contributeur):
     sql = "SELECT id_c, poids, frais, transporteur FROM Contrepartie_physique CP JOIN Contribution C ON CP.id_c=C.id WHERE C.contributeur=%s"
@@ -106,8 +111,9 @@ def show_contreparties(conn, contributeur):
     print("-----------------------")
     cur.close()
 
+
 def show_transporteurs(conn):
-    sql = "SELECT nom FROM Transporteur"
+    sql = "SELECT nom, delai FROM Transporteur"
     cur = conn.cursor()
 
     try:
@@ -121,12 +127,11 @@ def show_transporteurs(conn):
     raw = cur.fetchone()
     print("-----Transporteurs-----")
     while raw:
-        print(
-            f"Nom: {raw[0]}"
-        )
+        print(f"Nom: {raw[0]}, delai: {raw[1]}")
         raw = cur.fetchone()
     print("-----------------------")
     cur.close()
+
 
 def insert_contrepartie(conn, contributeur):
     cur = conn.cursor()
@@ -134,7 +139,7 @@ def insert_contrepartie(conn, contributeur):
 
     while True:
         id_c = input("Choisissez l'id de la contribution (ou 'q' pour quitter) : ")
-        if id_c.lower() == 'q':
+        if id_c.lower() == "q":
             cur.close()
             return
 
@@ -150,8 +155,10 @@ def insert_contrepartie(conn, contributeur):
         if not raw:
             print("Cette contribution ne vous appartient pas")
             continue
-        
-        choix = input("1 pour une contrepartie physique, 2 pour une contrepartie numérique : ")
+
+        choix = input(
+            "1 pour une contrepartie physique, 2 pour une contrepartie numérique : "
+        )
 
         sql = "INSERT INTO Contrepartie VALUES (%s)"
         try:
@@ -193,11 +200,14 @@ def insert_contrepartie(conn, contributeur):
         break
     cur.close()
 
+
 def delete_contrepartie(conn, contributeur):
     cur = conn.cursor()
     while True:
-        num = input("Entrez l'id de la contrepartie à supprimer (ou 'q' pour quitter) : ")
-        if num.lower() == 'q':
+        num = input(
+            "Entrez l'id de la contrepartie à supprimer (ou 'q' pour quitter) : "
+        )
+        if num.lower() == "q":
             break
 
         sql = "SELECT id_c FROM Contrepartie C JOIN Contribution CO ON C.id_c=CO.id WHERE CO.contributeur=%s AND C.id_c=%s"
