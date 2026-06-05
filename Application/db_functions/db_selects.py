@@ -2,7 +2,7 @@ import psycopg2
 
 
 def select1(conn):
-    sql = """SELECT DISTINCT pa.id_p 
+    sql = """SELECT DISTINCT p.titre, p.descr, p.objectif, p.lancement, p.incubateur, pa.medium
   FROM Projet_artis pa  
   JOIN Projet p ON p.id = pa.id_p
   JOIN MembreProjet mp1 ON mp1.projet = p.id
@@ -30,7 +30,9 @@ def select1(conn):
     # Fetch data line by line
     raw = cur.fetchone()
     while raw:
-        print(raw[0])
+        print(
+            f"titre: {raw[0]}, description: {raw[1]}, objectif: {raw[2]}, lancement: {raw[3]}, incubateur: {raw[4]}, medium: {raw[5]}"
+        )
         raw = cur.fetchone()
     cur.close()
     return
@@ -88,4 +90,3 @@ def select3(conn):
         raw = cur.fetchone()
     cur.close()
     return
-    
