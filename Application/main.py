@@ -37,6 +37,12 @@ from db_functions.ong_functions import (
     update_ong,
     delete_ong,
 )
+from db_functions.projetsocial_ong import (
+    show_social_ong,
+    insert_social_ong,
+    update_social_ong,
+    delete_social_ong,
+)
 from db_functions.avis_functions import delete_avis, insert_avis, show_avis, update_avis
 import time
 import os
@@ -143,6 +149,7 @@ def adminMenu(conn):
         print("7 - Gérer les contreparties")
         print("8 - Gérer les transporteurs")
         print("9 - Gérer les ONGs")
+        print("10 - Gérer les liens Projet social - ONG")
         print("0 - Retour")
         choice = input("--> ")
         if choice == "0":
@@ -272,6 +279,20 @@ def adminMenu(conn):
                     pause()
                 elif sub == "3":
                     delete_ong(conn)
+                    pause()
+                elif sub == "0":
+                    break
+        elif choice == "10":
+            while True:
+                clear()
+                show_social_ong(conn)
+                print("1 - INSERT | 2 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == "1":
+                    insert_social_ong(conn)
+                    pause()
+                elif sub == "2":
+                    delete_social_ong(conn)
                     pause()
                 elif sub == "0":
                     break
