@@ -72,18 +72,19 @@ def select2(conn):
 
 
 def select3(conn):
+    transporteur = input("Transporteur expediant la contrepartie : ")
     sql = """SELECT p.id ,COUNT(DISTINCT c.contributeur) AS nb_contributeurs
     FROM Projet p
     JOIN Contribution c ON p.id=c.projet
     JOIN Contributeur contrib ON contrib.id=c.contributeur
     JOIN Contrepartie_physique cp_p ON c.id=cp_p.id_c
     JOIN Transporteur t ON cp_p.transporteur=t.nom
-    WHERE(p.incubateur IS NOT NULL AND t.nom='Chronopost')
+    WHERE(p.incubateur IS NOT NULL AND t.nom=%s)
     GROUP BY p.id"""
 
     cur = conn.cursor()
     try:
-        cur.execute(sql)
+        cur.execute(sql, (transporteur,))
     except psycopg2.Error as e:
         print("Message système :", e)
         conn.rollback()
