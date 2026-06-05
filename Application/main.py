@@ -31,6 +31,12 @@ from db_functions.transporteur_fonctions import (
     insert_transporteur,
     update_transporteur,
 )
+from db_functions.ong_functions import (
+    show_ong,
+    insert_ong,
+    update_ong,
+    delete_ong,
+)
 from db_functions.avis_functions import delete_avis, insert_avis, show_avis, update_avis
 import time
 import os
@@ -136,6 +142,7 @@ def adminMenu(conn):
         print("6 - Gérer les contributions")
         print("7 - Gérer les contreparties")
         print("8 - Gérer les transporteurs")
+        print("9 - Gérer les ONGs")
         print("0 - Retour")
         choice = input("--> ")
         if choice == "0":
@@ -248,6 +255,23 @@ def adminMenu(conn):
                     pause()
                 elif sub == "3":
                     delete_transporteur(conn)
+                    pause()
+                elif sub == "0":
+                    break
+        elif choice == "9":
+            while True:
+                clear()
+                show_ong(conn)
+                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == "1":
+                    update_ong(conn)
+                    pause()
+                elif sub == "2":
+                    insert_ong(conn)
+                    pause()
+                elif sub == "3":
+                    delete_ong(conn)
                     pause()
                 elif sub == "0":
                     break
