@@ -107,42 +107,42 @@ def insert_social_ong(conn):
     cur.close()
 
 
-def update_social_ong(conn):
-    cur = conn.cursor()
-    while True:
-        show_social_ong(conn)
-        projet = input(
-            "Entrez l'id du projet dont les données sont à mettre à jour (ou 'q' pour annuler) : "
-        )
-        if projet.lower() == "q":
-            break
-        neu = input(
-            "Entrez le neu de l'ONG dont les données sont à mettre à jour (ou 'q' pour annuler) : "
-        )
-        if projet.lower() == "q":
-            break
+# def update_social_ong(conn):
+#     cur = conn.cursor()
+#     while True:
+#         show_social_ong(conn)
+#         projet = input(
+#             "Entrez l'id du projet dont les données sont à mettre à jour (ou 'q' pour annuler) : "
+#         )
+#         if projet.lower() == "q":
+#             break
+#         neu = input(
+#             "Entrez le neu de l'ONG dont les données sont à mettre à jour (ou 'q' pour annuler) : "
+#         )
+#         if projet.lower() == "q":
+#             break
 
-        choix = input("Entrez la donnée à modifier (projet, ONG) ou 'q' : ")
-        if choix.lower() == "q":
-            break
-        if choix not in {"projet", "ONG"}:
-            print("Champ non autorisé")
-            continue
+#         choix = input("Entrez la donnée à modifier (projet, ONG) ou 'q' : ")
+#         if choix.lower() == "q":
+#             break
+#         if choix not in {"projet", "ONG"}:
+#             print("Champ non autorisé")
+#             continue
 
-        value = input("Entrez la nouvelle valeur : ")
+#         value = input("Entrez la nouvelle valeur : ")
 
-        sql = f"UPDATE Projet_socialONG SET {choix}=%s WHERE projet=%s AND ONG=%s"
-        try:
-            cur.execute(sql, (value, projet, neu))
-            if cur.rowcount == 0:
-                print("Aucun utilisateur modifié.")
-                conn.rollback()
-            else:
-                conn.commit()
-                print("Opération réussie")
-                break
-        except psycopg2.Error as e:
-            print("Message système :", e)
-            conn.rollback()
-            continue
-    cur.close()
+#         sql = f"UPDATE Projet_socialONG SET {choix}=%s WHERE projet=%s AND ONG=%s"
+#         try:
+#             cur.execute(sql, (value, projet, neu))
+#             if cur.rowcount == 0:
+#                 print("Aucun utilisateur modifié.")
+#                 conn.rollback()
+#             else:
+#                 conn.commit()
+#                 print("Opération réussie")
+#                 break
+#         except psycopg2.Error as e:
+#             print("Message système :", e)
+#             conn.rollback()
+#             continue
+#     cur.close()

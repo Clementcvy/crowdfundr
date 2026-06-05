@@ -40,8 +40,14 @@ from db_functions.ong_functions import (
 from db_functions.projetsocial_ong import (
     show_social_ong,
     insert_social_ong,
-    update_social_ong,
+    # update_social_ong,
     delete_social_ong,
+)
+from db_functions.incubateur_functions import (
+    show_incubateur,
+    insert_incubateur,
+    delete_incubateur,
+    update_incubateur,
 )
 from db_functions.avis_functions import delete_avis, insert_avis, show_avis, update_avis
 import time
@@ -150,6 +156,7 @@ def adminMenu(conn):
         print("8 - Gérer les transporteurs")
         print("9 - Gérer les ONGs")
         print("10 - Gérer les liens Projet social - ONG")
+        print("11 - Gérer les incubateurs")
         print("0 - Retour")
         choice = input("--> ")
         if choice == "0":
@@ -293,6 +300,23 @@ def adminMenu(conn):
                     pause()
                 elif sub == "2":
                     delete_social_ong(conn)
+                    pause()
+                elif sub == "0":
+                    break
+        elif choice == "11":
+            while True:
+                clear()
+                show_incubateur(conn)
+                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == "1":
+                    update_incubateur(conn)
+                    pause()
+                elif sub == "2":
+                    insert_incubateur(conn)
+                    pause()
+                elif sub == "3":
+                    delete_incubateur(conn)
                     pause()
                 elif sub == "0":
                     break
