@@ -8,7 +8,7 @@ Relations :
 Incubateur(#nom: varchar[20], création: int[4], budget: float)
 création et budget NOT NULL
 
-Projet(#id: int, titre: varchar[20], descr: text, objectif: float, lancement: date, #incubateur => Incubateur, type_projet: type_projet, membre: json, avis: json)
+Projet(#id: int, titre: varchar[20], descr: text, objectif: float, lancement: date, #incubateur => Incubateur, type_projet: enum{'projet_techno', 'projet_social', 'projet_artis'}, membre: json, avis: json)
 titre, description, objectif, lancement, membre et avis NOT NULL AND (titre, lancement) UNIQUE NOT NULL
 
 Contribution(#id: int, date_c: timestamp, montant: float, #projet => Projet, contributeur: json)
