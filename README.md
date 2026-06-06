@@ -131,5 +131,24 @@ Prompt APP : [CODE] Pour ces menu, ajoute un retour en arrière pour chaque éta
 
 
 
+## 8. Choix des classes à transformer en document JSON : 
+
+**Projet_Techno** est modélisé comme un `DataType` car il ne représente pas une entité indépendante, mais un complément d’information propre à un projet de type technologique. Son attribut `innovation` vient enrichir le document `Projet`.
+
+**Projet_Artis** est modélisé comme un `DataType` car il contient uniquement des informations spécifiques à un projet artistique, comme le `médium`. Ces données sont directement dépendantes du projet principal et n’ont pas besoin d’exister séparément.
+
+**Projet_Social** est modélisé comme un `DataType` car il décrit les caractéristiques propres à un projet social, notamment la `région` et l’`ONG` associée. Il sert donc à spécialiser le document `Projet` sans créer une collection indépendante.
+
+**ONG** est modélisée comme un `DataType` car elle est utilisée comme information descriptive dans un projet social. Elle peut être intégrée directement dans le document JSON du projet afin d’éviter une jointure supplémentaire.
+
+**Membre** est modélisé comme un `DataType` car il correspond à une information incluse dans un projet, avec un prénom, un pays et un rôle. Les membres sont donc naturellement stockés sous forme de tableau imbriqué dans le document `Projet`.
+
+**Contributeur** est modélisé comme un `DataType` car il sert principalement à identifier la personne qui effectue une contribution, avec un pseudo et une adresse mail. Ces informations peuvent être intégrées directement dans la contribution sans nécessiter une table ou collection séparée.
+
+**Avis** est modélisé comme un `DataType` car il est fortement lié au projet concerné. Sa date, sa note et son texte peuvent être stockés directement dans le document `Projet`, par exemple dans un tableau d’avis.
+
+**Transporteur** est modélisé comme un `DataType` car il décrit simplement les informations nécessaires à une contrepartie physique, comme le nom du transporteur et le délai. Il peut donc être imbriqué dans la contrepartie physique sans être géré séparément.
+
+Les autres classes restent modélisées en SQL car elles représentent des entités principales du système, avec une identité propre, des clés et des relations importantes à maintenir. Par exemple, `Projet`, `Incubateur`, `Contribution`, `Contrepartie` ou encore `Rôle` nécessitent une gestion structurée et des contraintes d’intégrité fortes. De plus, certaines de ces classes manipulent des données sensibles ou transactionnelles, comme les montants des contributions, les budgets ou les contreparties associées aux paiements. Le modèle relationnel est donc plus adapté, car il permet de garantir la cohérence des données, d’éviter les pertes d’information, de sécuriser les opérations critiques et de bénéficier des propriétés transactionnelles du SQL.
 
 
