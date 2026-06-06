@@ -49,8 +49,9 @@ from db_functions.incubateur_functions import (
     delete_incubateur,
     update_incubateur,
 )
-from db_functions.avis_functions import delete_avis, insert_avis, show_avis, update_avis
+from db_functions.avis_functions import delete_avis, insert_avis, update_avis
 from db_functions.member_functions import delete_member, insert_member, show_members, update_member
+from db_functions.membership_functions import delete_membership, insert_membership
 import time
 import os
 import database_connect as dbc
@@ -204,7 +205,7 @@ def adminMenu(conn):
             while True:
                 clear()
                 show_projects(conn)
-                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 0 - Retour")
+                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 4 - Gérer les membres |0 - Retour")
                 sub = input("-> ")
                 if sub == "1":
                     update_project(conn)
@@ -215,6 +216,18 @@ def adminMenu(conn):
                 elif sub == "3":
                     delete_project(conn)
                     pause()
+                elif sub == "4":
+                    while True:
+                        print("1 - INSERT | 2 - DELETE | 0 - Retour")
+                        subsub = input("-> ")
+                        if subsub == "1":
+                            insert_membership(conn)
+                            pause()
+                        elif subsub =="2":
+                            delete_membership(conn)
+                            pause()
+                        elif subsub =="0":
+                            break
                 elif sub == "0":
                     break
         elif choice == "4":
