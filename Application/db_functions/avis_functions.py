@@ -31,7 +31,7 @@ def delete_avis(conn, user=None):
     if user is None:
         show_users(conn)
         user = input("Entrez l'id de l'utilisateur ou entrez 'q' pour retourner: ")
-        if(user == 'q'):
+        if(user.lower == 'q'):
             return
     
     if not show_avis(conn, user):
