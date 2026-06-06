@@ -157,6 +157,7 @@ def adminMenu(conn):
         print("9 - Gérer les ONGs")
         print("10 - Gérer les liens Projet social - ONG")
         print("11 - Gérer les incubateurs")
+        print("12 - Supprimer l'avis d'un utilisateur")
         print("0 - Retour")
         choice = input("--> ")
         if choice == "0":
@@ -320,6 +321,10 @@ def adminMenu(conn):
                     pause()
                 elif sub == "0":
                     break
+        elif choice == "12":
+            clear()
+            delete_avis(conn)
+            pause()
 
 
 def login(conn):
