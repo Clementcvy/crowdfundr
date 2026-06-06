@@ -105,10 +105,12 @@ Nous allons créer une base de données pour aider la plateforme CrowdFundr puis
 |        |        |        |
 | MLDv2/LDD | oui | idées de SELECT |
 |        |        |        |
-| APP | oui |   | [CODE] Pour ces menu, ajoute un retour en arrière pour chaque étape du menu avec des boucles. N'ajoute aucun commentaire et donne moi le fichier en entier. Ne touche pas les fonction. Et reste cohérent avec tes méthodes d'input pour le retour Python
+| APP | oui |   | 
 |        |        |        |
 | NoSQL | non |   |
 
+
+Prompt APP : [CODE] Pour ces menu, ajoute un retour en arrière pour chaque étape du menu avec des boucles. N'ajoute aucun commentaire et donne moi le fichier en entier. Ne touche pas les fonction. Et reste cohérent avec tes méthodes d'input pour le retour Python
 
 
 ### Participation :
