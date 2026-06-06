@@ -49,7 +49,9 @@ from db_functions.incubateur_functions import (
     delete_incubateur,
     update_incubateur,
 )
-from db_functions.avis_functions import delete_avis, insert_avis, show_avis, update_avis
+from db_functions.avis_functions import delete_avis, insert_avis, update_avis
+from db_functions.member_functions import delete_member, insert_member, show_members, update_member
+from db_functions.membership_functions import delete_membership, insert_membership
 import time
 import os
 import database_connect as dbc
@@ -147,16 +149,18 @@ def adminMenu(conn):
     while True:
         clear()
         print("1 - Gérer les utilisateurs")
-        print("2 - Gérer les projets")
-        print("3 - SELECT")
-        print("4 - Afficher tous les projets")
-        print("5 - Afficher tous les utilisateurs")
-        print("6 - Gérer les contributions")
-        print("7 - Gérer les contreparties")
-        print("8 - Gérer les transporteurs")
-        print("9 - Gérer les ONGs")
-        print("10 - Gérer les liens Projet social - ONG")
-        print("11 - Gérer les incubateurs")
+        print("2 - Gérer les membres")
+        print("3 - Gérer les projets")
+        print("4 - SELECT")
+        print("5 - Afficher tous les projets")
+        print("6 - Afficher tous les utilisateurs")
+        print("7 - Gérer les contributions")
+        print("8 - Gérer les contreparties")
+        print("9 - Gérer les transporteurs")
+        print("10 - Gérer les ONGs")
+        print("11 - Gérer les liens Projet social - ONG")
+        print("12 - Gérer les incubateurs")
+        print("13 - Supprimer l'avis d'un utilisateur")
         print("0 - Retour")
         choice = input("--> ")
         if choice == "0":
@@ -178,11 +182,30 @@ def adminMenu(conn):
                     pause()
                 elif sub == "0":
                     break
+        
         elif choice == "2":
             while True:
                 clear()
-                show_projects(conn)
+                show_members(conn)
                 print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 0 - Retour")
+                sub = input("-> ")
+                if sub == "1":
+                    update_member(conn)
+                    pause()
+                elif sub == "2":
+                    insert_member(conn)
+                    pause()
+                elif sub == "3":
+                    delete_member(conn)
+                    pause()
+                elif sub == "0":
+                    break
+
+        elif choice == "3":
+            while True:
+                clear()
+                show_projects(conn)
+                print("1 - UPDATE | 2 - INSERT | 3 - DELETE | 4 - Gérer les membres |0 - Retour")
                 sub = input("-> ")
                 if sub == "1":
                     update_project(conn)
@@ -193,9 +216,21 @@ def adminMenu(conn):
                 elif sub == "3":
                     delete_project(conn)
                     pause()
+                elif sub == "4":
+                    while True:
+                        print("1 - INSERT | 2 - DELETE | 0 - Retour")
+                        subsub = input("-> ")
+                        if subsub == "1":
+                            insert_membership(conn)
+                            pause()
+                        elif subsub =="2":
+                            delete_membership(conn)
+                            pause()
+                        elif subsub =="0":
+                            break
                 elif sub == "0":
                     break
-        elif choice == "3":
+        elif choice == "4":
             while True:
                 clear()
                 print(
@@ -220,15 +255,15 @@ def adminMenu(conn):
                     pause()
                 elif sub == "0":
                     break
-        elif choice == "4":
+        elif choice == "5":
             clear()
             show_projects(conn)
             pause()
-        elif choice == "5":
+        elif choice == "6":
             clear()
             show_users(conn)
             pause()
-        elif choice == "6":
+        elif choice == "7":
             contributeur = login(conn)
             if contributeur:
                 show_contributions(conn, contributeur)
@@ -240,7 +275,7 @@ def adminMenu(conn):
                 elif sub == "2":
                     delete_contribution(conn, contributeur)
                     pause()
-        elif choice == "7":
+        elif choice == "8":
             contributeur = login(conn)
             if contributeur:
                 show_contreparties(conn, contributeur)
@@ -255,7 +290,7 @@ def adminMenu(conn):
                 elif sub == "3":
                     delete_contrepartie(conn, contributeur)
                     pause()
-        elif choice == "8":
+        elif choice == "9":
             while True:
                 clear()
                 show_transporteurs(conn)
@@ -272,7 +307,7 @@ def adminMenu(conn):
                     pause()
                 elif sub == "0":
                     break
-        elif choice == "9":
+        elif choice == "10":
             while True:
                 clear()
                 show_ong(conn)
@@ -289,7 +324,7 @@ def adminMenu(conn):
                     pause()
                 elif sub == "0":
                     break
-        elif choice == "10":
+        elif choice == "11":
             while True:
                 clear()
                 show_social_ong(conn)
@@ -303,7 +338,7 @@ def adminMenu(conn):
                     pause()
                 elif sub == "0":
                     break
-        elif choice == "11":
+        elif choice == "12":
             while True:
                 clear()
                 show_incubateur(conn)
@@ -320,6 +355,10 @@ def adminMenu(conn):
                     pause()
                 elif sub == "0":
                     break
+        elif choice == "13":
+            clear()
+            delete_avis(conn)
+            pause()
 
 
 def login(conn):

@@ -1,5 +1,6 @@
 import psycopg2
 from datetime import datetime
+from db_functions.user_functions import show_users
 
 def show_avis(conn, user):
     cur = conn.cursor()
@@ -28,7 +29,10 @@ def show_avis(conn, user):
 
 def delete_avis(conn, user=None):
     if user is None:
-        user = input("Entrez l'id de l'utilisateur : ")
+        show_users(conn)
+        user = input("Entrez l'id de l'utilisateur ou entrez 'q' pour retourner: ")
+        if(user.lower == 'q'):
+            return
     
     if not show_avis(conn, user):
         return
