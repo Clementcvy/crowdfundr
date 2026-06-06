@@ -2,7 +2,7 @@ import psycopg2
 from db_functions.member_functions import show_members
 from db_functions.project_functions import show_projects
 
-def show_membership(conn,projet):
+def show_membership(conn, projet):
     sql = """SELECT M.id, M.nom, M.naissance, M.prenom, M.pays, MP.role_m
     FROM MembreProjet MP
     JOIN Membre M ON M.id=MP.membre
@@ -10,7 +10,7 @@ def show_membership(conn,projet):
     """
     cur = conn.cursor()
     try:
-        cur.execute(sql,(projet,))
+        cur.execute(sql, (projet,))
     except psycopg2.Error as e:
         print("Message système :", e)
         conn.rollback()
@@ -18,10 +18,9 @@ def show_membership(conn,projet):
         return
 
     raw = cur.fetchone()
-    print("-------Membre(s) du projet "+ str(projet) +"-------")
+    print(f"-----Membre(s) du projet {projet}-----")
     while raw:
-        print(f"ID : {raw[0]}, Nom : {raw[1]}, Date de naissance : {raw[2]},")
-        print(f"Prenom : {raw[3]}, Pays : {raw[4]}, Role : {raw[5]}")
+        print(f"ID : {raw[0]}, Nom : {raw[1]}, Date de naissance : {raw[2]}, Prenom : {raw[3]}, Pays : {raw[4]}, Role : {raw[5]}")
         raw = cur.fetchone()
     print("-----------------------")
     cur.close()
@@ -30,16 +29,11 @@ def show_membership(conn,projet):
 def delete_membership(conn):
     cur = conn.cursor()
     while True:
-        show_projects(conn)
-        projet = input(
-            "Entrez l'id du projet que vous voulez traiter (ou 'q' pour annuler) : "
-        )
+        projet = input("Entrez l'id du projet que vous voulez traiter (ou 'q' pour annuler) : ")
         if projet.lower() == "q":
             break
-        show_membership(conn,projet)
-        membre = input(
-            "Entrez l'ID du membre a retirer (ou 'q' pour annuler) : "
-        )
+        show_membership(conn, projet)
+        membre = input("Entrez l'ID du membre a retirer (ou 'q' pour annuler) : ")
         if membre.lower() == "q":
             break
 
@@ -62,12 +56,11 @@ def delete_membership(conn):
 def insert_membership(conn):
     cur = conn.cursor()
     while True:
-        show_projects(conn)
         projet = input("Entrez l'id du projet (ou 'q' pour annuler) : ")
         if projet.lower() == "q":
             break
         
-        sql = """SELECT DISTINCT M.* FROM Membre M
+        sql = """SELECT DISTINCT M.id, M.nom, M.naissance, M.prenom, M.pays FROM Membre M
         LEFT JOIN MembreProjet MP ON M.id=MP.membre
         AND MP.projet = %s
         WHERE MP.membre IS NULL
@@ -78,13 +71,13 @@ def insert_membership(conn):
             raw = cur.fetchone()
             print("-----Membres ne faisant pas partie du projet----")
             while raw:
-                print(f"ID : {raw[0]}, Nom : {raw[1]}, Date de naissance : {raw[2]},")
-                print(f"Prenom : {raw[3]}, Pays : {raw[4]}")
+                print(f"ID : {raw[0]}, Nom : {raw[1]}, Date de naissance : {raw[2]}, Prenom : {raw[3]}, Pays : {raw[4]}")
                 raw = cur.fetchone()
             print("-----------------------")
         except psycopg2.Error as e:
             print("Message système :", e)
             conn.rollback()
+            cur.close()
             return
 
         membre = input("Entrez l'ID du membre que vous souhaitez ajouter (ou 'q' pour annuler) : ")
@@ -92,10 +85,10 @@ def insert_membership(conn):
             break
         role = input("Entrez le role a attribuer au membre ('chef de projet', 'développeur', 'designer', 'community manager') : ")
         if role not in ['chef de projet', 'développeur', 'designer', 'community manager']:
-            input("Entree incorrecte, appuyez sur Entrée pour continuer : ")
-            break
+            print("Role invalide")
+            continue
         try:
-            sql = "INSERT INTO MembreProjet (projet, membre, role_m) VALUES (%s, %s,%s)"
+            sql = "INSERT INTO MembreProjet (projet, membre, role_m) VALUES (%s, %s, %s)"
             cur.execute(sql, (projet, membre, role))
             conn.commit()
             print("Opération réussie")
@@ -105,6 +98,3 @@ def insert_membership(conn):
             conn.rollback()
             continue
     cur.close()
-
-# def update_membership(conn):
-#     return

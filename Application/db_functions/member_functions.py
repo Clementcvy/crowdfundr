@@ -54,15 +54,14 @@ def insert_member(conn):
     cur.close()
 
 def show_members(conn):
-    sql = "SELECT * FROM Membre ORDER BY id"
+    sql = "SELECT id, nom, naissance, prenom, pays FROM Membre ORDER BY id"
     cur = conn.cursor()
     try:
         cur.execute(sql)
         raw = cur.fetchone()
         print("-----Membres----")
         while raw:
-            print(f"ID : {raw[0]}, Nom : {raw[1]}, Date de naissance : {raw[2]},")
-            print(f"Prenom : {raw[3]}, Pays : {raw[4]}")
+            print(f"ID : {raw[0]}, Nom : {raw[1]}, Date de naissance : {raw[2]}, Prenom : {raw[3]}, Pays : {raw[4]}")
             raw = cur.fetchone()
         print("-----------------------")
     except psycopg2.Error as e:
