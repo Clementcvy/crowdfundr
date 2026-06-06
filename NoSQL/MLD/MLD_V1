@@ -1,0 +1,31 @@
+Choix de modélisation : 
+
+On ajoute une clé artificielle id dans Projet et Contribution pour simplifier les références et éviter de manipuler des clés primaires composées.
+
+On choisit de transformer l'héritage de Contrepartie par référence (la classe mère et les classes filles partagent la même clé, qui fait à la fois office de clé primaire et de clé étrangère).
+
+Relations :
+Incubateur(#nom: varchar[20], création: int[4], budget: float)
+création et budget NOT NULL
+
+Projet(#id: int, titre: varchar[20], descr: text, objectif: float, lancement: date, #incubateur => Incubateur, type_projet: type_projet, membre: json, avis: json)
+titre, description, objectif, lancement, membre et avis NOT NULL AND (titre, lancement) UNIQUE NOT NULL
+
+Contribution(#id: int, date_c: timestamp, montant: float, #projet => Projet, contributeur: json)
+date_c, montant, #projet et contributeur NOT NULL
+
+Contrepartie(#id_c => Contribution)
+
+Contrepartie_physique(#id_c => Contrepartie, poids: float, frais: float, transporteur: json)
+poids, frais et transporteur NOT NULL
+
+Contrepartie_numérique(#id_c => Contrepartie, format: varchar[10], taille: int)
+format et taille NOT NULL
+
+
+Contraintes :
+Intersection(Projection(Contrepartie_physique, #id_c), Projection(Contrepartie_numérique, #id_c)) = {}
+
+Projection(Contrepartie, #id_c) =
+Projection(Contrepartie_physique, #id_c)
+UNION Projection(Contrepartie_numérique, #id_c)
