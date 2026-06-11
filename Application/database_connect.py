@@ -6,7 +6,13 @@ PASSWORD = "r6zwYwj3X6zW"
 HOST = "tuxa.sme.utc"
 
 def connectDatabase():
-    conn = psycopg2.connect("host=%s dbname=%s user=%s password=%s" % (HOST, DATABASE, USER, PASSWORD))
+    conn = psycopg2.connect(
+        host=HOST,
+        dbname=DATABASE,
+        user=USER,
+        password=PASSWORD,
+        options="-c search_path=sql"
+    )
     if (conn):
         print("[LOGS] Connexion DB réussie.")
     else:
