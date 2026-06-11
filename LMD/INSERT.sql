@@ -1,5 +1,5 @@
 --- ONG
-INSERT INTO ONG (NEU, nom, pays) VALUES 
+INSERT INTO sql.ONG (NEU, nom, pays) VALUES 
 (1, 'Amnesty Internat.', 'Royaume-Uni'),
 (2, 'Croix-Rouge', 'France'),
 (3, 'MSF', 'Suisse'),
@@ -7,7 +7,7 @@ INSERT INTO ONG (NEU, nom, pays) VALUES
 (5, 'Greenpeace', 'Pays-Bas');
 
 -- Transporteur
-INSERT INTO Transporteur (nom, delai) VALUES 
+INSERT INTO sql.Transporteur (nom, delai) VALUES 
 ('Chronopost', 2),
 ('DHL', 3),
 ('FedEx', 5),
@@ -15,7 +15,7 @@ INSERT INTO Transporteur (nom, delai) VALUES
 ('La Poste', 7);
 
 -- Incubateur
-INSERT INTO Incubateur (nom, creation, budget) VALUES 
+INSERT INTO sql.Incubateur (nom, creation, budget) VALUES 
 ('Station F', 2017, 1000000),
 ('Le Cargo', 2016, 500000),
 ('Techstars', 2006, 2000000),
@@ -23,7 +23,7 @@ INSERT INTO Incubateur (nom, creation, budget) VALUES
 ('Plug and Play', 2006, 1500000);
 
 -- Projet
-INSERT INTO Projet (id, titre, descr, objectif, lancement, incubateur) VALUES 
+INSERT INTO sql.Projet (id, titre, descr, objectif, lancement, incubateur) VALUES 
 -- Projets Artis
 (1, 'Tactical Art', 'Expo jeu video', 1000.0, '2026-01-01', 'Le Cargo'),
 (2, 'Artisanat 2', 'Peinture', 2000.0, '2026-01-02', 'Station F'),
@@ -44,21 +44,21 @@ INSERT INTO Projet (id, titre, descr, objectif, lancement, incubateur) VALUES
 (15, 'Tech 5', 'Domotique', 50000.0, '2026-03-05', NULL);
 
 -- Sous projets
-INSERT INTO Projet_artis (id_p, medium) VALUES 
+INSERT INTO sql.Projet_artis (id_p, medium) VALUES 
 (1, 'Jeu Video'), (2, 'Peinture'), (3, 'Sculpture'), (4, 'Musique'), (5, 'Cinema');
 
-INSERT INTO Projet_social (id_p, region) VALUES 
+INSERT INTO sql.Projet_social (id_p, region) VALUES 
 (6, 'Monde'), (7, 'Europe'), (8, 'Afrique'), (9, 'Asie'), (10, 'Amerique');
 
-INSERT INTO Projet_techno (id_p, innovation) VALUES 
+INSERT INTO sql.Projet_techno (id_p, innovation) VALUES 
 (11, 'Robotique'), (12, 'IA'), (13, 'Web3'), (14, 'Cleantech'), (15, 'IoT');
 
 -- Projet Social ONG
-INSERT INTO Projet_socialONG (projet, ONG) VALUES 
+INSERT INTO sql.Projet_socialONG (projet, ONG) VALUES 
 (6,1), (7,2), (8,3), (9,4), (10,5);
 
 -- Membre
-INSERT INTO Membre (id, nom, naissance, prenom, pays) VALUES 
+INSERT INTO sql.Membre (id, nom, naissance, prenom, pays) VALUES 
 (1, 'Kojima', '1963-08-24', 'Hideo', 'Japon'),
 (2, 'Shinkawa', '1971-12-25', 'Yoji', 'Japon'),
 (3, 'Durand', '1985-03-12', 'Marie', 'France'),
@@ -66,7 +66,7 @@ INSERT INTO Membre (id, nom, naissance, prenom, pays) VALUES
 (5, 'Zola', '1978-11-02', 'Emile', 'Italie');
 
 -- MembreProjet
-INSERT INTO MembreProjet (projet, membre, role_m) VALUES 
+INSERT INTO sql.MembreProjet (projet, membre, role_m) VALUES 
 (1, 1, 'chef de projet'), (1, 2, 'designer'),
 (2, 3, 'développeur'), (3, 4, 'designer'), (4, 5, 'community manager'), (5, 1, 'chef de projet'),
 (6, 2, 'designer'), (7, 3, 'développeur'), (8, 4, 'designer'), (9, 5, 'community manager'),
@@ -74,7 +74,7 @@ INSERT INTO MembreProjet (projet, membre, role_m) VALUES
 (14, 5, 'community manager'), (15, 3, 'chef de projet');
 
 -- Contributeur
-INSERT INTO Contributeur (id, nom, naissance, pseudo, mail) VALUES 
+INSERT INTO sql.Contributeur (id, nom, naissance, pseudo, mail) VALUES 
 (1, 'Dupont', '1990-01-01', 'dupondt', 'd@mail.com'),
 (2, 'Martin', '1988-05-15', 'marty', 'm@mail.com'),
 (3, 'Bernard', '1995-10-10', 'berny', 'b@mail.com'),
@@ -82,7 +82,7 @@ INSERT INTO Contributeur (id, nom, naissance, pseudo, mail) VALUES
 (5, 'Leroy', '2000-06-15', 'roy', 'l@mail.com');
 
 -- Contribution
-INSERT INTO Contribution (id, date_c, montant, projet, contributeur) VALUES 
+INSERT INTO sql.Contribution (id, date_c, montant, projet, contributeur) VALUES 
 (1, '2026-01-05 10:00:00', 600.0, 1, 1),
 (2, '2026-01-06 12:00:00', 500.0, 1, 2), 
 (3, '2026-02-05 09:00:00', 100.0, 6, 3),
@@ -95,14 +95,14 @@ INSERT INTO Contribution (id, date_c, montant, projet, contributeur) VALUES
 (10,'2026-02-20 09:00:00', 70.0,  6, 5);
 
 -- Contrepartie
-INSERT INTO Contrepartie (id_c) VALUES 
+INSERT INTO sql.Contrepartie (id_c) VALUES 
 (1), (2), (3), (4), (5), (6), (7), (8), (9), (10);
 
 -- Filles contreparties
-INSERT INTO Contrepartie_numerique (id_c, format, taille) VALUES 
+INSERT INTO sql.Contrepartie_numerique (id_c, format, taille) VALUES 
 (1, 'PDF', 10), (2, 'MP3', 20), (3, 'MP4', 30), (4, 'ZIP', 40), (6, 'RAR', 50);
 
-INSERT INTO Contrepartie_physique (id_c, poids, frais, transporteur) VALUES 
+INSERT INTO sql.Contrepartie_physique (id_c, poids, frais, transporteur) VALUES 
 (5, 1.0, 5.0, 'Chronopost'),
 (7, 2.0, 10.0, 'Chronopost'),
 (8, 3.0, 15.0, 'Chronopost'),
@@ -110,7 +110,7 @@ INSERT INTO Contrepartie_physique (id_c, poids, frais, transporteur) VALUES
 (10, 5.0, 25.0, 'Chronopost');
 
 -- Avis
-INSERT INTO Avis (projet, contributeur, date_a, note, texte) VALUES 
+INSERT INTO sql.Avis (projet, contributeur, date_a, note, texte) VALUES 
 (1, 1, '2026-01-10', 5, 'Merveilleux'),
 (1, 2, '2026-01-15', 5, 'Incroyable'),
 (6, 3, '2026-03-01', 4, 'Tres important'),
