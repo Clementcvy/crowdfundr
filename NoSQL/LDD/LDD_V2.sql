@@ -36,7 +36,7 @@ CREATE TABLE nosql.Contributeur (
     naissance DATE NOT NULL,
     pseudo VARCHAR(20) UNIQUE NOT NULL,
     mail VARCHAR(50) NOT NULL
-
+);
 CREATE TABLE nosql.Contrepartie (
     id_c INT PRIMARY KEY,
 CONSTRAINT contrib FOREIGN KEY (id_c) REFERENCES nosql.Contribution(id)
