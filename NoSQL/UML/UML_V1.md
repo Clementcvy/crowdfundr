@@ -1,6 +1,4 @@
 @startuml
-
-@startuml
 skinparam linetype ortho
 
 class Projet {
@@ -61,7 +59,7 @@ note bottom of Rôle : à titre indicatif
 class Contribution {
     date : datetime {key}
     montant : float
-    contributeurs : Contributeur
+    contributeur : Contributeur
 }
 
 Projet *-- "*" Contribution
@@ -94,6 +92,4 @@ class Transporteur <<DataType>> {
 Contribution "1-1"--> "0..1" Contrepartie : Inclue
 Contrepartie <|-- Contrepartie_Numérique
 Contrepartie <|-- Contrepartie_Physique
-@enduml
-
 @enduml
