@@ -42,10 +42,14 @@ class Membre <<DataType>> {
     rôle : Rôle
 }
 
-class Contributeur <<DataType>> {
+class Contributeur {
     pseudo : varchar[20] {unique}
     mail : varchar[50]
 }
+
+Projet "*" <-- "*" Contributeur : contribue
+
+Contributeur "1" <-- "*" Contribution : appartient
 
 enum Rôle {
     chef de projet
@@ -59,10 +63,7 @@ note bottom of Rôle : à titre indicatif
 class Contribution {
     date : datetime {key}
     montant : float
-    contributeur : Contributeur
 }
-
-Projet *-- "*" Contribution
 
 class Avis <<DataType>> {
     date : date
