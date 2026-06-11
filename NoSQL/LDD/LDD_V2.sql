@@ -17,19 +17,12 @@ CREATE TABLE nosql.Projet (
     lancement DATE NOT NULL,
     incubateur VARCHAR(20),
     type_projet nosql.typeProjet NOT NULL,
-    type_data JSON NOT NULL,
+    additional_data JSON NOT NULL,
     membre JSON NOT NULL,
     avis JSON NOT NULL,
 CONSTRAINT projet_incubateur FOREIGN KEY (incubateur) REFERENCES nosql.Incubateur(nom)
 );
 
-CREATE TABLE nosql.Contribution (
-    id INT PRIMARY KEY,
-    date_c TIMESTAMP NOT NULL,
-    montant FLOAT NOT NULL,
-    projet INT NOT NULL,,
-CONSTRAINT contrib_projet FOREIGN KEY (projet) REFERENCES nosql.Projet(id)
-);
 CREATE TABLE nosql.Contributeur (
     id INT PRIMARY KEY,
     nom VARCHAR(20) NOT NULL,
@@ -37,6 +30,17 @@ CREATE TABLE nosql.Contributeur (
     pseudo VARCHAR(20) UNIQUE NOT NULL,
     mail VARCHAR(50) NOT NULL
 );
+
+CREATE TABLE nosql.Contribution (
+    id INT PRIMARY KEY,
+    date_c TIMESTAMP NOT NULL,
+    montant FLOAT NOT NULL,
+    projet INT NOT NULL,
+    contributeur INT NOT NULL,
+CONSTRAINT contrib_projet FOREIGN KEY (projet) REFERENCES nosql.Projet(id),
+CONSTRAINT contrib_contributeur FOREIGN KEY (contributeur) REFERENCES nosql.Contributeur(id)
+);
+
 CREATE TABLE nosql.Contrepartie (
     id_c INT PRIMARY KEY,
 CONSTRAINT contrib FOREIGN KEY (id_c) REFERENCES nosql.Contribution(id)
