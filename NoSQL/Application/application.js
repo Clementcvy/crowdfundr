@@ -332,3 +332,26 @@ db.Projets.insertMany([
    }
 ])
 
+//Supprimer avis
+db.Projets.updateOne(
+    {titre:"Tactical Art"},
+    {$pull: {avis:{contributeur:"marty"}}}
+)
+
+//MAJ avis
+db.Projets.updateOne(
+    {titre: "Tactical Art",
+        "avis.contributeur": "dupondt",
+    }, //Selection
+    {
+        "avis.$.note":2
+    }
+)
+
+//Select membre
+db.Projets.find(
+    {titre: "Tactical Art"}, //Selection
+    {
+        "membres":1,
+    } //Elts à afficher
+)
