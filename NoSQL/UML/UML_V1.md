@@ -20,28 +20,6 @@ class Incubateur {
 
 Incubateur "0..1" --> "*" Projet : Soutient
 
-class Projet_Techno <<DataType>> {
-    innovation : text
-}
-class Projet_Artis <<DataType>> {
-    médium : text
-}
-class Projet_Social <<DataType>> {
-    région : text
-    ONG : ONG
-}
-class ONG <<DataType>> {
-    NEU : integer {key}
-    nom : varchar[20]
-    pays : varchar[20]
-}
-
-class Membre <<DataType>> {
-    prenom : varchar[20]
-    pays : varchar[10]
-    rôle : Rôle
-}
-
 class Contributeur {
     pseudo : varchar[20] {unique}
     mail : varchar[50]
@@ -51,24 +29,9 @@ Projet "*" <-- "*" Contributeur : contribue
 
 Contributeur "1" <-- "*" Contribution : appartient
 
-enum Rôle {
-    chef de projet
-    développeur
-    designer
-    community manager
-}
-
-note bottom of Rôle : à titre indicatif
-
 class Contribution {
     date : datetime {key}
     montant : float
-}
-
-class Avis <<DataType>> {
-    date : date
-    note : integer[1..5]
-    texte : text
 }
 
 abstract Contrepartie {
@@ -83,11 +46,6 @@ class Contrepartie_Physique {
     poids : float
     fraisLivraison : float
     transporteur : Transporteur
-}
-
-class Transporteur <<DataType>> {
-    nom : varchar[20] {key}
-    delai : integer
 }
 
 Contribution "1-1"--> "0..1" Contrepartie : Inclue
