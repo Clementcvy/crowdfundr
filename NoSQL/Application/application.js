@@ -355,3 +355,18 @@ db.Projets.find(
         "membres":1,
     } //Elts à afficher
 )
+
+// Recherche 1
+db.Projets.aggregate([
+  { $match: {
+    type: "Projet_Artistique",
+    "membres.nom": { $all: ["Kojima", "Shinkawa"] },
+    "membres.prenom": { $all: ["Hideo", "Yoji"] }
+  }},
+
+  { $match: {
+    $expr: {
+      $gt: [ { $sum: "$contributions.montant" }, "$objectif" ]
+    }
+  }}
+])
