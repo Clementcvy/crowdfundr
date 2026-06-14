@@ -3,7 +3,7 @@ conn = new Mongo("mongodb://localhost:27017")
 db = conn.getDB("crowdfunder");
 db.createCollection('Projets');
 
-db.Projets.insertMany([
+db.Projets.insertMany([ // exemple d'insertion
    // ==========================================
    // PROJETS ARTISANAT (1 à 5)
    // ==========================================
@@ -332,23 +332,24 @@ db.Projets.insertMany([
    }
 ])
 
-//Supprimer avis
+// exemple de supression (pour avis)
 db.Projets.updateOne(
-    {titre:"Tactical Art"},
-    {$pull: {avis:{contributeur:"marty"}}}
+   { titre: "Tactical Art" },
+   { $pull: { avis: { contributeur: "marty" } } }
 )
 
-//MAJ avis
+// exemple de mise à jour (pour avis)
 db.Projets.updateOne(
-    {titre: "Tactical Art",
-        "avis.contributeur": "dupondt",
-    }, //Selection
-    {
-        "avis.$.note":2
-    }
+   {
+      titre: "Tactical Art",
+      "avis.contributeur": "dupondt",
+   }, //Selection
+   {
+      "avis.$.note": 2
+   }
 )
 
-//Select membre
+// exemple de selection (pour membre)
 db.Projets.find(
     {titre: "Tactical Art"}, //Selection
     {
