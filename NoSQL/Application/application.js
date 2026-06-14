@@ -351,10 +351,23 @@ db.Projets.updateOne(
 
 // exemple de selection (pour membre)
 db.Projets.find(
-   { titre: "Tactical Art" }, //Selection
-   {
-      "membres": 1,
-   } //Elts à afficher
+    {titre: "Tactical Art"}, //Selection
+    {
+        "membres":1,
+    } //Elts à afficher
 )
 
-// 3 requêtes à faire
+// Recherche 1
+db.Projets.aggregate([
+  { $match: {
+    type: "Projet_Artistique",
+    "membres.nom": { $all: ["Kojima", "Shinkawa"] },
+    "membres.prenom": { $all: ["Hideo", "Yoji"] }
+  }},
+
+  { $match: {
+    $expr: {
+      $gt: [ { $sum: "$contributions.montant" }, "$objectif" ]
+    }
+  }}
+])
