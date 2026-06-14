@@ -108,6 +108,8 @@ Nous allons créer une base de données pour aider la plateforme CrowdFundr puis
 | APP | oui |   | 
 |        |        |        |
 | NoSQL | non |   |
+|        |        |        |
+| APP NoSQL | non |   |
 
 
 Prompt APP : [CODE] Pour ces menu, ajoute un retour en arrière pour chaque étape du menu avec des boucles. N'ajoute aucun commentaire et donne moi le fichier en entier. Ne touche pas les fonction. Et reste cohérent avec tes méthodes d'input pour le retour Python
@@ -126,6 +128,8 @@ Prompt APP : [CODE] Pour ces menu, ajoute un retour en arrière pour chaque éta
 |     APP   |    25%    |   25%     |   25%     |   25%     |
 |        |        |        |        |        |
 |     NoSQL   |    25%    |   25%     |   25%     |   25%     |
+|        |        |        |        |        |
+|     App NoSQL   |    22%    |   22%     |   22%     |   34%     |
 |        |        |        |        |        |
 | Pourcentage totale:|        |        |        |        |
 
@@ -150,5 +154,25 @@ Prompt APP : [CODE] Pour ces menu, ajoute un retour en arrière pour chaque éta
 **Transporteur** est modélisé comme un `DataType` car il décrit simplement les informations nécessaires à une contrepartie physique, comme le nom du transporteur et le délai. Il peut donc être imbriqué dans la contrepartie physique sans être géré séparément.
 
 Les autres classes restent modélisées en SQL car elles représentent des entités principales du système, avec une identité propre, des clés et des relations importantes à maintenir. Par exemple, `Projet`, `Incubateur`, `Contribution`, `Contrepartie` ou encore `Rôle` nécessitent une gestion structurée et des contraintes d’intégrité fortes. De plus, certaines de ces classes manipulent des données sensibles ou transactionnelles, comme les montants des contributions, les budgets ou les contreparties associées aux paiements. Le modèle relationnel est donc plus adapté, car il permet de garantir la cohérence des données, d’éviter les pertes d’information, de sécuriser les opérations critiques et de bénéficier des propriétés transactionnelles du SQL.
+
+## 9. BDD MongoDB
+
+La base de données NoSQL a été implémentée avec MongoDB et des scripts JavaScript exécutables avec `mongosh`. Les données sont stockées dans la base `crowdfunder`, principalement dans la collection `Projets`, où chaque document regroupe les informations du projet ainsi que ses membres, contributions, contreparties, avis et éventuel incubateur.
+
+Les scripts se trouvent dans le dossier `NoSQL/Application`. Le fichier `application.js` permet d'exécuter l'ensemble des requêtes dans l'ordre. Il commence par réinitialiser la collection `Projets`, puis insère les données d'exemple avant de lancer les requêtes de modification et de recherche.
+
+Depuis la racine du projet, l'exécution complète se fait avec :
+
+```bash
+mongosh "mongodb://localhost:27017" NoSQL/Application/application.js
+```
+
+Chaque requête peut aussi être exécutée séparément. La commande à utiliser est indiquée en commentaire en haut de chaque fichier. Par exemple :
+
+```bash
+mongosh "mongodb://localhost:27017" NoSQL/Application/05_recherche_projets_artisanaux_finances.js
+```
+
+Les scripts de modification affichent l'état des données avant et après l'opération afin de montrer clairement l'effet de la requête exécutée.
 
 
