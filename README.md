@@ -125,13 +125,13 @@ Prompt APP : [CODE] Pour ces menu, ajoute un retour en arrière pour chaque éta
 |        |        |        |        |        |
 |     MLDv2/LDD   |    25%    |   25%     |   25%     |   25%     |
 |        |        |        |        |        |
-|     APP   |    25%    |   25%     |   25%     |   25%     |
+|     APP   |    22%    |   26%     |   26%     |   26%     |
 |        |        |        |        |        |
 |     NoSQL   |    25%    |   25%     |   25%     |   25%     |
 |        |        |        |        |        |
 |     App NoSQL   |    22%    |   22%     |   22%     |   34%     |
 |        |        |        |        |        |
-| Pourcentage totale:|        |        |        |        |
+| Pourcentage total:|   24%     |    25%    |    25%    |    26%    |
 
 
 
