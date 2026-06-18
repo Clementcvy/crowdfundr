@@ -1,23 +1,62 @@
-// Requete d'insertion des projets.
+// Requete d'insertion des projets normalisés.
 // 1. Depuis le dossier NoSQL/Application :
 //    mongosh "mongodb://localhost:27017" 01_insertion_projets.js
 // 2. Depuis mongosh, depuis le dossier NoSQL/Application :
 //    load("01_insertion_projets.js")
-// Cette requete supprime la collection Projets puis insere les documents.
-// Le drop evite les doublons si le fichier est execute plusieurs fois.
 
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
 
-print("Avant modification : nombre de projets existants");
-printjson(db.Projets.countDocuments());
+// ==========================================
+// 1. Collection Contributeurs
+// ==========================================
+print("--- COLLECTION CONTRIBUTEURS ---");
+db.Contributeurs.drop();
 
-print("Suppression de la collection Projets");
-printjson(db.Projets.drop());
+db.Contributeurs.insertMany([
+   { "pseudo": "dupondt", "mail": "d@mail.com" },
+   { "pseudo": "marty", "mail": "m@mail.com" },
+   { "pseudo": "tipeu", "mail": "p@mail.com" },
+   { "pseudo": "roy", "mail": "l@mail.com" },
+   { "pseudo": "berny", "mail": "b@mail.com" }
+]);
 
-print("Insertion des projets");
+// ==========================================
+// 2. Collection Membres
+// ==========================================
+print("\n--- COLLECTION MEMBRES ---");
+db.Membres.drop();
 
-resultat = db.Projets.insertMany([
+db.Membres.insertMany([
+   { "nom": "Durand", "prenom": "Marie" },
+   { "nom": "Zola", "prenom": "Emile" },
+   { "nom": "Smith", "prenom": "John" },
+   { "nom": "Shinkawa", "prenom": "Yoji" },
+   { "nom": "Kojima", "prenom": "Hideo" }
+]);
+
+// ==========================================
+// Raccourcis de requêtes
+// ==========================================
+// Fonctions permettent de chercher l'_id pour l'injecter comme clé étrangère
+function getMembreId(prenom, nom) {
+    let membre = db.Membres.findOne({ "prenom": prenom, "nom": nom });
+    return membre ? membre._id : null;
+}
+
+function getContributeurId(pseudo) {
+    let contrib = db.Contributeurs.findOne({ "pseudo": pseudo });
+    return contrib ? contrib._id : null;
+}
+
+// ==========================================
+// 3. Collection Projets (Avec Références / ID)
+// ==========================================
+print("\n--- COLLECTION PROJETS ---");
+db.Projets.drop();
+
+print("Insertion des projets normalisés...");
+let resProjets = db.Projets.insertMany([
    // ==========================================
    // PROJETS ARTISANAT (1 à 5)
    // ==========================================
@@ -30,26 +69,26 @@ resultat = db.Projets.insertMany([
       "details_type": { "medium": "Jeu Video" },
       "incubateur": { "nom": "Le Cargo", "creation": 2016, "budget": 500000 },
       "membres": [
-         { "nom": "Kojima", "prenom": "Hideo", "role": "chef de projet" },
-         { "nom": "Shinkawa", "prenom": "Yoji", "role": "designer" }
+         { "membre_id": getMembreId("Hideo", "Kojima"), "role": "chef de projet" },
+         { "membre_id": getMembreId("Yoji", "Shinkawa"), "role": "designer" }
       ],
       "contributions": [
          {
             "date": "2026-01-05T10:00:00Z",
             "montant": 600.0,
-            "contributeur": { "pseudo": "dupondt", "mail": "d@mail.com" },
+            "contributeur_id": getContributeurId("dupondt"),
             "contrepartie": { "type": "Numérique", "format": "PDF", "tailleFichier": 10 }
          },
          {
             "date": "2026-01-06T12:00:00Z",
             "montant": 500.0,
-            "contributeur": { "pseudo": "marty", "mail": "m@mail.com" },
+            "contributeur_id": getContributeurId("marty"),
             "contrepartie": { "type": "Numérique", "format": "MP3", "tailleFichier": 20 }
          },
          {
             "date": "2026-01-20T18:00:00Z",
             "montant": 60.0,
-            "contributeur": { "pseudo": "tipeu", "mail": "p@mail.com" },
+            "contributeur_id": getContributeurId("tipeu"),
             "contrepartie": {
                "type": "Physique", "poids": 4.0, "fraisLivraison": 20.0,
                "transporteur": { "nom": "Chronopost", "delai": 2 }
@@ -57,8 +96,8 @@ resultat = db.Projets.insertMany([
          }
       ],
       "avis": [
-         { "date": "2026-01-10", "note": 5, "texte": "Merveilleux", "contributeur": "dupondt" },
-         { "date": "2026-01-15", "note": 5, "texte": "Incroyable", "contributeur": "marty" }
+         { "date": "2026-01-10", "note": 5, "texte": "Merveilleux", "contributeur_id": getContributeurId("dupondt") },
+         { "date": "2026-01-15", "note": 5, "texte": "Incroyable", "contributeur_id": getContributeurId("marty") }
       ]
    },
    {
@@ -70,13 +109,13 @@ resultat = db.Projets.insertMany([
       "details_type": { "medium": "Peinture" },
       "incubateur": { "nom": "Station F", "creation": 2017, "budget": 1000000 },
       "membres": [
-         { "nom": "Durand", "prenom": "Marie", "role": "développeur" }
+         { "membre_id": getMembreId("Marie", "Durand"), "role": "développeur" }
       ],
       "contributions": [
          {
             "date": "2026-01-10T16:00:00Z",
             "montant": 20.0,
-            "contributeur": { "pseudo": "roy", "mail": "l@mail.com" },
+            "contributeur_id": getContributeurId("roy"),
             "contrepartie": {
                "type": "Physique", "poids": 1.0, "fraisLivraison": 5.0,
                "transporteur": { "nom": "Chronopost", "delai": 2 }
@@ -94,7 +133,7 @@ resultat = db.Projets.insertMany([
       "details_type": { "medium": "Sculpture" },
       "incubateur": null,
       "membres": [
-         { "nom": "Smith", "prenom": "John", "role": "designer" }
+         { "membre_id": getMembreId("John", "Smith"), "role": "designer" }
       ],
       "contributions": [],
       "avis": []
@@ -108,7 +147,7 @@ resultat = db.Projets.insertMany([
       "details_type": { "medium": "Musique" },
       "incubateur": null,
       "membres": [
-         { "nom": "Zola", "prenom": "Emile", "role": "community manager" }
+         { "membre_id": getMembreId("Emile", "Zola"), "role": "community manager" }
       ],
       "contributions": [],
       "avis": []
@@ -122,7 +161,7 @@ resultat = db.Projets.insertMany([
       "details_type": { "medium": "Cinema" },
       "incubateur": null,
       "membres": [
-         { "nom": "Kojima", "prenom": "Hideo", "role": "chef de projet" }
+         { "membre_id": getMembreId("Hideo", "Kojima"), "role": "chef de projet" }
       ],
       "contributions": [],
       "avis": []
@@ -143,25 +182,25 @@ resultat = db.Projets.insertMany([
       },
       "incubateur": { "nom": "Techstars", "creation": 2006, "budget": 2000000 },
       "membres": [
-         { "nom": "Shinkawa", "prenom": "Yoji", "role": "designer" }
+         { "membre_id": getMembreId("Yoji", "Shinkawa"), "role": "designer" }
       ],
       "contributions": [
          {
             "date": "2026-02-05T09:00:00Z",
             "montant": 100.0,
-            "contributeur": { "pseudo": "berny", "mail": "b@mail.com" },
+            "contributeur_id": getContributeurId("berny"),
             "contrepartie": { "type": "Numérique", "format": "MP4", "tailleFichier": 30 }
          },
          {
             "date": "2026-02-06T14:00:00Z",
             "montant": 80.0,
-            "contributeur": { "pseudo": "tipeu", "mail": "p@mail.com" },
+            "contributeur_id": getContributeurId("tipeu"),
             "contrepartie": { "type": "Numérique", "format": "ZIP", "tailleFichier": 40 }
          },
          {
             "date": "2026-02-20T09:00:00Z",
             "montant": 70.0,
-            "contributeur": { "pseudo": "roy", "mail": "l@mail.com" },
+            "contributeur_id": getContributeurId("roy"),
             "contrepartie": {
                "type": "Physique", "poids": 5.0, "fraisLivraison": 25.0,
                "transporteur": { "nom": "Chronopost", "delai": 2 }
@@ -169,8 +208,8 @@ resultat = db.Projets.insertMany([
          }
       ],
       "avis": [
-         { "date": "2026-03-01", "note": 4, "texte": "Tres important", "contributeur": "berny" },
-         { "date": "2026-04-01", "note": 5, "texte": "Bravo Amnesty", "contributeur": "tipeu" }
+         { "date": "2026-03-01", "note": 4, "texte": "Tres important", "contributeur_id": getContributeurId("berny") },
+         { "date": "2026-04-01", "note": 5, "texte": "Bravo Amnesty", "contributeur_id": getContributeurId("tipeu") }
       ]
    },
    {
@@ -185,13 +224,13 @@ resultat = db.Projets.insertMany([
       },
       "incubateur": { "nom": "Station F", "creation": 2017, "budget": 1000000 },
       "membres": [
-         { "nom": "Durand", "prenom": "Marie", "role": "développeur" }
+         { "membre_id": getMembreId("Marie", "Durand"), "role": "développeur" }
       ],
       "contributions": [
          {
             "date": "2026-02-15T10:00:00Z",
             "montant": 30.0,
-            "contributeur": { "pseudo": "dupondt", "mail": "d@mail.com" },
+            "contributeur_id": getContributeurId("dupondt"),
             "contrepartie": { "type": "Numérique", "format": "RAR", "tailleFichier": 50 }
          }
       ],
@@ -209,7 +248,7 @@ resultat = db.Projets.insertMany([
       },
       "incubateur": null,
       "membres": [
-         { "nom": "Smith", "prenom": "John", "role": "designer" }
+         { "membre_id": getMembreId("John", "Smith"), "role": "designer" }
       ],
       "contributions": [],
       "avis": []
@@ -226,7 +265,7 @@ resultat = db.Projets.insertMany([
       },
       "incubateur": null,
       "membres": [
-         { "nom": "Zola", "prenom": "Emile", "role": "community manager" }
+         { "membre_id": getMembreId("Emile", "Zola"), "role": "community manager" }
       ],
       "contributions": [],
       "avis": []
@@ -243,7 +282,7 @@ resultat = db.Projets.insertMany([
       },
       "incubateur": null,
       "membres": [
-         { "nom": "Kojima", "prenom": "Hideo", "role": "chef de projet" }
+         { "membre_id": getMembreId("Hideo", "Kojima"), "role": "chef de projet" }
       ],
       "contributions": [],
       "avis": []
@@ -261,13 +300,13 @@ resultat = db.Projets.insertMany([
       "details_type": { "innovation": "Robotique" },
       "incubateur": { "nom": "Y Combinator", "creation": 2005, "budget": 5000000 },
       "membres": [
-         { "nom": "Shinkawa", "prenom": "Yoji", "role": "designer" }
+         { "membre_id": getMembreId("Yoji", "Shinkawa"), "role": "designer" }
       ],
       "contributions": [
          {
             "date": "2026-03-10T11:00:00Z",
             "montant": 40.0,
-            "contributeur": { "pseudo": "marty", "mail": "m@mail.com" },
+            "contributeur_id": getContributeurId("marty"),
             "contrepartie": {
                "type": "Physique", "poids": 2.0, "fraisLivraison": 10.0,
                "transporteur": { "nom": "Chronopost", "delai": 2 }
@@ -275,7 +314,7 @@ resultat = db.Projets.insertMany([
          }
       ],
       "avis": [
-         { "date": "2026-03-20", "note": 3, "texte": "Techno sympa", "contributeur": "marty" }
+         { "date": "2026-03-20", "note": 3, "texte": "Techno sympa", "contributeur_id": getContributeurId("marty") }
       ]
    },
    {
@@ -287,13 +326,13 @@ resultat = db.Projets.insertMany([
       "details_type": { "innovation": "IA" },
       "incubateur": { "nom": "Plug and Play", "creation": 2006, "budget": 1500000 },
       "membres": [
-         { "nom": "Durand", "prenom": "Marie", "role": "développeur" }
+         { "membre_id": getMembreId("Marie", "Durand"), "role": "développeur" }
       ],
       "contributions": [
          {
             "date": "2026-03-15T14:00:00Z",
             "montant": 50.0,
-            "contributeur": { "pseudo": "berny", "mail": "b@mail.com" },
+            "contributeur_id": getContributeurId("berny"),
             "contrepartie": {
                "type": "Physique", "poids": 3.0, "fraisLivraison": 15.0,
                "transporteur": { "nom": "Chronopost", "delai": 2 }
@@ -311,7 +350,7 @@ resultat = db.Projets.insertMany([
       "details_type": { "innovation": "Web3" },
       "incubateur": null,
       "membres": [
-         { "nom": "Smith", "prenom": "John", "role": "designer" }
+         { "membre_id": getMembreId("John", "Smith"), "role": "designer" }
       ],
       "contributions": [],
       "avis": []
@@ -325,7 +364,7 @@ resultat = db.Projets.insertMany([
       "details_type": { "innovation": "Cleantech" },
       "incubateur": null,
       "membres": [
-         { "nom": "Zola", "prenom": "Emile", "role": "community manager" }
+         { "membre_id": getMembreId("Emile", "Zola"), "role": "community manager" }
       ],
       "contributions": [],
       "avis": []
@@ -339,15 +378,16 @@ resultat = db.Projets.insertMany([
       "details_type": { "innovation": "IoT" },
       "incubateur": null,
       "membres": [
-         { "nom": "Durand", "prenom": "Marie", "role": "chef de projet" }
+         { "membre_id": getMembreId("Marie", "Durand"), "role": "chef de projet" }
       ],
       "contributions": [],
       "avis": []
    }
 ]);
 
-print("Resultat de l'insertion");
-printjson(resultat);
+print("Insertion terminée.");
 
-print("Apres modification : nombre de projets existants");
-printjson(db.Projets.countDocuments());
+print("\n--- BILAN FINAL ---");
+print("Nombre final de projets insérés       : " + db.Projets.countDocuments());
+print("Nombre final de contributeurs insérés : " + db.Contributeurs.countDocuments());
+print("Nombre final de membres insérés       : " + db.Membres.countDocuments());
