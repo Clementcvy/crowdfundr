@@ -14,9 +14,11 @@ print("Selection des membres du projet Tactical Art");
 recordset = db.Projets.find(
    { titre: "Tactical Art" },
    {
-      membres: 1
+      membre_id: 1
    }
 );
+
+
 
 while (recordset.hasNext()) {
    printjson(recordset.next());

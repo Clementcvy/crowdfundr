@@ -10,6 +10,8 @@ db = conn.getDB("crowdfunder");
 
 load("outils.js")
 
+contID = getContributeurId("marty");
+
 print("Suppression de l'avis de marty sur Tactical Art");
 
 print("Avant modification : avis du projet Tactical Art");
@@ -20,7 +22,7 @@ printjson(db.Projets.findOne(
 
 resultat = db.Projets.updateOne(
    { titre: "Tactical Art" },
-   { $pull: { avis: { contributeur: "marty" } } }
+   { $pull: { avis: { contributeur_id: contID } } }
 );
 
 print("Resultat de la modification");
