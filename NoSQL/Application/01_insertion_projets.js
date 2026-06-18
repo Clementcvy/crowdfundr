@@ -4,6 +4,7 @@
 // 2. Depuis mongosh, depuis le dossier NoSQL/Application :
 //    load("01_insertion_projets.js")
 
+
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
 
