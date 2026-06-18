@@ -8,6 +8,8 @@
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
 
+load("outils.js")
+
 print("Suppression de l'avis de marty sur Tactical Art");
 
 print("Avant modification : avis du projet Tactical Art");

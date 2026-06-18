@@ -7,6 +7,7 @@
 
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
+load("outils.js")
 
 print("Selection des membres du projet Tactical Art");
 

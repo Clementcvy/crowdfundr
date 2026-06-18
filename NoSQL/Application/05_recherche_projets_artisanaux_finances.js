@@ -7,8 +7,12 @@
 
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
+load("outils.js")
 
 print("Recherche 1 : projets artisanaux finances");
+
+membreID = getMembreId("Hideo", "Kojima");
+membreID2 = getMembreId("Yoji", "Shinkawa");
 
 db.Projets.aggregate([
    {
@@ -18,8 +22,8 @@ db.Projets.aggregate([
          // 2. On verifie que les deux membres sont dans le projet
          membres: {
             $all: [
-               { $elemMatch: { nom: "Kojima", prenom: "Hideo" } },
-               { $elemMatch: { nom: "Shinkawa", prenom: "Yoji" } }
+               { $elemMatch: { membre_id: membreID } },
+               { $elemMatch: { membre_id: membreID2 } }
             ]
          }
       }
