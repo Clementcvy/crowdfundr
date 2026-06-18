@@ -41,7 +41,7 @@ db.Projets.aggregate([
          _id: "$_id",
          titre: { $first: "$titre" },
          contributeurs: {
-            $addToSet: "$contributions.contributeur.pseudo"
+            $addToSet: "$contributions.contributeur_id"
          }
       }
    },
