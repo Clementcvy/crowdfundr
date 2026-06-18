@@ -131,7 +131,7 @@ Prompt APP : [CODE] Pour ces menu, ajoute un retour en arrière pour chaque éta
 |        |        |        |        |        |
 |     App NoSQL   |    22%    |   22%     |   22%     |   34%     |
 |        |        |        |        |        |
-| Pourcentage total:|        |        |        |        |
+| Pourcentage total:|   24%     |    25%    |    25%    |    26%    |
 
 
 
