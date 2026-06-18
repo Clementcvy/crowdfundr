@@ -1,10 +1,12 @@
 import os
 
+
 def clear():
     if os.name == "nt":
         os.system("cls")
     else:
         os.system("clear")
+
 
 def pause():
     input("\nAppuyez sur entrée pour continuer...")
@@ -21,9 +23,10 @@ if __name__ == "__main__":
             print("3 - Mettre à jour un avis")
             print("4 - Sélectionner un membre")
             print("5 - Selects")
+            print("0 - Sortir")
             choix = int(input("-> "))
 
-            if choix == 1: # Insérer un projets
+            if choix == 1:  # Insérer un projets
                 os.system("mongosh 01_insertion_projets.js")
             elif choix == 2:
                 os.system("mongosh 02_suppression_avis.js")
@@ -50,6 +53,8 @@ if __name__ == "__main__":
                     os.system("mongosh 06_recherche_moyenne_avis_ong.js")
                 elif reponse == 3:
                     os.system("mongosh 07_recherche_contributeurs_chronopost.js")
+            elif choix == 0:
+                break
             pause()
     except KeyboardInterrupt as e:
         print("Sortie de l'app...")
