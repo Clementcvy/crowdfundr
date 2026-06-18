@@ -19,7 +19,6 @@ function chargerRequete(fichier) {
       load("NoSQL/Application/" + fichier);
    }
 }
-
 chargerRequete("01_insertion_projets.js");
 chargerRequete("02_suppression_avis.js");
 chargerRequete("03_mise_a_jour_avis.js");
