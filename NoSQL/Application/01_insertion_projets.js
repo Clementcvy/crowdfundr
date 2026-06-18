@@ -4,6 +4,7 @@
 // 2. Depuis mongosh, depuis le dossier NoSQL/Application :
 //    load("01_insertion_projets.js")
 
+
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
 
@@ -39,12 +40,12 @@ db.Membres.insertMany([
 // Raccourcis de requêtes
 // ==========================================
 // Fonctions permettent de chercher l'_id pour l'injecter comme clé étrangère
-function getMembreId(prenom, nom) {
+export function getMembreId(prenom, nom) {
     let membre = db.Membres.findOne({ "prenom": prenom, "nom": nom });
     return membre ? membre._id : null;
 }
 
-function getContributeurId(pseudo) {
+export function getContributeurId(pseudo) {
     let contrib = db.Contributeurs.findOne({ "pseudo": pseudo });
     return contrib ? contrib._id : null;
 }
