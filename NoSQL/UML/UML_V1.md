@@ -1,5 +1,3 @@
-@startuml
-skinparam linetype ortho
 
 class Projet {
     titre : varchar[20] {key}
@@ -7,9 +5,11 @@ class Projet {
     objectif : float
     lancement : date {key}
     type : {"Projet_Techno", "Projet_Artis", "Projet_Social""}
-    type_data : {Projet_Techno, Projet_Artis, Projet_Social}
-    membres : Membre
-    avis : Avis
+    innovation : text
+    region : text
+    medium : text
+    membres : JSON
+    avis : JSON
 }
 
 class Incubateur {
@@ -45,10 +45,9 @@ class Contrepartie_Numérique {
 class Contrepartie_Physique {
     poids : float
     fraisLivraison : float
-    transporteur : Transporteur
+    transporteur : JSON
 }
 
 Contribution "1-1"--> "0..1" Contrepartie : Inclue
 Contrepartie <|-- Contrepartie_Numérique
 Contrepartie <|-- Contrepartie_Physique
-@enduml

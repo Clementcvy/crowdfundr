@@ -8,8 +8,8 @@ Relations :
 Incubateur(#nom: varchar[20], création: int[4], budget: float)
 création et budget NOT NULL
 
-Projet(#id: int, titre: varchar[20], descr: text, objectif: float, lancement: date, #incubateur => Incubateur, type_projet: enum{'projet_techno', 'projet_social', 'projet_artis'}, data : json, membre: json, avis: json)
-titre, description, objectif, lancement, type_projet, data, membre et avis NOT NULL AND (titre, lancement) UNIQUE NOT NULL AND ((type_projet='projet_techno' AND data[type_projet] = 'projet_techno') OR (type_projet='projet_social' AND data[type_projet] = 'projet_social') OR (type_projet='projet_artis' AND data[type_projet] = 'projet_artis'))
+Projet(#id: int, titre: varchar[20], descr: text, objectif: float, lancement: date, #incubateur => Incubateur, type_projet: enum{'projet_techno', 'projet_social', 'projet_artis'},innovation: text, region: text, medium: text, membre: json, avis: json)
+titre, description, objectif, lancement, type_projet, membre et avis NOT NULL AND (titre, lancement) UNIQUE NOT NULL AND ((type_projet='projet_techno' AND innovation NOT NULL AND (region, medium) NULL) OR (type_projet='projet_artis' AND medium NOT NULL AND (region, innovation) NULL) OR (type_projet='projet_social' AND region NOT NULL AND (innovation, medium) NULL))
 
 Contributeur(#id: int, nom: varchar[20], naissance: Date, pseudo: varchar[20], mail: varchar[50])
 nom, naissance, mail NOT NULL AND pseudo UNIQUE NOT NULL

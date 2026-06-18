@@ -17,10 +17,15 @@ CREATE TABLE nosql.Projet (
     lancement DATE NOT NULL,
     incubateur VARCHAR(20),
     type_projet nosql.typeProjet NOT NULL,
-    additional_data JSON NOT NULL,
+    innovation TEXT,
+    region TEXT,
+    medium TEXT,
     membre JSON NOT NULL,
     avis JSON NOT NULL,
 CONSTRAINT projet_incubateur FOREIGN KEY (incubateur) REFERENCES nosql.Incubateur(nom)
+    -- Si typeProjet == 'projet_techno' : innovation NOT NULL, region & medium NULL
+    -- Si typeProjet == 'projet_social' : region NOT NULL, innovation & medium NULL
+    -- Si typeProjet == 'projet_artis' : medium NOT NULL, region & innovation NULL
 );
 
 CREATE TABLE nosql.Contributeur (
