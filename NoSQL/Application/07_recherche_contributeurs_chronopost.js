@@ -8,6 +8,7 @@
 
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
+load("outils.js")
 
 print("Recherche 3 : nombre d'utilisateurs distincts par projet avec incubateur ayant reclame une contrepartie physique expediee par Chronopost");
 
