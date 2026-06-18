@@ -11,15 +11,16 @@ load("outils.js")
 
 print("Selection des membres du projet Tactical Art");
 
-recordset = db.Projets.find(
+recordset = db.Projets.findOne(
    { titre: "Tactical Art" },
    {
-      membre_id: 1
+      membres: 1
    }
 );
 
-
-
-while (recordset.hasNext()) {
-   printjson(recordset.next());
+for (const doc of recordset.membres) {
+   membre = getMembre(doc.membre_id);
+   printjson(membre);
 }
+
+

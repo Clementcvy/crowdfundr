@@ -8,12 +8,12 @@ function getContributeurId(pseudo) {
    return contrib ? contrib._id : null;
 }
 
-function getMembre(id){
-   let membre = db.Membres.findOne({"_id":id});
-   return membre ? membre._id : null;
+function getMembre(id) {
+   let membre = db.Membres.findOne(id);
+   return membre;
 }
 
-function getContributeur(id){
-   let contrib = db.Contributeurs.findOne({"_id":id});
-   return contrib ? contrib._id : null;
+function getContributeur(id) {
+   let contrib = db.Contributeurs.findOne(id);
+   return contrib;
 }
