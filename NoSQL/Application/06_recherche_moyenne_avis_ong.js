@@ -7,7 +7,15 @@
 
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
-load("outils.js")
+try {
+   load("outils.js");
+} catch (erreur) {
+   try {
+      load("NoSQL/Application/outils.js");
+   } catch (autreErreur) {
+      load("/scripts/outils.js");
+   }
+}
 
 print("Recherche 2 : moyenne des avis pour Amnesty International");
 
@@ -36,7 +44,7 @@ db.Projets.aggregate([
       $match: {
          $expr: {
             $and: [
-               { $eq: ["$avis.contributeur", "$contributions.contributeur.pseudo"] },
+               { $eq: ["$avis.contributeur_id", "$contributions.contributeur_id"] },
                { $gt: ["$contributions.montant", 50] }
             ]
          }

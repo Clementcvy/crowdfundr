@@ -8,11 +8,20 @@
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
 
-load("outils.js")
+try {
+   load("outils.js");
+} catch (erreur) {
+   try {
+      load("NoSQL/Application/outils.js");
+   } catch (autreErreur) {
+      load("/scripts/outils.js");
+   }
+}
 
 contID = getContributeurId("marty");
 
 print("Suppression de l'avis de marty sur Tactical Art");
+contID = getContributeurId("marty");
 
 print("Avant modification : avis du projet Tactical Art");
 printjson(db.Projets.findOne(

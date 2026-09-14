@@ -8,7 +8,15 @@
 conn = new Mongo("mongodb://localhost:27017");
 db = conn.getDB("crowdfunder");
 
-load("outils.js")
+try {
+   load("outils.js");
+} catch (erreur) {
+   try {
+      load("NoSQL/Application/outils.js");
+   } catch (autreErreur) {
+      load("/scripts/outils.js");
+   }
+}
 
 // ==========================================
 // 1. Collection Contributeurs

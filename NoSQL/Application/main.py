@@ -1,4 +1,12 @@
 import os
+from pathlib import Path
+
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+def run_mongo_script(filename):
+    os.system(f'mongosh "{SCRIPT_DIR / filename}"')
 
 
 def clear():
@@ -27,13 +35,13 @@ if __name__ == "__main__":
             choix = int(input("-> "))
 
             if choix == 1:  # Insérer un projets
-                os.system("mongosh 01_insertion_projets.js")
+                run_mongo_script("01_insertion_projets.js")
             elif choix == 2:
-                os.system("mongosh 02_suppression_avis.js")
+                run_mongo_script("02_suppression_avis.js")
             elif choix == 3:
-                os.system("mongosh 03_mise_a_jour_avis.js")
+                run_mongo_script("03_mise_a_jour_avis.js")
             elif choix == 4:
-                os.system("mongosh 04_selection_membres.js")
+                run_mongo_script("04_selection_membres.js")
             elif choix == 5:
                 clear()
                 print("Choix :")
@@ -48,11 +56,11 @@ if __name__ == "__main__":
                 )
                 reponse = int(input("-> "))
                 if reponse == 1:
-                    os.system("mongosh 05_recherche_projets_artisanaux_finances.js")
+                    run_mongo_script("05_recherche_projets_artisanaux_finances.js")
                 elif reponse == 2:
-                    os.system("mongosh 06_recherche_moyenne_avis_ong.js")
+                    run_mongo_script("06_recherche_moyenne_avis_ong.js")
                 elif reponse == 3:
-                    os.system("mongosh 07_recherche_contributeurs_chronopost.js")
+                    run_mongo_script("07_recherche_contributeurs_chronopost.js")
             elif choix == 0:
                 break
             pause()

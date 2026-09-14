@@ -1,17 +1,22 @@
+import os
+
 import psycopg2
 
-DATABASE = "dbnf18p080"
-USER = "nf18p080"
-PASSWORD = "r6zwYwj3X6zW"
-HOST = "tuxa.sme.utc"
+DATABASE = os.getenv("CROWDFUNDR_DB_NAME", "crowdfundr")
+USER = os.getenv("CROWDFUNDR_DB_USER", "crowdfundr")
+PASSWORD = os.getenv("CROWDFUNDR_DB_PASSWORD", "crowdfundr")
+HOST = os.getenv("CROWDFUNDR_DB_HOST", "localhost")
+PORT = os.getenv("CROWDFUNDR_DB_PORT", "5432")
+SCHEMA = os.getenv("CROWDFUNDR_DB_SCHEMA", "sql")
 
 def connectDatabase():
     conn = psycopg2.connect(
         host=HOST,
+        port=PORT,
         dbname=DATABASE,
         user=USER,
         password=PASSWORD,
-        options="-c search_path=sql"
+        options=f"-c search_path={SCHEMA}"
     )
     if (conn):
         print("[LOGS] Connexion DB réussie.")

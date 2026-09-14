@@ -9,14 +9,21 @@
 print("Execution de toutes les requetes");
 
 function chargerRequete(fichier) {
-   try {
-      load(fichier);
-   } catch (erreur) {
-      if (String(erreur.message).indexOf("ENOENT") === -1) {
-         throw erreur;
-      }
+   let chemins = [
+      fichier,
+      "NoSQL/Application/" + fichier,
+      "/scripts/" + fichier
+   ];
 
-      load("NoSQL/Application/" + fichier);
+   for (let i = 0; i < chemins.length; i++) {
+      try {
+         load(chemins[i]);
+         return;
+      } catch (erreur) {
+         if (i === chemins.length - 1) {
+            throw erreur;
+         }
+      }
    }
 }
 chargerRequete("01_insertion_projets.js");

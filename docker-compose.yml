@@ -1,0 +1,49 @@
+services:
+  app:
+    build: .
+    profiles:
+      - app
+    environment:
+      CROWDFUNDR_DB_HOST: postgres
+      CROWDFUNDR_DB_PORT: 5432
+      CROWDFUNDR_DB_NAME: crowdfundr
+      CROWDFUNDR_DB_USER: crowdfundr
+      CROWDFUNDR_DB_PASSWORD: crowdfundr
+      CROWDFUNDR_DB_SCHEMA: sql
+    depends_on:
+      postgres:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: crowdfundr-postgres
+    environment:
+      POSTGRES_DB: crowdfundr
+      POSTGRES_USER: crowdfundr
+      POSTGRES_PASSWORD: crowdfundr
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./LDD/LDD_V1.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./LMD/INSERT.sql:/docker-entrypoint-initdb.d/02_data.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crowdfundr -d crowdfundr"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mongo:
+    image: mongo:7
+    container_name: crowdfundr-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./NoSQL/Application:/scripts:ro
+
+volumes:
+  postgres_data:
+  mongo_data:
