@@ -5,15 +5,13 @@
 //    load("05_recherche_projets_artisanaux_finances.js")
 // Affiche les projets artisanaux dont la somme des contributions atteint l'objectif.
 
-conn = new Mongo("mongodb://localhost:27017");
-db = conn.getDB("crowdfunder");
 try {
-   load("outils.js");
+   load("bootstrap.js");
 } catch (erreur) {
    try {
-      load("NoSQL/Application/outils.js");
+      load("NoSQL/Application/bootstrap.js");
    } catch (autreErreur) {
-      load("/scripts/outils.js");
+      load("/scripts/bootstrap.js");
    }
 }
 

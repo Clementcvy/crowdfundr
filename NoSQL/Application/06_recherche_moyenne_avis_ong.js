@@ -5,15 +5,13 @@
 //    load("06_recherche_moyenne_avis_ong.js")
 // Affiche la moyenne des notes pour Amnesty International avec contributions superieures a 50.
 
-conn = new Mongo("mongodb://localhost:27017");
-db = conn.getDB("crowdfunder");
 try {
-   load("outils.js");
+   load("bootstrap.js");
 } catch (erreur) {
    try {
-      load("NoSQL/Application/outils.js");
+      load("NoSQL/Application/bootstrap.js");
    } catch (autreErreur) {
-      load("/scripts/outils.js");
+      load("/scripts/bootstrap.js");
    }
 }
 

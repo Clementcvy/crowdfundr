@@ -43,6 +43,25 @@ services:
     volumes:
       - mongo_data:/data/db
       - ./NoSQL/Application:/scripts:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mongo-app:
+    build:
+      context: .
+      dockerfile: NoSQL/Dockerfile
+    profiles:
+      - mongo-app
+    environment:
+      MONGODB_URI: mongodb://mongo:27017
+    depends_on:
+      mongo:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
 
 volumes:
   postgres_data:

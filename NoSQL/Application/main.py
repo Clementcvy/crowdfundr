@@ -1,12 +1,14 @@
 import os
+import subprocess
 from pathlib import Path
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+MONGODB_URI = os.environ.get("MONGODB_URI", "mongodb://localhost:27017")
 
 
 def run_mongo_script(filename):
-    os.system(f'mongosh "{SCRIPT_DIR / filename}"')
+    subprocess.run(["mongosh", MONGODB_URI, str(SCRIPT_DIR / filename)], check=False)
 
 
 def clear():

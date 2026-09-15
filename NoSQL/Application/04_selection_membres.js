@@ -5,15 +5,13 @@
 //    load("04_selection_membres.js")
 // Affiche les membres du projet Tactical Art.
 
-conn = new Mongo("mongodb://localhost:27017");
-db = conn.getDB("crowdfunder");
 try {
-   load("outils.js");
+   load("bootstrap.js");
 } catch (erreur) {
    try {
-      load("NoSQL/Application/outils.js");
+      load("NoSQL/Application/bootstrap.js");
    } catch (autreErreur) {
-      load("/scripts/outils.js");
+      load("/scripts/bootstrap.js");
    }
 }
 
@@ -30,5 +28,4 @@ for (const doc of recordset.membres) {
    membre = getMembre(doc.membre_id);
    printjson(membre);
 }
-
 
